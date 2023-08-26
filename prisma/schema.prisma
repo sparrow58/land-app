@@ -1,0 +1,22 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider  = "postgresql"
+    url       = env("POSTGRES_PRISMA_URL") // uses connection pooling
+    directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+}
+
+model Land {
+    id         String   @id @default(cuid())
+    name       String
+    land_size  Int
+    land_price Int
+    endowment  Boolean  @default(false)
+    image      String?
+    created_by String
+    updated_by String
+    created_at DateTime @default(now())
+    updated_At DateTime
+}
