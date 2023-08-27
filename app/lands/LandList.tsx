@@ -3,15 +3,6 @@ import React from "react";
 import fetchData from "../services/fetchData";
 import Image from "next/image";
 import LandCard from "./LandCard";
-const getData = async () => {
-  const res = await fetch("http://localhost:3000/api/lands", {
-    next: {
-      revalidate: 30,
-    },
-  });
-
-  return res.json();
-};
 
 export interface Land {
   id: string;
@@ -27,13 +18,12 @@ export interface Land {
 }
 const LandsList = async () => {
   const data = await fetchData<Land>("http://localhost:3000/api/lands");
-  console.log("all lands", data);
   return (
     <>
       <div className="mt-8 grid lg:grid-cols-3 gap-10">
         {data.map((item) => (
           <Link href={`/lands/${item.id}`}>
-            <LandCard land={item} />
+            <LandCard land={item} key={item.id} />
           </Link>
         ))}
       </div>
