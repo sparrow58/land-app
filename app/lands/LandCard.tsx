@@ -1,6 +1,6 @@
+import { Land } from "@prisma/client";
 import Image from "next/image";
 import React from "react";
-import { Land } from "./LandList";
 
 interface Props {
   land: Land;

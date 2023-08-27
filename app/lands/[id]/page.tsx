@@ -3,10 +3,13 @@ import LandCard from "../LandCard";
 import { fetchSingle } from "@/app/services/fetchData";
 import { Land } from "../LandList";
 import NotFound from "@/app/not-found";
+import { getLand } from "@/app/services/landService";
 const page = async ({ params }: any) => {
-  const data = await fetchSingle<Land>(
-    "http://localhost:3000/api/lands/" + params.id
-  );
+  //   const data = await fetchSingle<Land>(
+  //     "http://localhost:3000/api/lands/" + params.id
+  //   );
+
+  const data = await getLand(params.id);
   if (data == null) return <NotFound />;
   return (
     <main>

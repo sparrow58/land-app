@@ -3,6 +3,7 @@ import React from "react";
 import fetchData from "../services/fetchData";
 import Image from "next/image";
 import LandCard from "./LandCard";
+import { getLands } from "../services/landService";
 
 export interface Land {
   id: string;
@@ -17,7 +18,8 @@ export interface Land {
   updated_at: Date | null;
 }
 const LandsList = async () => {
-  const data = await fetchData<Land>("http://localhost:3000/api/lands");
+  // const data = await fetchData<Land>("http://localhost:3000/api/lands");
+  const data = await getLands();
   return (
     <>
       <div className="mt-8 grid lg:grid-cols-3 gap-10">
