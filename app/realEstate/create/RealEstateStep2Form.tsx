@@ -1,6 +1,10 @@
 import { OverlookingType } from "@prisma/client";
 import React, { ReactEventHandler } from "react";
 import { FormProps } from "../../Props/FormProps";
+import TextField from "@/app/components/TextField";
+import { error } from "console";
+import DropList from "@/app/components/DropList";
+import { enumToKeyValues } from "@/app/helpers/converters";
 
 type Props = FormProps & {
   price: number;
@@ -21,7 +25,9 @@ const RealEstateStep2Form = ({
   price,
   size,
   overlooking,
-  onChange: handleChange,
+  onChange,
+  onBlur,
+  errors,
 }: Props) => {
   //   const handleChange =
   //     (fieldName: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -29,30 +35,33 @@ const RealEstateStep2Form = ({
   //     };
   return (
     <>
-      <label>Price: </label>
-      <input
+      <TextField
+        fieldName="price"
+        label="Price"
         value={price}
-        onChange={handleChange("price")}
-        autoFocus
-        required
+        error={errors.price}
+        onChange={onChange}
+        onBlur={onBlur}
         type="number"
       />
-      <label>Size: </label>
-      <input
+      <TextField
+        fieldName="size"
+        label="Size"
         value={size}
-        onChange={handleChange("size")}
-        required
+        error={errors.size}
+        onChange={onChange}
+        onBlur={onBlur}
         type="number"
       />
-      <label>Overlooking: </label>
-      <select onChange={handleChange("overlooking")}>
-        <option value={overlooking}>Select...</option>
-        {Object.values(OverlookingType).map((type) => (
-          <option key={type} value={type}>
-            {type}
-          </option>
-        ))}
-      </select>
+      <DropList
+        fieldName="overlooking"
+        label="Overlooking"
+        value={overlooking}
+        onChange={onChange}
+        onBlur={onBlur}
+        options={enumToKeyValues(OverlookingType)}
+        error={errors.overlooking}
+      />
     </>
   );
 };

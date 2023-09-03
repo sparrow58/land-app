@@ -16,68 +16,38 @@ const RealEstateStep1Form = ({
   title,
   description,
   type,
-  onChange: handleChange,
-  onBlur: handleBlur,
+  onChange,
+  onBlur,
   errors,
 }: Props) => {
-  const typeOptions = Object.keys(RealEstateType).map((value) => ({
-    key: value,
-    value: value,
-  }));
-
   return (
     <>
-      {/* <label>Title</label>
-      <input
-        value={title}
-        onChange={handleChange("title")}
-        onBlur={handleBlur("title")}
-        autoFocus
-        required
-        type="text"
-      /> */}
       <TextField
         fieldName="title"
         label="Title"
         value={title}
         error={errors.title}
-        onChange={handleChange}
-        onBlur={handleBlur}
+        onChange={onChange}
+        onBlur={onBlur}
       />
-      {/* <label>Description</label>
-      <textarea
-        value={description}
-        onChange={handleChange("description")}
-        onBlur={handleBlur("description")}
-        required
-      /> */}
-      {console.log("errors", errors)}
+
       <TexAreaField
         fieldName="description"
         label="Description"
         value={description}
         error={errors.description}
-        onChange={handleChange}
-        onBlur={handleBlur}
+        onChange={onChange}
+        onBlur={onBlur}
       />
       <DropList
         fieldName="type"
         label="Type"
         value={type}
-        onChange={handleChange}
-        onBlur={handleBlur}
+        onChange={onChange}
+        onBlur={onBlur}
         options={enumToKeyValues(RealEstateType)}
         error={errors.type}
       />
-      {/* <label>Type</label>
-      <select value={type} onChange={handleChange("type")}>
-        <option value="">Select...</option>
-        {Object.values(RealEstateType).map((type) => (
-          <option key={type} value={type}>
-            {type}
-          </option>
-        ))}
-      </select> */}
     </>
   );
 };

@@ -17,25 +17,25 @@ export default function useRealEstateForm(
       .required("Description is required"),
     overlooking: yup.string().required("overlooking is required"),
     payment_method: yup.string().required("payment_method time is required"),
-    price: yup.number().required("price is required"),
+    price: yup.number().min(1).required("price is required"),
     rentOrSell: yup.string().required("rentOrSell is required"),
-    type: yup.string().required("type is required"),
+    type: yup.string().min(1).required("type is required"),
     size: yup.string().required("Scheduled  is required"),
   });
 
   const initialValues: RealEstateFormData = {
     title: "",
     description: "",
-    overlooking: "BACK",
+    overlooking: "",
     details: JSON.parse("{}"),
-    payment_method: "CASH",
+    payment_method: "",
     price: 0,
-    rentOrSell: "BOTH",
+    rentOrSell: "",
     size: 0,
-    type: "APARTMENT",
+    type: "",
   };
 
-  const formik = useFormik<RealEstateFormData>({
+  const formik = useFormik({
     initialValues,
     validationSchema,
     onSubmit,

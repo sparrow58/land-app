@@ -9,6 +9,7 @@ const TexAreaField = ({
   label,
   onBlur,
   onChange,
+  autoFocus = false,
 }: FieldProps) => {
   return (
     <div>
@@ -18,6 +19,7 @@ const TexAreaField = ({
         value={value}
         onChange={onChange(fieldName)}
         onBlur={onBlur(fieldName)}
+        autoFocus={autoFocus}
       />
       <ErrorLabel error={error} />
     </div>

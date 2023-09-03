@@ -12,6 +12,7 @@ const DropList = ({
   onBlur,
   options,
   label,
+  autoFocus = false,
 }: Props) => {
   return (
     <div>
@@ -20,6 +21,7 @@ const DropList = ({
         value={value}
         onChange={onChange(fieldName)}
         onBlur={onBlur(fieldName)}
+        autoFocus={autoFocus}
       >
         <option value="">Select...</option>
         {options.map((listValue) => (

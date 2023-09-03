@@ -12,6 +12,7 @@ const TextField = ({
   error,
   label = fieldName,
   type = "text",
+  autoFocus = false,
 }: Props) => {
   return (
     <div>
@@ -21,8 +22,7 @@ const TextField = ({
         value={value}
         onChange={onChange(fieldName)}
         onBlur={onBlur(fieldName)}
-        autoFocus
-        required
+        autoFocus={autoFocus}
         type={type}
       />
       <ErrorLabel error={error} />

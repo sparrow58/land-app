@@ -11,49 +11,84 @@ import {
 } from "@prisma/client";
 import { RealEstateFormData } from "@/app/dataObjects/RealEstateFormData";
 import useRealEstateForm from "@/app/hooks/useRealStateForm";
+import FormPageContainer from "@/app/components/FormPageContainer";
+import TextField from "@/app/components/TextField";
+import TexAreaField from "@/app/components/TexAreaField";
+import { enumToKeyValues } from "@/app/helpers/converters";
+import DropList from "@/app/components/DropList";
 
-const initialData: RealEstateFormData = {
-  title: "",
-  description: "",
-  overlooking: OverlookingType.BACK,
-  details: JSON.parse("{}"),
-  payment_method: PaymentMethodType.BOTH,
-  price: 0,
-  rentOrSell: "BOTH",
-  size: 0,
-  type: "APARTMENT",
-};
 const RealEstateForm = () => {
   const { handleChange, handleBlur, handleSubmit, values, errors } =
     useRealEstateForm((values) => {});
-  // const [data, setData] = useState(initialData);
-  // const updateFields = (fields: Partial<RealEstateFormData>) => {
-  //   setData((prev) => {
-  //     return { ...prev, ...fields };
-  //   });
-  // };
   const { steps, step, isFirstStep, isLastStep, currentStepIndex, back, next } =
     useMultistepForm([
-      <RealEstateStep1Form
-        {...values}
-        onChange={handleChange}
-        onBlur={handleBlur}
-        errors={errors}
-      />,
-      <RealEstateStep2Form
-        {...values}
-        onChange={handleChange}
-        onBlur={handleBlur}
-        errors={errors}
-      />,
+      <FormPageContainer key={0}>
+        <TextField
+          fieldName="title"
+          label="Title"
+          value={values.title}
+          error={errors.title}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          autoFocus={true}
+        />
+
+        <TexAreaField
+          fieldName="description"
+          label="Description"
+          value={values.description}
+          error={errors.description}
+          onChange={handleChange}
+          onBlur={handleBlur}
+        />
+        <DropList
+          fieldName="type"
+          label="Type"
+          value={values.type}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          options={enumToKeyValues(RealEstateType)}
+          error={errors.type}
+        />
+      </FormPageContainer>,
+
+      <FormPageContainer key={1}>
+        <TextField
+          fieldName="price"
+          label="Price"
+          value={values.price}
+          error={errors.price}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          type="number"
+          autoFocus={true}
+        />
+        <TextField
+          fieldName="size"
+          label="Size"
+          value={values.size}
+          error={errors.size}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          type="number"
+        />
+        <DropList
+          fieldName="overlooking"
+          label="Overlooking"
+          value={values.overlooking}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          options={enumToKeyValues(OverlookingType)}
+          error={errors.overlooking}
+        />
+      </FormPageContainer>,
     ]);
 
   const onSubmitHandler = (e: FormEvent) => {
     e.preventDefault();
     if (!isLastStep) next();
-    console.log(values);
   };
-
+  console.log("errors", errors);
   return (
     <div className="relative bg-white rounded-sm p-8 m-4 ">
       <div className="absolute top-2 right-2">

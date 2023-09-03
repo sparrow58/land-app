@@ -8,8 +8,9 @@ export type FormProps = BaseProps & {
 export type FieldProps = BaseProps & {
   label: string;
   value: any;
-  error: string;
+  error: string | undefined;
   fieldName: string;
+  autoFocus?: boolean | undefined;
 };
 
 // export function handleChange(

@@ -7,11 +7,11 @@ import {
 export type RealEstateFormData = {
   title: string;
   description: string;
-  overlooking: OverlookingType;
+  overlooking: OverlookingType | "";
   details: JSON;
-  payment_method: PaymentMethodType;
+  payment_method: PaymentMethodType | "";
   price: number;
-  rentOrSell: string;
+  rentOrSell: string | "";
   size: number;
-  type: RealEstateType;
+  type: RealEstateType | "";
 };
