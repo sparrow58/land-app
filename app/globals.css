@@ -44,7 +44,10 @@ button {
     px-3 py-2 
     rounded-sm 
     flex justify-between items-center gap-2
+    bg-blue-400
+    text-gray-300
     text-sm;
+  
 }
 button:hover {
   @apply bg-opacity-90;
@@ -60,12 +63,12 @@ button:hover {
 form {
   @apply 
     py-4 px-7 
-    bg-primary 
     bg-opacity-5 
     rounded-md 
-    block 
     mx-auto 
-    min-w-fit w-1/4;
+    flex-row
+     ;
+    
 }
 form label {
   @apply block;

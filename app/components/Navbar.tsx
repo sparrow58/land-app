@@ -12,9 +12,11 @@ const Navbar = () => {
         quality={100}
         placeholder="blur"
       />
-      <h1>Lands App</h1>
+      <h1>Real Estate App</h1>
       <Link href="/"> Home</Link>
       <Link href="/lands"> Lands</Link>
+      <Link href="/apartments"> Apartments</Link>
+      <Link href="/realEstate/create"> Create your add</Link>
     </nav>
   );
 };

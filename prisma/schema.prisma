@@ -20,3 +20,55 @@ model Land {
     created_at DateTime @default(now())
     updated_At DateTime
 }
+
+enum RealEstateType {
+    LAND
+    APARTMENT
+    VILLA
+    BUILDING
+    // Add more types as needed
+}
+
+enum PaymentMethodType {
+    CASH
+    INSTALLMENT
+    BOTH
+}
+
+enum OverlookingType {
+    MAINSTREET
+    SUBSTREET
+    SEA
+    BACK
+}
+
+enum RentOrSell {
+    RENT
+    SELL
+    BOTH
+}
+
+enum Status {
+    UNDER_REVIEW
+    SOLD
+    APPROVED
+}
+
+// Define the RealEstate table
+model RealEstate {
+    id             String            @id @default(cuid())
+    type           RealEstateType
+    title          String
+    description    String
+    details        Json // Store details as JSON
+    payment_method PaymentMethodType
+    rentOrSell     RentOrSell
+    price          Float
+    size           Float
+    overlooking    OverlookingType
+    status         Status
+    created_by     String
+    updated_by     String
+    created_at     DateTime          @default(now())
+    updated_At     DateTime
+}
