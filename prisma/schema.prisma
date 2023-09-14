@@ -3,22 +3,28 @@ generator client {
 }
 
 datasource db {
-    provider  = "postgresql"
-    url       = env("POSTGRES_PRISMA_URL") // uses connection pooling
-    directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+    // url       = env("POSTGRES_PRISMA_URL") // uses connection pooling
+    // directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
 
-model Land {
-    id         String   @id @default(cuid())
-    name       String
-    land_size  Int
-    land_price Int
-    endowment  Boolean  @default(false)
-    image      String?
-    created_by String
-    updated_by String
-    created_at DateTime @default(now())
-    updated_At DateTime
+enum Roles {
+    BASIC
+    ADMIN
+    SUPERADMIN
+}
+
+model User {
+    id          String       @id @default(cuid())
+    name        String
+    email       String       @unique
+    dateOfBirth DateTime
+    role        Roles        @default(BASIC)
+    prefrences  Json?
+    RealEstate  RealEstate[]
+    createdAt   DateTime     @default(now())
+    updatedAt   DateTime     @updatedAt
 }
 
 enum RealEstateType {
@@ -56,19 +62,20 @@ enum Status {
 
 // Define the RealEstate table
 model RealEstate {
-    id             String            @id @default(cuid())
-    type           RealEstateType
-    title          String
-    description    String
-    details        Json // Store details as JSON
-    payment_method PaymentMethodType
-    rentOrSell     RentOrSell
-    price          Float
-    size           Float
-    overlooking    OverlookingType
-    status         Status
-    created_by     String
-    updated_by     String
-    created_at     DateTime          @default(now())
-    updated_At     DateTime
+    id            String            @id @default(cuid())
+    type          RealEstateType
+    title         String
+    description   String
+    // details        Json? // Store details as JSON
+    paymentMethod PaymentMethodType
+    rentOrSell    RentOrSell
+    price         Float
+    size          Float
+    overlooking   OverlookingType
+    status        Status            @default(UNDER_REVIEW)
+    createdAt     DateTime          @default(now())
+    updatedAt     DateTime          @updatedAt
+
+    author User   @relation(fields: [userId], references: [id])
+    userId String
 }

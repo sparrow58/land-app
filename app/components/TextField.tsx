@@ -1,31 +1,30 @@
-import React from "react";
-import { FieldProps } from "../Props/FormProps";
+import React, { HTMLInputTypeAttribute } from "react";
+import { FieldProps } from "../Props/CommonProps";
 import ErrorLabel from "./ErrorLabel";
+import { useField } from "formik";
 type Props = FieldProps & {
-  type?: string;
+  type?: HTMLInputTypeAttribute;
 };
 const TextField = ({
-  fieldName,
-  value,
-  onChange,
-  onBlur,
-  error,
-  label = fieldName,
+  name,
+  label = name,
   type = "text",
+  placeholder,
   autoFocus = false,
 }: Props) => {
+  const [field, meta] = useField(name);
+
   return (
-    <div>
-      <label>{label}</label>
+    <div className="flex flex-col items-start mb-2">
+      <label className="font-medium text-gray-900">{label}</label>
       <input
-        className="border-2 rounded-lg h-10 border-stone-600-400"
-        value={value}
-        onChange={onChange(fieldName)}
-        onBlur={onBlur(fieldName)}
+        className="rounded-md border-2 p-2"
+        {...field}
         autoFocus={autoFocus}
         type={type}
+        placeholder={placeholder}
       />
-      <ErrorLabel error={error} />
+      <ErrorLabel error={meta.error} touched={meta.touched} />
     </div>
   );
 };

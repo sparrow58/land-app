@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "RealEstate" ALTER COLUMN "status" SET DEFAULT 'UNDER_REVIEW';

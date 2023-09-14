@@ -1,8 +1,8 @@
 import prisma from "@/lib/prisma";
-import { Land } from "@prisma/client";
-export async function getLand(id: string): Promise<Land | null> {
-  return prisma.land.findFirst({ where: { id: id } });
+import { RealEstate } from "@prisma/client";
+export async function getLand(id: string): Promise<RealEstate | null> {
+  return prisma.realEstate.findFirst({ where: { id: id, type: "LAND" } });
 }
 export async function getLands() {
-  return await prisma.land.findMany();
+  return await prisma.realEstate.findMany();
 }

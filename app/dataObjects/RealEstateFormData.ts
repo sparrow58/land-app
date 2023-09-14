@@ -2,16 +2,26 @@ import {
   OverlookingType,
   PaymentMethodType,
   RealEstateType,
+  RentOrSell,
 } from "@prisma/client";
 
-export type RealEstateFormData = {
+export interface RealEstateStep1Data {
   title: string;
   description: string;
-  overlooking: OverlookingType | "";
-  details: JSON;
-  payment_method: PaymentMethodType | "";
-  price: number;
-  rentOrSell: string | "";
-  size: number;
   type: RealEstateType | "";
-};
+}
+
+export interface RealEstateStep2Data {
+  price: number | "";
+  size: number | "";
+  overlooking: OverlookingType | "";
+  paymentMethod: PaymentMethodType | "";
+  rentOrSell: RentOrSell | "";
+}
+
+export interface RealEstateStep3Data {
+  paymentMethod: PaymentMethodType | "";
+  rentOrSell: RentOrSell | "";
+}
+
+export type RealEstateFormData = RealEstateStep1Data & RealEstateStep2Data & {};

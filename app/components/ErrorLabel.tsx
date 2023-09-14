@@ -1,8 +1,11 @@
 type Props = {
   error: string | undefined;
+  touched: boolean;
 };
-const ErrorLabel = ({ error }: Props) => {
-  return <label className="text-sm px-4 text-red-500">{error}</label>;
+const ErrorLabel = ({ error, touched }: Props) => {
+  return error && touched ? (
+    <label className="italic text-red-600">{error}</label>
+  ) : null;
 };
 
 export default ErrorLabel;

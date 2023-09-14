@@ -1,5 +1,4 @@
 import React, { ReactNode } from "react";
-import { FormProps } from "../Props/FormProps";
 
 type Props = {
   children: ReactNode;

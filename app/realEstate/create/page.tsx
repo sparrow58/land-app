@@ -1,8 +1,8 @@
 import React from "react";
-import RealEstateForm from "./RealEstateForm";
+import { FormStepper } from "./FormStepper";
 
 const page = () => {
-  return <RealEstateForm />;
+  return <FormStepper />;
 };
 
 export default page;

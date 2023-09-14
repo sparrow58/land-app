@@ -1,8 +1,8 @@
 export function enumToKeyValues(
   enumObject: any
-): { key: string; value: any }[] {
+): { value: string; label: any }[] {
   return Object.keys(enumObject).map((key) => ({
-    key: key,
-    value: enumObject[key],
+    value: key,
+    label: enumObject[key],
   }));
 }
