@@ -9,7 +9,7 @@ const RealEstateCard = ({ realEstate }: Props) => {
   console.log("apartment in component", realEstate);
 
   return (
-    <div className="card">
+    <div className="bg-white rounded overflow-hidden shadow relative">
       <Image
         src="/land.jpeg"
         width={600}
@@ -29,7 +29,7 @@ const RealEstateCard = ({ realEstate }: Props) => {
           {/* {realEstate.created_at.toString()} */}
         </span>
       </div>
-      <div className="badge">
+      <div className="bg-secondary-100  text-xs uppercase font-bold rounded-full p-2 absolute top-0 ml-2 mt-2">
         <span>Verified</span>
       </div>
       <div className="bg-blue-300 text-gray-500  text-xs uppercase font-bold rounded-bl-md p-2 absolute top-0 right-0">

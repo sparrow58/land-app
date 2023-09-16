@@ -1,7 +1,5 @@
-import { existsSync, mkdirSync, writeFileSync } from "fs";
 import { NextRequest, NextResponse } from "next/server";
 import { join } from "path";
-import { writeFile, mkdir } from "fs/promises";
 import { uploadFile } from "@/app/helpers/uploadHelper";
 import { addRealEstateImageUrlAsync } from "@/app/services/reatState/createService";
 interface Props {
@@ -17,6 +15,9 @@ export async function PATCH(req: NextRequest, { params: { id } }: Props) {
 
   if (!file) return NextResponse.json({ success: false });
 
+  // const blob = await put(file.name, file, {
+  //   access: "public",
+  // });
   const { relativePath } = await uploadFile(file, "REImages");
 
   const imageUrl = join(req.nextUrl.origin, relativePath);

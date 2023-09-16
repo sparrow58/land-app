@@ -15,7 +15,7 @@ const TextField = ({
   const [field, meta] = useField(name);
 
   return (
-    <div className="flex flex-col items-start mb-2">
+    <div className="flex flex-col mb-2">
       <label className="font-medium text-gray-900">{label}</label>
       <input
         className="rounded-md border-2 p-2"

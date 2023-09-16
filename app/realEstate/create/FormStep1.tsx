@@ -38,7 +38,7 @@ function FormStep1() {
         setActiveStepIndex?.((lastValue) => lastValue + 1);
       }}
     >
-      <Form className="flex flex-col justify-center">
+      <Form className="flex flex-col items-center justify-stretch">
         <div className="text-2xl font-medium self-center mb-2">Welcome!</div>
         <TextField
           name="title"
