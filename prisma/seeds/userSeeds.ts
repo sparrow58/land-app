@@ -7,6 +7,7 @@ async function main() {
     where: { email: "superadmin@mail.com" },
     update: {},
     create: {
+      id: "clmjhsx490000ac7g03dkr0zf",
       name: "SuperAdmin",
       email: "superadmin@mail.com",
       dateOfBirth: new Date("1993-6-13"),
