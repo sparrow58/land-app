@@ -76,6 +76,7 @@ model RealEstate {
     createdAt     DateTime          @default(now())
     updatedAt     DateTime          @updatedAt
 
-    author User   @relation(fields: [userId], references: [id])
+    author User     @relation(fields: [userId], references: [id])
     userId String
+    images String[]
 }

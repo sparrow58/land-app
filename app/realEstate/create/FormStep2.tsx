@@ -3,19 +3,36 @@ import { Form, Formik } from "formik";
 import React, { useContext } from "react";
 import * as yup from "yup";
 import { FormContext } from "./FormStepper";
-import { RealEstateStep2Data } from "@/app/dataObjects/RealEstateFormData";
+import {
+  RealEstateFormData,
+  RealEstateStep2Data,
+} from "@/app/dataObjects/RealEstateFormData";
 import TextField from "@/app/components/TextField";
 import { enumToKeyValues } from "@/app/helpers/converters";
 import SelectField from "@/app/components/SelectField";
 import { OverlookingType, PaymentMethodType, RentOrSell } from "@prisma/client";
 import SubmitButton from "@/app/components/SubmitButton";
-import api from "@/app/helpers/axios";
+import api from "@/app/helpers/api";
 import Button from "@/app/components/Button";
+import useCreateRealEstate from "@/app/hooks/realEstate/useCreateRealEstate";
 
 function FormStep2() {
-  const { activeStepIndex, setActiveStepIndex, formData, setFormData } =
-    useContext(FormContext) || {};
+  const {
+    activeStepIndex,
+    setActiveStepIndex,
+    formData,
+    setFormData,
+    setItemId,
+  } = useContext(FormContext) || {};
 
+  const { create, isLoading } = useCreateRealEstate({
+    onSuccess: (response: any) => {
+      console.log(response);
+      setItemId?.(response.id as string);
+      setActiveStepIndex?.((i) => i + 1);
+    },
+    onFailure: (error: any) => {},
+  });
   const validationSchema = yup.object().shape({
     overlooking: yup.string().required("overlooking is required"),
     price: yup.number().min(1).required("price is required"),
@@ -33,19 +50,20 @@ function FormStep2() {
       initialValues={{ ...formData }}
       validationSchema={validationSchema}
       onSubmit={(values) => {
-        const data = { ...formData, ...values };
+        const data: RealEstateFormData | {} = { ...formData, ...values };
         setFormData?.(data);
         console.log("sending", data);
 
-        api
-          .post("/realEstates", data)
-          .then(function (response) {
-            console.log(response);
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
-        setActiveStepIndex?.((i) => i + 1);
+        // api
+        //   .post("/realEstates", data)
+        //   .then(function (response) {
+        //     console.log(response);
+        //   })
+        //   .catch(function (error) {
+        //     console.log(error);
+        //   });
+
+        create(data);
       }}
     >
       {({ values }) => (
@@ -82,7 +100,7 @@ function FormStep2() {
           />
           <div className="flex gap-6 ">
             <Button text="Back" onClick={() => handleBack(values)} />
-            <SubmitButton text="Continue" />
+            <SubmitButton text="Continue" disabled={isLoading} />
           </div>
         </Form>
       )}

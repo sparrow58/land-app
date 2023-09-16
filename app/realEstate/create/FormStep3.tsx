@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useContext, useState } from "react";
 import { FormContext } from "./FormStepper";
 import Image from "next/image";
-import api from "@/app/helpers/axios";
+import api from "@/app/helpers/api";
 import { AxiosProgressEvent } from "axios";
 
 const FormStep3 = () => {
@@ -9,7 +9,7 @@ const FormStep3 = () => {
   const [progress, setProgress] = useState<number | undefined>(0);
   const [uploading, setUploading] = useState<boolean>(false);
   const [imageUrls, setImageUrls] = useState<string[]>([]);
-  const { activeStepIndex, setActiveStepIndex, formData, setFormData } =
+  const { activeStepIndex, setActiveStepIndex, formData, setFormData, itemId } =
     useContext(FormContext) || {};
   const [currentIndex, setCurrentIndex] = useState<number>(0);
 
@@ -51,14 +51,19 @@ const FormStep3 = () => {
     const formData = new FormData();
     formData.append("image", selectedFile);
     try {
-      const response = await api.patchForm("/realEstates/images/id", formData, {
-        onUploadProgress: (progressEvent: AxiosProgressEvent) => {
-          const percentCompleted =
-            progressEvent.total &&
-            Math.round((progressEvent.loaded * 100) / progressEvent.total);
-          setProgress(percentCompleted);
-        },
-      });
+      console.log("uploading image for id", itemId);
+      const response = await api.patchForm(
+        `/realEstates/images/${itemId}`,
+        formData,
+        {
+          onUploadProgress: (progressEvent: AxiosProgressEvent) => {
+            const percentCompleted =
+              progressEvent.total &&
+              Math.round((progressEvent.loaded * 100) / progressEvent.total);
+            setProgress(percentCompleted);
+          },
+        }
+      );
 
       console.log("Image uploaded successfully:", response.data);
     } catch (error) {

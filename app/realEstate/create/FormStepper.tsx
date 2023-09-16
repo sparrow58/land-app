@@ -13,28 +13,15 @@ interface StepperProps {
   setActiveStepIndex: Dispatch<SetStateAction<number>>;
   formData: RealEstateFormData | {};
   setFormData: Dispatch<SetStateAction<RealEstateFormData | {}>>;
+  itemId: string;
+  setItemId: Dispatch<SetStateAction<string>>;
 }
 export const FormContext = createContext<StepperProps | null>(null);
 
-const validationSchema = Yup.object().shape({
-  title: yup
-    .string()
-    .min(5, "Title must be at least 5 characters")
-    .required("Title is required"),
-  description: yup
-    .string()
-    .min(10, "Description must be at least 10 characters")
-    .required("Description is required"),
-  type: yup.string().required("type is required"),
-  overlooking: yup.string().required("overlooking is required"),
-  price: yup.number().min(1, "price is required").required("price is required"),
-  size: yup.string().required("Scheduled  is required"),
-  payment_method: yup.string().required("payment_method time is required"),
-  rentOrSell: yup.string().required("rentOrSell is required"),
-});
-
 export const FormStepper = () => {
   const [activeStepIndex, setActiveStepIndex] = useState(0);
+  const [itemId, setItemId] = useState<string>("");
+
   const [formData, setFormData] = useState<RealEstateFormData | {}>({
     title: "",
     description: "",
@@ -48,7 +35,14 @@ export const FormStepper = () => {
 
   return (
     <FormContext.Provider
-      value={{ activeStepIndex, setActiveStepIndex, formData, setFormData }}
+      value={{
+        activeStepIndex,
+        setActiveStepIndex,
+        formData,
+        setFormData,
+        itemId,
+        setItemId,
+      }}
     >
       <div className=" flex flex-col items-center justify-start">
         <Stepper />
