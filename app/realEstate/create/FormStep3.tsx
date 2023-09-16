@@ -4,100 +4,95 @@ import Image from "next/image";
 import api from "@/app/helpers/api";
 import { AxiosProgressEvent } from "axios";
 import SubmitButton from "@/app/components/SubmitButton";
-interface ImageProps {
+interface FileProps {
   url: string;
   progress: number | undefined;
-  name: string;
+  file: File;
 }
 const FormStep3 = () => {
-  const [images, setImages] = useState<ImageProps[]>([]);
+  const [images, setImages] = useState<FileProps[]>([]);
   const { activeStepIndex, setActiveStepIndex, formData, setFormData, itemId } =
     useContext(FormContext) || {};
-  const [currentIndex, setCurrentIndex] = useState<number>(0);
 
-  const startReadingFile = (
-    fileList: FileList,
-    index: number,
-    urlArray: ImageProps[],
-    onFinish: (urlArray: ImageProps[]) => void
-  ) => {
-    if (index < fileList.length) {
+  const readFilesAsync = async (fileList: FileList) => {
+    const urlArray: FileProps[] = [];
+
+    for (let index = 0; index < fileList.length; index++) {
+      const file = fileList[index];
+
+      const dataURL = await readFileAsync(file);
+
+      urlArray.push({
+        file,
+        url: dataURL,
+        progress: 0,
+      });
+    }
+
+    return urlArray;
+  };
+
+  const readFileAsync = (file: File): Promise<string> => {
+    return new Promise((resolve) => {
       const reader = new FileReader();
       reader.onload = (event) => {
         const dataURL = event?.target?.result;
-        urlArray.push({
-          name: fileList[index].name,
-          url: dataURL as string,
-          progress: 0,
-        });
-        startReadingFile(fileList, index + 1, urlArray, onFinish);
+        resolve(dataURL as string);
       };
-      reader.readAsDataURL(fileList[index]);
-    } else {
-      return onFinish(urlArray);
-    }
+      reader.readAsDataURL(file);
+    });
   };
-  const handleImageChanged = (e: ChangeEvent<HTMLInputElement>) => {
+  function uploadFiles(images: FileProps[]) {
+    for (let i = 0; i < images.length; i++) {
+      uploadImage(images[i].file, ({ name, progress }) => {
+        setImages((prev) => {
+          const uploadedImages = prev?.map((image) => {
+            console.log();
+            if (image.file.name === name) {
+              return { ...image, progress: progress };
+            } else {
+              //console.log("no match ", image.name, name);
+              return image;
+            }
+          });
+
+          return uploadedImages;
+        });
+      });
+    }
+  }
+  const handleImageChanged = async (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files && files.length > 0) {
-      setCurrentIndex(0);
-      startReadingFile(files, 0, [], (readImages) => {
-        const existingFiles = new Set(images.map((image) => image.name));
+      const readImages = await readFilesAsync(files);
 
-        setImages((prev) => {
-          // Create a Set of unique URLs from the existing images
-          const existingUrls = new Set(prev.map((image) => image.url));
+      setImages((prev) => {
+        // Create a Set of unique URLs from the existing images
+        const existingUrls = new Set(prev.map((image) => image.url));
 
-          // Filter out images from readImages that have URLs not present in prev
-          const filteredImages = readImages.filter(
-            (newImage) => !existingUrls.has(newImage.url)
-          );
+        // Filter out images from readImages that have URLs not present in prev
+        const filteredImages = readImages.filter(
+          (newImage) => !existingUrls.has(newImage.url)
+        );
 
-          // Combine the filtered images with the existing images
-          const combinedImages = [...prev, ...filteredImages];
+        // Combine the filtered images with the existing images
+        uploadFiles(filteredImages);
+        const combinedImages = [...prev, ...filteredImages];
 
-          return combinedImages;
-          // const combinedImages = [
-          //   ...(prev as ImageProps[]),
-          //   ...(readImages as ImageProps[]),
-          // ];
-
-          // return combinedImages;
-        });
-        for (let i = 0; i < files.length; i++) {
-          if (
-            Array.from(existingFiles).some((existingName) =>
-              files[i].name.includes(existingName)
-            )
-          ) {
-            continue; // continue the loop if a match is found
-          }
-          uploadImage(files[i], ({ name, progress }) => {
-            setImages((prev) => {
-              const uploadedImages = prev?.map((image) => {
-                console.log();
-                if (image.name === name) {
-                  return { ...image, progress: progress };
-                } else {
-                  //console.log("no match ", image.name, name);
-                  return image;
-                }
-              });
-
-              return uploadedImages;
-            });
-          });
-        }
+        return combinedImages;
       });
     }
   };
-  interface UploadProps {
-    progress: number | undefined;
-    name: string;
-  }
+
   const uploadImage = async (
     selectedFile: File,
-    onUplading: ({ name, progress }: UploadProps) => void
+    onUplading: ({
+      name,
+      progress,
+    }: {
+      progress: number | undefined;
+      name: string;
+    }) => void
   ) => {
     if (!selectedFile) return;
     const formData = new FormData();
