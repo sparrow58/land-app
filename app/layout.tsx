@@ -1,9 +1,19 @@
-import "./globals.css";
+// import "./globals.css";
+"use client";
+import "./css/style.css";
+
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import Navbar from "./components/Navbar";
-
-const inter = Inter({ subsets: ["latin"] });
+import Header from "./components/ui/header";
+import Banner from "./components/banner";
+import { useEffect } from "react";
+import AOS from "aos";
+import "aos/dist/aos.css";
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "Lands app",
@@ -15,10 +25,25 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  useEffect(() => {
+    AOS.init({
+      once: true,
+      disable: "phone",
+      duration: 700,
+      easing: "ease-out-cubic",
+    });
+  });
+
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <Navbar /> {children}
+      <body
+        className={`${inter.variable} font-inter antialiased bg-white text-gray-900 tracking-tight`}
+      >
+        <div className="flex flex-col min-h-screen overflow-hidden supports-[overflow:clip]:overflow-clip">
+          <Header />
+          {children}
+          <Banner />
+        </div>
       </body>
     </html>
   );
