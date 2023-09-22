@@ -3,12 +3,14 @@ import { FormContext } from "./FormStepper";
 import Image from "next/image";
 import api from "@/app/helpers/api";
 import { AxiosProgressEvent } from "axios";
-import SubmitButton from "@/app/components/SubmitButton";
 import Button from "@/app/components/Button";
 import { toast, ToastContainer } from "react-toastify";
-import { Id } from "react-toastify/dist/types";
 import "react-toastify/dist/ReactToastify.css";
-
+import Compressor from "compressorjs";
+interface Dimensions {
+  width: number;
+  height: number;
+}
 interface FileProps {
   url: string;
   progress: number | undefined;
@@ -24,7 +26,7 @@ const FormStep3 = () => {
 
   const toastIds = useRef<string[]>([]);
 
-  const isFinishedUploading = images.every((image) => image.progress === 1);
+  const isFinishedUploading = images.every((image) => image.isDone);
 
   const isAnyImage = images.length > 0;
 
@@ -34,18 +36,61 @@ const FormStep3 = () => {
     for (let index = 0; index < fileList.length; index++) {
       const file = fileList[index];
 
-      const dataURL = await readFileAsync(file);
+      const fileUrl = await readFileAsync(file);
 
+      const dimensions = await getImagePropsAsync(fileUrl);
+
+      console.log("size before", file.size);
+
+      const newFile = await compressImage(file, dimensions);
+
+      console.log("size after", newFile);
       files.push({
-        file,
-        url: dataURL,
-        progress: 0,
+        file: newFile as File,
         isDone: false,
+        progress: 0,
+        url: fileUrl,
       });
     }
 
     return files;
   };
+
+  function getImagePropsAsync(url: string): Promise<Dimensions> {
+    return new Promise((resolve, reject) => {
+      const img = document.createElement("img");
+      img.src = url;
+
+      img.onload = () => {
+        const width = img.width;
+        const height = img.height;
+
+        resolve({ width, height });
+      };
+    });
+  }
+  function compressImage(
+    file: File | Blob,
+    dimensions: Dimensions
+  ): Promise<File | Blob> {
+    const WIDTH = 800;
+    const ratio = WIDTH / dimensions.width;
+    return new Promise((resolve, reject) => {
+      new Compressor(file, {
+        quality: 0.6,
+        maxWidth: WIDTH,
+        maxHeight: dimensions.height * ratio,
+        success(result) {
+          resolve(result);
+        },
+        error(err) {
+          console.log(err.message);
+          reject(err);
+        },
+      });
+    });
+  }
+
   const showToast = (file: FileProps) => {
     const toastId = toast.success(`Uploading ${file.file.name} in Progress`, {
       progress: file.progress,
@@ -83,12 +128,13 @@ const FormStep3 = () => {
     return new Promise((resolve) => {
       const reader = new FileReader();
       reader.onload = (event) => {
-        const dataURL = event?.target?.result;
-        resolve(dataURL as string);
+        const url = event?.target?.result as string;
+        resolve(url);
       };
       reader.readAsDataURL(file);
     });
   };
+
   async function uploadImages(images: FileProps[]) {
     for (let i = 0; i < images.length; i++) {
       uploadImage({
@@ -122,6 +168,7 @@ const FormStep3 = () => {
   }
   const handleImageChanged = async (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
+
     if (files && files.length > 0) {
       const readImages = await readFilesAsync(files);
 
@@ -150,7 +197,7 @@ const FormStep3 = () => {
     }
   };
   interface uploadImageProps {
-    selectedFile: File;
+    selectedFile: File | Blob;
     onUplading: ({
       name,
       progress,
@@ -169,7 +216,7 @@ const FormStep3 = () => {
   }: uploadImageProps) => {
     if (!selectedFile) return;
     const formData = new FormData();
-    formData.append("image", selectedFile);
+    formData.append("image", selectedFile, selectedFile.name);
     try {
       const response = await api.patchForm(
         `/realEstates/images/clmjifrqf0005aco4w7c9mwxj`,
