@@ -8,20 +8,20 @@ import {
 export interface RealEstateStep1Data {
   title: string;
   description: string;
-  type: RealEstateType | "";
+  type: RealEstateType | undefined;
 }
 
 export interface RealEstateStep2Data {
-  price: number | "";
-  size: number | "";
-  overlooking: OverlookingType | "";
-  paymentMethod: PaymentMethodType | "";
-  rentOrSell: RentOrSell | "";
+  price: number | undefined;
+  size: number | undefined;
+  overlooking: OverlookingType | undefined;
+  paymentMethod: PaymentMethodType | undefined;
+  rentOrSell: RentOrSell | undefined;
 }
 
 export interface RealEstateStep3Data {
-  paymentMethod: PaymentMethodType | "";
-  rentOrSell: RentOrSell | "";
+  paymentMethod: PaymentMethodType | undefined;
+  rentOrSell: RentOrSell | undefined;
 }
 
 export type RealEstateFormData = RealEstateStep1Data & RealEstateStep2Data & {};

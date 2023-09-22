@@ -1,6 +1,6 @@
 // Basic.js
 import { Form, Formik } from "formik";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import * as yup from "yup";
 import { FormContext } from "./FormStepper";
 import {
@@ -45,12 +45,24 @@ function FormStep2() {
     setActiveStepIndex?.((i) => i - 1);
     formData && setFormData?.({ ...formData, ...values });
   };
+  const onAreaChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log("changing");
+    setAreaOption(e.target.value);
+    console.log("area", e.target.value);
+  };
+  const [areaOption, setAreaOption] = useState("meter");
+
   return (
     <Formik
       initialValues={{ ...formData }}
       validationSchema={validationSchema}
       onSubmit={(values) => {
-        const data: RealEstateFormData | {} = { ...formData, ...values };
+        let newValues: any;
+        if (areaOption === "lebnah") {
+          if (values.size)
+            newValues = { ...values, size: convertToMeter(values.size) };
+        } else newValues = values;
+        const data: RealEstateFormData | {} = { ...formData, ...newValues };
         setFormData?.(data);
         console.log("sending", data);
 
@@ -66,20 +78,76 @@ function FormStep2() {
         create(data);
       }}
     >
-      {({ values }) => (
+      {({ values, setFieldValue, errors }) => (
         <Form className="flex flex-col justify-center items-center">
           <TextField
             name="price"
             label="Price"
             type="number"
-            placeholder="Price"
+            autoFocus
+            placeholder="Total price"
           />
           <TextField
             name="size"
             label="Size"
             type="number"
-            placeholder="Size"
+            placeholder={`Total size in ${
+              areaOption === "meter" ? "Square Meters" : "Lebnah"
+            } `}
           />
+          <div className="flex flex-row justify-between gap-6">
+            <div className="flex items-center">
+              <input
+                checked={areaOption === "meter"}
+                id="default-radio-2"
+                type="radio"
+                value="meter"
+                name="meter-radio"
+                onChange={(e) => {
+                  setAreaOption(e.target.value);
+                  if (values?.size) {
+                    const converted = convertToMeter(values?.size);
+
+                    setFieldValue("size", converted);
+                  }
+                }}
+                className="w-4 h-4 text-gray-600 bg-gray-100 border-gray-300
+             
+              dark:bg-gray-700 "
+              />
+              <label
+                htmlFor="default-radio-2"
+                className="ml-2 text-sm font-medium "
+              >
+                Meter Square
+              </label>
+            </div>
+            <div className="flex items-center">
+              <input
+                id="default-radio-2"
+                checked={areaOption === "lebnah"}
+                type="radio"
+                value="lebnah"
+                name="lebnah-radio"
+                onChange={(e) => {
+                  setAreaOption(e.target.value);
+                  if (values?.size) {
+                    const converted = values?.size && values.size / 44.44;
+                    setFieldValue("size", Math.round(converted * 100) / 100);
+                  }
+                }}
+                className="w-4 h-4 text-gray-600 bg-gray-100 border-gray-300
+              "
+              />
+              <label
+                htmlFor="default-radio-2"
+                className="ml-2 text-sm font-medium "
+              >
+                Lebnah
+              </label>
+            </div>
+          </div>
+
           <SelectField
             name="overlooking"
             label="Overlooking"
@@ -98,7 +166,7 @@ function FormStep2() {
             label="Payment Method"
             placeholder="Select Payment Method"
           />
-          <div className="flex gap-6 ">
+          <div className="flex justify-between gap-6">
             <Button text="Back" onClick={() => handleBack(values)} />
             <SubmitButton text="Continue" disabled={isLoading} />
           </div>
@@ -107,5 +175,7 @@ function FormStep2() {
     </Formik>
   );
 }
-
+function convertToMeter(size: number) {
+  return Math.round(size && size * 44.44 * 100) / 100;
+}
 export default FormStep2;

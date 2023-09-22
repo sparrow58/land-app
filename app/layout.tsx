@@ -1,4 +1,3 @@
-// import "./globals.css";
 "use client";
 import "./css/style.css";
 
