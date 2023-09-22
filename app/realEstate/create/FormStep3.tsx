@@ -238,36 +238,36 @@ const FormStep3 = () => {
     }
   };
   return (
-    <div>
-      <div className="max-w-3xl mx-auto text-center pb-1 md:pb-1">
+    <>
+      <div className="max-w-3xl mx-auto  px-6 text-center pb-1 md:pb-1 ">
         <h4 className="h4 mb-0">Upload up to 6 images</h4>
         <h6 className="h6 c text-green-600 mb-0">
           Total Selected {images.length}{" "}
         </h6>
-      </div>
-      <div className="max-w-6xl min-w-fit mt-8 grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {images?.map((image, index) => {
-          return (
-            <div className="" key={index}>
-              {
-                <progress
-                  className="w-full h-23"
-                  value={image.progress}
-                  max="1"
+        <div className="max-w-6xl mt-8 grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 ">
+          {images?.map((image, index) => {
+            return (
+              <div className="w-full " key={index}>
+                {
+                  <progress
+                    className="w-full h-23"
+                    value={image.progress}
+                    max="1"
+                  />
+                }
+                <Image
+                  className={`${
+                    image.isDone ? "" : "opacity-50"
+                  }  w-full h-24 sm:h-48 object-cover`}
+                  src={image.url}
+                  width={200}
+                  height={400}
+                  alt="image"
                 />
-              }
-              <Image
-                className={`${
-                  image.isDone ? "" : "opacity-50"
-                }  w-full h-23 sm:h-48 object-cover`}
-                src={image.url}
-                width={200}
-                height={400}
-                alt="image"
-              />
-            </div>
-          );
-        })}
+              </div>
+            );
+          })}
+        </div>
       </div>
 
       <input
@@ -319,7 +319,7 @@ const FormStep3 = () => {
         pauseOnHover
         theme="light"
       />
-    </div>
+    </>
   );
 };
 
