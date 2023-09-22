@@ -40,17 +40,17 @@ const FormStep3 = () => {
 
       const dimensions = await getImagePropsAsync(fileUrl);
 
-      console.log("size before", file.size);
-
       const newFile = await compressImage(file, dimensions);
 
-      console.log("size after", newFile);
-      files.push({
+      const image = {
         file: newFile as File,
         isDone: false,
         progress: 0,
         url: fileUrl,
-      });
+      };
+      showToast(image);
+
+      files.push(image);
     }
 
     return files;
@@ -154,6 +154,9 @@ const FormStep3 = () => {
         onSuccess: ({ name, response }) => {
           const toastId = toastIds.current.find((id) => id === name);
           if (toastId) toast.update(toastId, { icon: true });
+          console.log("removeing toast", toastId);
+          if (toastId) toast.dismiss(toastId);
+          else toast.error("toast undefiend");
 
           setImages((prev) =>
             prev.map((image) => ({ ...image, isDone: true }))
@@ -226,7 +229,6 @@ const FormStep3 = () => {
             const percentCompleted =
               progressEvent.total &&
               Math.round(progressEvent.loaded / progressEvent.total);
-            console.log("uploading ", percentCompleted);
 
             onUplading({
               progress: percentCompleted,
