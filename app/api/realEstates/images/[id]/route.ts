@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { join } from "path";
 import { uploadFile } from "@/app/helpers/uploadHelper";
 import { addRealEstateImageUrlAsync } from "@/app/services/reatState/createService";
+import { put } from "@vercel/blob";
 interface Props {
   params: {
     id: string;
@@ -15,13 +16,15 @@ export async function PATCH(req: NextRequest, { params: { id } }: Props) {
 
   if (!file) return NextResponse.json({ success: false });
 
-  // const blob = await put(file.name, file, {
-  //   access: "public",
-  // });a
-  const { relativePath } = await uploadFile(file, "REImages");
+  const blob = await put(file.name, file, {
+    access: "public",
+  });
 
-  const imageUrl = join(req.nextUrl.origin, relativePath);
+  // const { relativePath } = await uploadFile(file, "REImages");
+  console.log(blob);
+  // const imageUrl = join(req.nextUrl.origin, relativePath);
 
+  const imageUrl = blob.url;
   const updated = await addRealEstateImageUrlAsync(id, imageUrl);
 
   return NextResponse.json({

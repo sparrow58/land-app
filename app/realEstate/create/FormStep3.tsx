@@ -147,10 +147,10 @@ const FormStep3 = () => {
           else toast.error("toast undefiend");
 
           setImages((prev) =>
-            prev.map((image) => ({ ...image, isDone: true }))
+            prev.map((image) => ({ ...image, isDone: true, progress: 1 }))
           );
 
-          removeToast(name);
+          //removeToast(name);
           // toast.success(`Finished ${name}`);
         },
         onFailure: (error) => {},
@@ -225,7 +225,7 @@ const FormStep3 = () => {
               Math.round(progressEvent.loaded / progressEvent.total);
 
             onUplading({
-              progress: percentCompleted,
+              progress: percentCompleted && percentCompleted - 0.01,
               name: selectedFile.name,
             });
           },
@@ -248,13 +248,17 @@ const FormStep3 = () => {
           {images?.map((image, index) => {
             return (
               <div className="w-full " key={index}>
-                {
-                  <progress
-                    className="w-full h-23"
-                    value={image.progress}
-                    max="1"
-                  />
-                }
+                <div className="w-full bg-gray-200 rounded-t-full dark:bg-gray-700">
+                  <div
+                    className="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-t-full"
+                    style={{
+                      width: `${image.progress && image.progress * 100}%`,
+                    }}
+                  >
+                    {image.progress && image.progress * 100}%
+                  </div>
+                </div>
+
                 <Image
                   className={`${
                     image.isDone ? "" : "opacity-50"
