@@ -45,7 +45,7 @@ const FormStep3 = () => {
       const image = {
         file: newFile as File,
         isDone: false,
-        progress: 0,
+        progress: 0.1,
         url: fileUrl,
       };
       showToast(image);
@@ -104,24 +104,12 @@ const FormStep3 = () => {
 
     if (toastId) {
       toast.update(toastId, { progress: file.progress });
-      // if (file.progress === 1) {
-      //   toast.update(toastId);
-      //   toast.dismiss(toastId);
-      //   toast.success(`Finished ${file.file.name}`);
-      // }
     } else showToast(file);
   };
   const removeToast = (imageFileName: string) => {
     const toastId = toastIds.current.find((id) => id === imageFileName);
 
     if (toastId) toast.dismiss(toastId);
-    // const toastIdIndex = toastIds.current.findIndex(
-    //   (id) => id === imageFileName
-    // );
-
-    // if (toastIdIndex !== -1) {
-    //   //toastIds.current.splice(toastIdIndex, 1);
-    // }
   };
 
   const readFileAsync = (file: File): Promise<string> => {
@@ -173,7 +161,12 @@ const FormStep3 = () => {
     const files = e.target.files;
 
     if (files && files.length > 0) {
-      const readImages = await readFilesAsync(files);
+      console.log("compressing images");
+      const readImages = await toast.promise(readFilesAsync(files), {
+        pending: "Compressing images",
+        error: "Error while compressing images",
+      });
+      //const readImages = await readFilesAsync(files);
 
       setImages((prev) => {
         // Create a Set of unique URLs from the existing images
@@ -193,6 +186,7 @@ const FormStep3 = () => {
 
           return prev;
         }
+        console.log("uploading images");
         uploadImages(filteredImages);
 
         return combinedImages;
@@ -247,6 +241,9 @@ const FormStep3 = () => {
     <div>
       <div className="max-w-3xl mx-auto text-center pb-1 md:pb-1">
         <h4 className="h4 mb-0">Upload up to 6 images</h4>
+        <h6 className="h6 c text-green-600 mb-0">
+          Total Selected {images.length}{" "}
+        </h6>
       </div>
       <div className="max-w-6xl min-w-fit mt-8 grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         {images?.map((image, index) => {
@@ -314,7 +311,7 @@ const FormStep3 = () => {
         autoClose={5000}
         // autoClose={false}
         hideProgressBar={false}
-        newestOnTop={false}
+        newestOnTop={true}
         closeOnClick
         rtl={false}
         pauseOnFocusLoss
