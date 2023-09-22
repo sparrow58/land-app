@@ -17,16 +17,13 @@ export async function PATCH(req: NextRequest, { params: { id } }: Props) {
 
   // const blob = await put(file.name, file, {
   //   access: "public",
-  // });
+  // });a
   const { relativePath } = await uploadFile(file, "REImages");
 
   const imageUrl = join(req.nextUrl.origin, relativePath);
 
-  console.log("image Url: ", imageUrl);
-
   const updated = await addRealEstateImageUrlAsync(id, imageUrl);
 
-  console.log("updated item", updated);
   return NextResponse.json({
     success: true,
     data: { imageUrl: imageUrl },

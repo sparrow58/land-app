@@ -89,32 +89,31 @@ const FormStep3 = () => {
       reader.readAsDataURL(file);
     });
   };
-  async function uploadFiles(images: FileProps[]) {
+  async function uploadImages(images: FileProps[]) {
     for (let i = 0; i < images.length; i++) {
       uploadImage({
         selectedFile: images[i].file,
         onUplading: ({ name, progress }) => {
           setImages((prev) => {
             const uploadedImages = prev?.map((image) => {
-              console.log();
               const newImage = { ...image, progress: progress };
               updateToast(newImage);
 
-              if (image.file.name === name) {
-                return newImage;
-              } else {
-                //console.log("no match ", image.name, name);
-                return image;
-              }
+              return image.file.name === name ? newImage : image;
             });
 
             return uploadedImages;
           });
         },
-        onSecuss: ({ name, response }) => {
+        onSuccess: ({ name, response }) => {
           const toastId = toastIds.current.find((id) => id === name);
           if (toastId) toast.update(toastId, { icon: true });
-          //removeToast(name);
+
+          setImages((prev) =>
+            prev.map((image) => ({ ...image, isDone: true }))
+          );
+
+          removeToast(name);
           // toast.success(`Finished ${name}`);
         },
         onFailure: (error) => {},
@@ -137,14 +136,14 @@ const FormStep3 = () => {
 
         // Combine the filtered images with the existing images
         const combinedImages = [...prev, ...filteredImages];
-        if (combinedImages.length > 5) {
-          toast.error("you can't upload more than 5 images", {
+        if (combinedImages.length > 6) {
+          toast.error("you can't upload more than 6 images", {
             autoClose: 5000,
           });
 
           return prev;
         }
-        uploadFiles(filteredImages);
+        uploadImages(filteredImages);
 
         return combinedImages;
       });
@@ -159,13 +158,13 @@ const FormStep3 = () => {
       progress: number | undefined;
       name: string;
     }) => void;
-    onSecuss: ({ name, response }: { name: string; response: any }) => void;
+    onSuccess: ({ name, response }: { name: string; response: any }) => void;
     onFailure: ({ name, error }: { name: string; error: any }) => void;
   }
   const uploadImage = async ({
     selectedFile,
     onUplading,
-    onSecuss,
+    onSuccess: onSuccess,
     onFailure,
   }: uploadImageProps) => {
     if (!selectedFile) return;
@@ -189,7 +188,7 @@ const FormStep3 = () => {
           },
         }
       );
-      onSecuss({ name: selectedFile.name, response: response.data });
+      onSuccess({ name: selectedFile.name, response: response.data });
       // console.log("Image uploaded successfully:", response.data);
     } catch (error) {
       onFailure({ name: selectedFile.name, error: error });
@@ -197,13 +196,24 @@ const FormStep3 = () => {
   };
   return (
     <div>
-      <div className="flex gap-6">
+      <div className="max-w-3xl mx-auto text-center pb-1 md:pb-1">
+        <h4 className="h4 mb-0">Upload up to 6 images</h4>
+      </div>
+      <div className="max-w-6xl min-w-fit mt-8 grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         {images?.map((image, index) => {
           return (
-            <div key={index}>
-              {<progress value={image.progress} max="1" />}
+            <div className="" key={index}>
+              {
+                <progress
+                  className="w-full h-23"
+                  value={image.progress}
+                  max="1"
+                />
+              }
               <Image
-                className="opacity-50"
+                className={`${
+                  image.isDone ? "" : "opacity-50"
+                }  w-full h-23 sm:h-48 object-cover`}
                 src={image.url}
                 width={200}
                 height={400}
@@ -213,14 +223,7 @@ const FormStep3 = () => {
           );
         })}
       </div>
-      <Button
-        text="Upload"
-        onClick={() => {
-          if (fileInputRef.current) {
-            fileInputRef.current.click();
-          }
-        }}
-      />
+
       <input
         type="file"
         multiple
@@ -229,8 +232,18 @@ const FormStep3 = () => {
         style={{ display: "none" }} // Hide the default input
         onChange={handleImageChanged}
       />
-      {isFinishedUploading && isAnyImage && (
-        <div className="flex gap-6 ">
+
+      <div className="flex justify-between gap-6 ">
+        {/* <Button text="Back" onClick={() => {}} /> */}
+        <Button
+          text="Upload"
+          onClick={() => {
+            if (fileInputRef.current) {
+              fileInputRef.current.click();
+            }
+          }}
+        />
+        {isFinishedUploading && isAnyImage && (
           <Button
             text="Continue"
             onClick={() => {
@@ -244,8 +257,9 @@ const FormStep3 = () => {
             }}
             disabled={false}
           />
-        </div>
-      )}
+        )}
+      </div>
+
       <ToastContainer
         position="bottom-right"
         autoClose={5000}
