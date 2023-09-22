@@ -8,6 +8,7 @@ import MobileMenu from "./mobile-menu";
 import Dropdown from "../utils/dropdown";
 import SigninMenu from "./SigninMenu";
 import MainMenu from "./MainMenu";
+import AOS from "aos";
 
 export default function Header() {
   const [top, setTop] = useState<boolean>(true);
@@ -15,7 +16,14 @@ export default function Header() {
   const scrollHandler = () => {
     window.scrollY > 10 ? setTop(false) : setTop(true);
   };
-
+  useEffect(() => {
+    AOS.init({
+      once: true,
+      disable: "phone",
+      duration: 700,
+      easing: "ease-out-cubic",
+    });
+  });
   useEffect(() => {
     scrollHandler();
     window.addEventListener("scroll", scrollHandler);

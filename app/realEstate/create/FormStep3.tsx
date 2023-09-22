@@ -143,9 +143,6 @@ const FormStep3 = () => {
           setImages((prev) =>
             prev.map((image) => ({ ...image, isDone: true, progress: 1 }))
           );
-
-          //removeToast(name);
-          // toast.success(`Finished ${name}`);
         },
         onFailure: (error) => {},
       });
@@ -159,7 +156,6 @@ const FormStep3 = () => {
         pending: "Compressing images",
         error: "Error while compressing images",
       });
-      //const readImages = await readFilesAsync(files);
 
       setImages((prev) => {
         // Create a Set of unique URLs from the existing images

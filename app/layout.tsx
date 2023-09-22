@@ -1,12 +1,9 @@
-"use client";
 import "./css/style.css";
 
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Header from "./components/ui/header";
 import Banner from "./components/banner";
-import { useEffect } from "react";
-import AOS from "aos";
 import "aos/dist/aos.css";
 const inter = Inter({
   subsets: ["latin"],
@@ -24,15 +21,6 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  useEffect(() => {
-    AOS.init({
-      once: true,
-      disable: "phone",
-      duration: 700,
-      easing: "ease-out-cubic",
-    });
-  });
-
   return (
     <html lang="en">
       <body
