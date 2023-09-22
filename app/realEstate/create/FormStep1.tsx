@@ -28,39 +28,45 @@ function FormStep1() {
   });
 
   return (
-    <Formik
-      initialValues={{ ...formData }}
-      validationSchema={validationSchema}
-      onSubmit={(values) => {
-        const data = { ...formData, ...values };
-        setFormData?.(data);
-        console.log(data);
-        setActiveStepIndex?.((lastValue) => lastValue + 1);
-      }}
-    >
-      <Form className="flex flex-col items-center justify-stretch">
-        <div className="text-2xl font-medium self-center mb-2">Welcome!</div>
-        <TextField
-          name="title"
-          label="Title"
-          type="text"
-          placeholder="Add title to your ad"
-        />
-        <TexAreaField
-          name="description"
-          label="Description"
-          placeholder="Descrip your real estate"
-        />
+    <>
+      <div className="max-w-6xlxl mx-auto text-center pb-12 md:pb-20">
+        <h2 className="h2"> Welcome!</h2>
+      </div>
+      <div className="max-w-md mx-auto">
+        <Formik
+          initialValues={{ ...formData }}
+          validationSchema={validationSchema}
+          onSubmit={(values) => {
+            const data = { ...formData, ...values };
+            setFormData?.(data);
+            console.log(data);
+            setActiveStepIndex?.((lastValue) => lastValue + 1);
+          }}
+        >
+          <Form>
+            <TextField
+              name="title"
+              label="Title"
+              type="text"
+              placeholder="Add title to your ad"
+            />
+            <TextField
+              name="description"
+              label="Description"
+              placeholder="Descrip your real estate"
+            />
 
-        <SelectField
-          name="type"
-          label="Type"
-          placeholder="Select type"
-          options={enumToKeyValues(RealEstateType)}
-        />
-        <SubmitButton text="Continue" />
-      </Form>
-    </Formik>
+            <SelectField
+              name="type"
+              label="Type"
+              placeholder="Select type"
+              options={enumToKeyValues(RealEstateType)}
+            />
+            <SubmitButton text="Continue" />
+          </Form>
+        </Formik>
+      </div>
+    </>
   );
 }
 

@@ -44,10 +44,14 @@ export const FormStepper = () => {
         setItemId,
       }}
     >
-      <div className=" flex flex-col items-center justify-start">
-        <Stepper />
-        <Step />
-      </div>
+      <section className="bg-gradient-to-b from-gray-100 to-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="pt-32 pb-10 md:pt-10 md:pb-10">
+            <Stepper />
+            <Step />
+          </div>
+        </div>
+      </section>
     </FormContext.Provider>
   );
 };

@@ -13,13 +13,13 @@ function Step() {
   let stepContent;
   switch (activeStepIndex) {
     case 0:
-      stepContent = <FormStep3 />;
+      stepContent = <FormStep1 />;
       break;
     case 1:
       stepContent = <FormStep2 />;
       break;
     case 2:
-      stepContent = <FormStep1 />;
+      stepContent = <FormStep3 />;
       break;
     case 3:
       stepContent = <Success />;

@@ -72,13 +72,13 @@ function FormStep2() {
             name="price"
             label="Price"
             type="number"
-            placeholder="price"
+            placeholder="Price"
           />
           <TextField
             name="size"
             label="Size"
             type="number"
-            placeholder="price"
+            placeholder="Size"
           />
           <SelectField
             name="overlooking"
@@ -90,7 +90,7 @@ function FormStep2() {
             name="rentOrSell"
             options={enumToKeyValues(RentOrSell)}
             label="Rent or Sell"
-            placeholder="Choose Rent or Sell"
+            placeholder="Select Rent or Sell"
           />
           <SelectField
             name="paymentMethod"
