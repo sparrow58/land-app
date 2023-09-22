@@ -48,7 +48,6 @@ const FormStep3 = () => {
         progress: 0.1,
         url: fileUrl,
       };
-      showToast(image);
 
       files.push(image);
     }
@@ -84,7 +83,8 @@ const FormStep3 = () => {
           resolve(result);
         },
         error(err) {
-          console.log(err.message);
+          console.error(err.message);
+          toast.error("Error occured while compressing data");
           reject(err);
         },
       });
@@ -105,11 +105,6 @@ const FormStep3 = () => {
     if (toastId) {
       toast.update(toastId, { progress: file.progress });
     } else showToast(file);
-  };
-  const removeToast = (imageFileName: string) => {
-    const toastId = toastIds.current.find((id) => id === imageFileName);
-
-    if (toastId) toast.dismiss(toastId);
   };
 
   const readFileAsync = (file: File): Promise<string> => {
@@ -142,7 +137,6 @@ const FormStep3 = () => {
         onSuccess: ({ name, response }) => {
           const toastId = toastIds.current.find((id) => id === name);
           if (toastId) toast.update(toastId, { icon: true });
-          console.log("removeing toast", toastId);
           if (toastId) toast.dismiss(toastId);
           else toast.error("toast undefiend");
 
@@ -161,7 +155,6 @@ const FormStep3 = () => {
     const files = e.target.files;
 
     if (files && files.length > 0) {
-      console.log("compressing images");
       const readImages = await toast.promise(readFilesAsync(files), {
         pending: "Compressing images",
         error: "Error while compressing images",
@@ -173,9 +166,15 @@ const FormStep3 = () => {
         const existingUrls = new Set(prev.map((image) => image.url));
 
         // Filter out images from readImages that have URLs not present in prev
-        const filteredImages = readImages.filter(
-          (newImage) => !existingUrls.has(newImage.url)
-        );
+        const filteredImages = readImages.filter((newImage) => {
+          const isNew = !existingUrls.has(newImage.url);
+          if (!isNew) {
+            toast.error("Image " + newImage.file.name + " Already selected");
+          } else {
+            showToast(newImage);
+          }
+          return isNew;
+        });
 
         // Combine the filtered images with the existing images
         const combinedImages = [...prev, ...filteredImages];
@@ -186,7 +185,7 @@ const FormStep3 = () => {
 
           return prev;
         }
-        console.log("uploading images");
+
         uploadImages(filteredImages);
 
         return combinedImages;
@@ -216,7 +215,7 @@ const FormStep3 = () => {
     formData.append("image", selectedFile, selectedFile.name);
     try {
       const response = await api.patchForm(
-        `/realEstates/images/clmjifrqf0005aco4w7c9mwxj`,
+        `/realEstates/images/${itemId}`,
         formData,
         {
           onUploadProgress: (progressEvent: AxiosProgressEvent) => {
@@ -232,7 +231,6 @@ const FormStep3 = () => {
         }
       );
       onSuccess({ name: selectedFile.name, response: response.data });
-      // console.log("Image uploaded successfully:", response.data);
     } catch (error) {
       onFailure({ name: selectedFile.name, error: error });
     }
@@ -283,7 +281,7 @@ const FormStep3 = () => {
         onChange={handleImageChanged}
       />
 
-      <div className="flex justify-between gap-6 ">
+      <div className="flex justify-center gap-6 ">
         {/* <Button text="Back" onClick={() => {}} /> */}
         <Button
           text="Upload"

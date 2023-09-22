@@ -36,7 +36,7 @@ function FormStep2() {
   const validationSchema = yup.object().shape({
     overlooking: yup.string().required("overlooking is required"),
     price: yup.number().min(1).required("price is required"),
-    size: yup.string().required("Scheduled  is required"),
+    size: yup.string().required("size is required"),
     paymentMethod: yup.string().required("payment_method time is required"),
     rentOrSell: yup.string().required("rentOrSell is required"),
   });
