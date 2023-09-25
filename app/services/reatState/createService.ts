@@ -7,6 +7,7 @@ import {
   RealEstateType,
   RentOrSell,
 } from "@prisma/client";
+import { del } from "@vercel/blob";
 
 export function createRealEstateAsync(data: RealEstateFormData) {
   console.log("not mapped data", data);

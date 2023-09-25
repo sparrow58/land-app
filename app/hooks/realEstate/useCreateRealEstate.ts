@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { RealEstateFormData } from "@/app/dataObjects/RealEstateFormData";
 import api from "@/app/helpers/api";
+import { ApiEvents } from "@/app/Props/CommonProps";
 
 interface UseCreateRealEstateResult {
   create: (data: RealEstateFormData | {}) => void;
@@ -8,14 +9,11 @@ interface UseCreateRealEstateResult {
   error: any;
   responseData: any;
 }
-interface Props {
-  onSuccess: (response: any) => void;
-  onFailure: (error: any) => void;
-}
+
 const useCreateRealEstate = ({
   onSuccess,
   onFailure,
-}: Props): UseCreateRealEstateResult => {
+}: ApiEvents): UseCreateRealEstateResult => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<any>(null);
   const [responseData, setResponseData] = useState<any>(null);

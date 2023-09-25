@@ -1,4 +1,5 @@
 // Basic.js
+"use client";
 import { Form, Formik } from "formik";
 import React, { useContext, useState } from "react";
 import * as yup from "yup";
@@ -12,9 +13,9 @@ import { enumToKeyValues } from "@/app/helpers/converters";
 import SelectField from "@/app/components/SelectField";
 import { OverlookingType, PaymentMethodType, RentOrSell } from "@prisma/client";
 import SubmitButton from "@/app/components/SubmitButton";
-import api from "@/app/helpers/api";
 import Button from "@/app/components/Button";
 import useCreateRealEstate from "@/app/hooks/realEstate/useCreateRealEstate";
+import { useRouter } from "next/navigation";
 
 function FormStep2() {
   const {
@@ -24,12 +25,15 @@ function FormStep2() {
     setFormData,
     setItemId,
   } = useContext(FormContext) || {};
+  const router = useRouter();
 
   const { create, isLoading } = useCreateRealEstate({
     onSuccess: (response: any) => {
       console.log(response);
       setItemId?.(response.id as string);
-      setActiveStepIndex?.((i) => i + 1);
+      console.log("redirecting to ", `/realEstate/edit/${response.id}/images`);
+      router.replace(`/realEstate/edit/${response.id}/images`);
+      //setActiveStepIndex?.((i) => i + 1);
     },
     onFailure: (error: any) => {},
   });
@@ -45,11 +49,7 @@ function FormStep2() {
     setActiveStepIndex?.((i) => i - 1);
     formData && setFormData?.({ ...formData, ...values });
   };
-  const onAreaChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log("changing");
-    setAreaOption(e.target.value);
-    console.log("area", e.target.value);
-  };
+
   const [areaOption, setAreaOption] = useState("meter");
 
   return (

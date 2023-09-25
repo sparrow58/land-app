@@ -5,11 +5,17 @@ import React from "react";
 interface Props {
   land: RealEstate;
 }
+const options: Intl.DateTimeFormatOptions = {
+  year: "numeric",
+  month: "long", // or 'long' for full month name
+  day: "numeric",
+};
 const LandCard = ({ land }: Props, key: string) => {
+  console.log("land ", land);
   return (
     <div key={key} className="card">
       <Image
-        src="/land.jpeg"
+        src={land.images.length !== 0 ? land.images[0] : `/land.jpeg"`}
         width={600}
         height={100}
         quality={100}
@@ -22,7 +28,7 @@ const LandCard = ({ land }: Props, key: string) => {
         <span className="block text-gray-500 text-sm">{land.size} Labna</span>
 
         <span className="block text-gray-500 text-sm">
-          {land.createdAt.toString()}
+          {land.createdAt.toLocaleDateString(undefined, options)}
         </span>
       </div>
       {/* <div className="badge">

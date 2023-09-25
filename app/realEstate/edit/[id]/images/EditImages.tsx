@@ -1,34 +1,44 @@
 "use client";
 import React, {
   ChangeEvent,
-  useContext,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from "react";
-import { FormContext } from "./FormStepper";
 import Image from "next/image";
-import api from "@/app/helpers/api";
-import { AxiosProgressEvent } from "axios";
 import Button from "@/app/components/Button";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Compressor from "compressorjs";
-interface Dimensions {
-  width: number;
-  height: number;
-}
-interface FileProps {
-  url: string;
-  progress: number | undefined;
-  file: File;
-  isDone: boolean;
+import uploadImageService from "@/app/services/reatState/uploadImageService";
+import { showToast, updateToast } from "./ToastHelpers";
+import { readFileAsync } from "@/app/helpers/fileHelper";
+import useRealEstateImages from "@/app/hooks/useRealStateImages";
+import api from "@/app/helpers/api";
+import useSWR from "swr";
+import getImagesService from "@/app/services/reatState/getImagesService";
+import ProgressBar from "@/app/components/ProgressBar";
+import { compressImage } from "@/app/helpers/compressionHelper";
+import {
+  Dimensions,
+  FileProps,
+  ApiResponse,
+  ApiEvents,
+} from "@/app/Props/CommonProps";
+import { AiTwotoneDelete } from "react-icons/Ai";
+import Popup from "@/app/components/ConfirmationDialog";
+import ConfirmationDialog from "@/app/components/ConfirmationDialog";
+
+interface Props {
+  id: string;
 }
 
-const FormStep3 = () => {
+const EditImages = ({ id }: Props) => {
+  //const dataImages = await getImagesService(id);
+  console.log("id", id);
   const [images, setImages] = useState<FileProps[]>([]);
-  const { activeStepIndex, setActiveStepIndex, formData, setFormData, itemId } =
-    useContext(FormContext) || {};
+  const [isPopupOpen, setPopupOpen] = useState<boolean>(false);
+  const [selectedUrl, setSelectedUrl] = useState<string>("");
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const toastIds = useRef<string[]>([]);
@@ -37,6 +47,16 @@ const FormStep3 = () => {
 
   const isAnyImage = images.length > 0;
 
+  const { data, error, isLoading, refetch } = useRealEstateImages(id);
+  console.log("data", data);
+  console.log("error", error);
+
+  const allImages = useMemo<FileProps[]>(() => {
+    return [...data, ...images];
+  }, [images, data]);
+  //   useEffect(() => {
+  //     setImages((prev) => [...prev, ...fetchedImages]);
+  //   }, [fetchedImages]);
   const readFilesAsync = async (fileList: FileList) => {
     const files: FileProps[] = [];
 
@@ -52,7 +72,7 @@ const FormStep3 = () => {
       const image = {
         file: newFile as File,
         isDone: false,
-        progress: 0.1,
+        progress: 0.01,
         url: fileUrl,
       };
 
@@ -75,67 +95,66 @@ const FormStep3 = () => {
       };
     });
   }
-  function compressImage(
-    file: File | Blob,
-    dimensions: Dimensions
-  ): Promise<File | Blob> {
-    const WIDTH = 800;
-    const ratio = WIDTH / dimensions.width;
-    return new Promise((resolve, reject) => {
-      new Compressor(file, {
-        quality: 0.6,
-        maxWidth: WIDTH,
-        maxHeight: dimensions.height * ratio,
-        success(result) {
-          resolve(result);
-        },
-        error(err) {
-          console.error(err.message);
-          toast.error("Error occured while compressing data");
-          reject(err);
-        },
-      });
+
+  const handleCloseConfirmation = () => {
+    setPopupOpen(false);
+  };
+
+  const handleConfirm = () => {
+    // Handle confirmation logic here
+    // For example, delete an item
+    console.log("Confirmed");
+    deleteImage(id, selectedUrl, {
+      onSuccess: (respose) => {
+        if (respose.status === 200) {
+          //setImages((prev) => prev.filter((i) => i.url !== url));
+          handleCloseConfirmation();
+
+          refetch();
+        } else {
+          toast.error(respose.status + " " + respose.data);
+        }
+      },
+      onFailure: (error) => {
+        toast.error(error);
+      },
     });
+  };
+  function deleteImage(
+    id: string,
+    url: string,
+    { onSuccess, onFailure }: ApiEvents
+  ) {
+    api
+      .delete(`/realEstates/${id}/images`, {
+        params: { url: url },
+      })
+      .then((respose) => {
+        console.log("ok", respose.status);
+        onSuccess(respose);
+      })
+      .catch((error) => {
+        onFailure(error);
+      });
   }
 
-  const showToast = (file: FileProps) => {
-    const toastId = toast.success(`Uploading ${file.file.name} in Progress`, {
-      progress: file.progress,
-      toastId: file.file.name,
-      icon: false,
-    });
-    toastIds.current.push(toastId.toString());
-  };
-  const updateToast = (file: FileProps) => {
-    const toastId = toastIds.current.find((id) => id === file.file.name);
-
-    if (toastId) {
-      toast.update(toastId, { progress: file.progress });
-    } else showToast(file);
-  };
-
-  const readFileAsync = (file: File): Promise<string> => {
-    return new Promise((resolve) => {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        const url = event?.target?.result as string;
-        resolve(url);
-      };
-      reader.readAsDataURL(file);
-    });
-  };
-
+  function handleDeleteImage(url: string) {
+    console.log("deleting url");
+    setSelectedUrl(url);
+    setPopupOpen(true);
+  }
   async function uploadImages(images: FileProps[]) {
     for (let i = 0; i < images.length; i++) {
-      uploadImage({
-        selectedFile: images[i].file,
+      uploadImageService({
+        id: id,
+        selectedFile: images[i].file as File,
         onUplading: ({ name, progress }) => {
           setImages((prev) => {
             const uploadedImages = prev?.map((image) => {
               const newImage = { ...image, progress: progress };
-              updateToast(newImage);
+              updateToast(newImage, toastIds);
 
-              return image.file.name === name ? newImage : image;
+              return image.file?.name === name ? newImage : image;
             });
 
             return uploadedImages;
@@ -146,16 +165,16 @@ const FormStep3 = () => {
           if (toastId) toast.update(toastId, { icon: true });
           if (toastId) toast.dismiss(toastId);
           else toast.error("toast undefiend");
-
-          setImages((prev) =>
-            prev.map((image) => ({ ...image, isDone: true, progress: 1 }))
-          );
+          console.log("response", response);
+          setImages([]);
+          refetch();
         },
         onFailure: (error) => {},
       });
     }
   }
   const handleImageChanged = async (e: ChangeEvent<HTMLInputElement>) => {
+    console.log("uploading");
     const files = e.target.files;
 
     if (files && files.length > 0) {
@@ -172,16 +191,17 @@ const FormStep3 = () => {
         const filteredImages = readImages.filter((newImage) => {
           const isNew = !existingUrls.has(newImage.url);
           if (!isNew) {
-            toast.error("Image " + newImage.file.name + " Already selected");
+            if (newImage.file)
+              toast.error("Image " + newImage.file.name + " Already selected");
           } else {
-            showToast(newImage);
+            showToast(newImage, toastIds);
           }
           return isNew;
         });
 
         // Combine the filtered images with the existing images
         const combinedImages = [...prev, ...filteredImages];
-        if (combinedImages.length > 6) {
+        if (combinedImages.length + allImages.length > 6) {
           toast.error("you can't upload more than 6 images", {
             autoClose: 5000,
           });
@@ -195,83 +215,49 @@ const FormStep3 = () => {
       });
     }
   };
-  interface uploadImageProps {
-    selectedFile: File | Blob;
-    onUplading: ({
-      name,
-      progress,
-    }: {
-      progress: number | undefined;
-      name: string;
-    }) => void;
-    onSuccess: ({ name, response }: { name: string; response: any }) => void;
-    onFailure: ({ name, error }: { name: string; error: any }) => void;
-  }
-  const uploadImage = async ({
-    selectedFile,
-    onUplading,
-    onSuccess: onSuccess,
-    onFailure,
-  }: uploadImageProps) => {
-    if (!selectedFile) return;
-    const formData = new FormData();
-    formData.append("image", selectedFile, selectedFile.name);
-    try {
-      const response = await api.patchForm(
-        `/realEstates/images/${itemId}`,
-        formData,
-        {
-          onUploadProgress: (progressEvent: AxiosProgressEvent) => {
-            const percentCompleted =
-              progressEvent.total &&
-              Math.round(progressEvent.loaded / progressEvent.total);
 
-            onUplading({
-              progress: percentCompleted && percentCompleted - 0.01,
-              name: selectedFile.name,
-            });
-          },
-        }
-      );
-      onSuccess({ name: selectedFile.name, response: response.data });
-    } catch (error) {
-      onFailure({ name: selectedFile.name, error: error });
-    }
-  };
   return (
     <>
-      <div className="max-w-3xl mx-auto  px-6 text-center pb-1 md:pb-1 ">
+      <ConfirmationDialog
+        isOpen={isPopupOpen}
+        onClose={handleCloseConfirmation}
+        onConfirm={handleConfirm}
+        message="Are you sure you want to perform this action?"
+      />
+      <div className="max-w-3xl mx-auto  px-6 text-center pb-1 md:pb-1 pt-20 ">
         <h4 className="h4 mb-0">Upload up to 6 images</h4>
         <h6 className="h6 c text-green-600 mb-0">
-          Total Selected {images.length}{" "}
+          Total Selected {allImages?.length}{" "}
         </h6>
-        <div className="max-w-6xl mt-8 grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 ">
-          {images?.map((image, index) => {
-            return (
-              <div className="w-full " key={index}>
-                <div className="w-full bg-gray-200 rounded-t-full dark:bg-gray-700">
-                  <div
-                    className="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-t-full"
-                    style={{
-                      width: `${image.progress && image.progress * 100}%`,
-                    }}
-                  >
-                    {image.progress && image.progress * 100}%
-                  </div>
-                </div>
+        <div className="relative max-w-6xl mt-8 grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 ">
+          {allImages &&
+            allImages?.map((image, index) => {
+              //const percentage = image.progress && image.progress * 100;
+              return (
+                <div className="w-full " key={index}>
+                  {image.file && image.progress && !image.isDone && (
+                    <ProgressBar progress={image.progress} />
+                  )}
 
-                <Image
-                  className={`${
-                    image.isDone ? "" : "opacity-50"
-                  }  w-full h-24 sm:h-48 object-cover`}
-                  src={image.url}
-                  width={200}
-                  height={400}
-                  alt="image"
-                />
-              </div>
-            );
-          })}
+                  <Image
+                    className={`${
+                      image.isDone ? "" : "opacity-50"
+                    } w-full h-24 sm:h-48 object-cover`}
+                    src={image.url}
+                    width={300}
+                    height={400}
+                    alt="image"
+                  />
+                  {index !== 0 && (
+                    <div className="w-full">
+                      <button onClick={() => handleDeleteImage(image.url)}>
+                        <AiTwotoneDelete size={30} />
+                      </button>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
         </div>
       </div>
 
@@ -328,4 +314,4 @@ const FormStep3 = () => {
   );
 };
 
-export default FormStep3;
+export default EditImages;

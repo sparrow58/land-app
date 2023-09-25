@@ -11,7 +11,9 @@ const RealEstateCard = ({ realEstate }: Props) => {
   return (
     <div className="bg-white rounded overflow-hidden shadow relative">
       <Image
-        src="/land.jpeg"
+        src={
+          realEstate.images.length !== 0 ? realEstate.images[0] : "/land.jpeg"
+        }
         width={600}
         height={100}
         quality={100}
