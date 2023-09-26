@@ -1,6 +1,6 @@
 import { toast } from "react-toastify";
-import { FileProps } from "./FileProps";
 import { MutableRefObject } from "react";
+import { FileProps } from "@/app/Props/CommonProps";
 
 export const showToast = (
   file: FileProps,
