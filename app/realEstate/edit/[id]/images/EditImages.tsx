@@ -1,11 +1,5 @@
 "use client";
-import React, {
-  ChangeEvent,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { ChangeEvent, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import Button from "@/app/components/Button";
 import { toast, ToastContainer } from "react-toastify";
@@ -15,18 +9,10 @@ import { showToast, updateToast } from "./ToastHelpers";
 import { readFileAsync } from "@/app/helpers/fileHelper";
 import useRealEstateImages from "@/app/hooks/useRealStateImages";
 import api from "@/app/helpers/api";
-import useSWR from "swr";
-import getImagesService from "@/app/services/reatState/getImagesService";
 import ProgressBar from "@/app/components/ProgressBar";
 import { compressImage } from "@/app/helpers/compressionHelper";
-import {
-  Dimensions,
-  FileProps,
-  ApiResponse,
-  ApiEvents,
-} from "@/app/Props/CommonProps";
-import { AiTwotoneDelete } from "react-icons/Ai";
-import Popup from "@/app/components/ConfirmationDialog";
+import { Dimensions, FileProps, ApiEvents } from "@/app/Props/CommonProps";
+import { AiTwotoneDelete } from "react-icons/ai";
 import ConfirmationDialog from "@/app/components/ConfirmationDialog";
 
 interface Props {
