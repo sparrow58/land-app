@@ -3,9 +3,12 @@ import { ErrorMessage, Field, Form, Formik } from "formik";
 import React, { useContext } from "react";
 import * as yup from "yup";
 import { FormContext } from "./FormStepper";
-import { RealEstateStep1Data } from "@/app/dataObjects/RealEstateFormData";
+import {
+  RealEstateFormData,
+  RealEstateStep1Data,
+} from "@/app/dataObjects/RealEstateFormData";
 import { enumToKeyValues } from "@/app/helpers/converters";
-import { RealEstateType } from "@prisma/client";
+import { AdvisorType, RealEstateType, RentOrSell } from "@prisma/client";
 import TextField from "@/app/components/TextField";
 import SelectField from "@/app/components/SelectField";
 import TexAreaField from "@/app/components/TexAreaField";
@@ -13,7 +16,7 @@ import SubmitButton from "@/app/components/SubmitButton";
 
 function FormStep1() {
   const { activeStepIndex, setActiveStepIndex, formData, setFormData } =
-    useContext(FormContext) || {};
+    useContext(FormContext);
 
   const validationSchema = yup.object().shape({
     title: yup
@@ -24,7 +27,9 @@ function FormStep1() {
       .string()
       .min(10, "Description must be at least 10 characters")
       .required("Description is required"),
-    type: yup.string().min(1).required("type is required"),
+    type: yup.string().min(1).required("Type is required"),
+    rentOrSell: yup.string().required("Rent or sell is required"),
+    advisorType: yup.string().required("Advisor type is required"),
   });
 
   return (
@@ -38,6 +43,7 @@ function FormStep1() {
           validationSchema={validationSchema}
           onSubmit={(values) => {
             const data = { ...formData, ...values };
+
             setFormData?.(data);
             console.log(data);
             setActiveStepIndex?.((lastValue) => lastValue + 1);
@@ -61,6 +67,18 @@ function FormStep1() {
               label="Type"
               placeholder="Select type"
               options={enumToKeyValues(RealEstateType)}
+            />
+            <SelectField
+              name="rentOrSell"
+              options={enumToKeyValues(RentOrSell)}
+              label="Rent or Sell"
+              placeholder="Select Rent or Sell"
+            />
+            <SelectField
+              name="advisorType"
+              options={enumToKeyValues(AdvisorType)}
+              label="Advisor Type"
+              placeholder="Select advisor type"
             />
             <SubmitButton text="Continue" />
           </Form>

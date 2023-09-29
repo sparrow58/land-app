@@ -31,6 +31,7 @@ enum RealEstateType {
     APARTMENT
     VILLA
     BUILDING
+    WARHOUSE
     // Add more types as needed
 }
 
@@ -59,13 +60,19 @@ enum Status {
     APPROVED
 }
 
+enum AdvisorType {
+    OWNER
+    PROKER
+    COMPANY
+}
+
 // Define the RealEstate table
 model RealEstate {
     id            String            @id @default(cuid())
     type          RealEstateType
     title         String
     description   String
-    // details        Json? // Store details as JSON
+    details       Json? // Store details as JSON
     paymentMethod PaymentMethodType
     rentOrSell    RentOrSell
     price         Float
@@ -74,8 +81,8 @@ model RealEstate {
     status        Status            @default(UNDER_REVIEW)
     createdAt     DateTime          @default(now())
     updatedAt     DateTime          @updatedAt
-
-    author User     @relation(fields: [userId], references: [id])
-    userId String
-    images String[]
+    advisorType   AdvisorType?
+    author        User              @relation(fields: [userId], references: [id])
+    userId        String
+    images        String[]
 }

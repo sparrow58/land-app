@@ -1,13 +1,13 @@
 import { RealEstateFormData } from "@/app/dataObjects/RealEstateFormData";
 import prisma from "@/lib/prisma";
 import {
+  AdvisorType,
   OverlookingType,
   PaymentMethodType,
   Prisma,
   RealEstateType,
   RentOrSell,
 } from "@prisma/client";
-import { del } from "@vercel/blob";
 
 export function createRealEstateAsync(data: RealEstateFormData) {
   console.log("not mapped data", data);
@@ -17,11 +17,13 @@ export function createRealEstateAsync(data: RealEstateFormData) {
       description: data.description,
       price: data.price as number,
       size: data.size as number,
+      advisorType: data.advisorType as AdvisorType,
       userId: "clmjhsx490000ac7g03dkr0zf",
       type: data.type as RealEstateType,
       paymentMethod: data.paymentMethod as PaymentMethodType,
       rentOrSell: data.rentOrSell as RentOrSell,
       overlooking: data.overlooking as OverlookingType,
+      details: JSON.stringify(data.details),
     },
   });
 }

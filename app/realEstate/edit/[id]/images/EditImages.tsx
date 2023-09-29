@@ -16,12 +16,11 @@ import { AiTwotoneDelete } from "react-icons/ai";
 import ConfirmationDialog from "@/app/components/ConfirmationDialog";
 
 interface Props {
-  id: string;
+  realEstateId: string;
 }
 
-const EditImages = ({ id }: Props) => {
-  //const dataImages = await getImagesService(id);
-  console.log("id", id);
+const EditImages = ({ realEstateId }: Props) => {
+  console.log("id", realEstateId);
   const [images, setImages] = useState<FileProps[]>([]);
   const [isPopupOpen, setPopupOpen] = useState<boolean>(false);
   const [selectedUrl, setSelectedUrl] = useState<string>("");
@@ -33,7 +32,7 @@ const EditImages = ({ id }: Props) => {
 
   const isAnyImage = images.length > 0;
 
-  const { data, error, isLoading, refetch } = useRealEstateImages(id);
+  const { data, error, isLoading, refetch } = useRealEstateImages(realEstateId);
   console.log("data", data);
   console.log("error", error);
 
@@ -90,7 +89,7 @@ const EditImages = ({ id }: Props) => {
     // Handle confirmation logic here
     // For example, delete an item
     console.log("Confirmed");
-    deleteImage(id, selectedUrl, {
+    deleteImage(realEstateId, selectedUrl, {
       onSuccess: (respose) => {
         if (respose.status === 200) {
           //setImages((prev) => prev.filter((i) => i.url !== url));
@@ -132,7 +131,7 @@ const EditImages = ({ id }: Props) => {
   async function uploadImages(images: FileProps[]) {
     for (let i = 0; i < images.length; i++) {
       uploadImageService({
-        id: id,
+        id: realEstateId,
         selectedFile: images[i].file as File,
         onUplading: ({ name, progress }) => {
           setImages((prev) => {

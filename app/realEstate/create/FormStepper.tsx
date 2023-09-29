@@ -1,8 +1,4 @@
 "use client";
-import { enumToKeyValues } from "@/app/helpers/converters";
-import * as yup from "yup";
-
-import * as Yup from "yup";
 import Stepper from "./Stepper";
 
 import { Dispatch, SetStateAction, createContext, useState } from "react";
@@ -11,18 +7,16 @@ import { RealEstateFormData } from "@/app/dataObjects/RealEstateFormData";
 interface StepperProps {
   activeStepIndex: number;
   setActiveStepIndex: Dispatch<SetStateAction<number>>;
-  formData: RealEstateFormData | {};
-  setFormData: Dispatch<SetStateAction<RealEstateFormData | {}>>;
-  itemId: string;
-  setItemId: Dispatch<SetStateAction<string>>;
+  formData: RealEstateFormData;
+  setFormData: Dispatch<SetStateAction<RealEstateFormData>>;
 }
-export const FormContext = createContext<StepperProps | null>(null);
+export const FormContext = createContext<StepperProps>({} as StepperProps);
 
 export const FormStepper = () => {
   const [activeStepIndex, setActiveStepIndex] = useState(0);
   const [itemId, setItemId] = useState<string>("");
 
-  const [formData, setFormData] = useState<RealEstateFormData | {}>({
+  const [formData, setFormData] = useState<RealEstateFormData>({
     title: "",
     description: "",
     type: "",
@@ -31,6 +25,17 @@ export const FormStepper = () => {
     size: "",
     paymentMethod: "",
     rentOrSell: "",
+    details: {
+      floor: "",
+      endowmentType: "",
+      yearOfDelivery: new Date().getFullYear(),
+      finalizationType: "",
+      onMarketType: "",
+      numberOfBathRooms: "",
+      numberOfFloors: "",
+      numberOfRooms: "",
+      rentType: "",
+    },
   });
 
   return (
@@ -40,8 +45,6 @@ export const FormStepper = () => {
         setActiveStepIndex,
         formData,
         setFormData,
-        itemId,
-        setItemId,
       }}
     >
       <section className="bg-gradient-to-b from-gray-100 to-white">

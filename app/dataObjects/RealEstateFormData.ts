@@ -1,4 +1,5 @@
 import {
+  AdvisorType,
   OverlookingType,
   PaymentMethodType,
   RealEstateType,
@@ -8,20 +9,55 @@ import {
 export interface RealEstateStep1Data {
   title: string;
   description: string;
-  type: RealEstateType | undefined;
+  type: RealEstateType | "";
+  price: number | "";
+  advisorType: AdvisorType | "";
 }
 
 export interface RealEstateStep2Data {
-  price: number | undefined;
-  size: number | undefined;
-  overlooking: OverlookingType | undefined;
-  paymentMethod: PaymentMethodType | undefined;
-  rentOrSell: RentOrSell | undefined;
+  size: number | "";
+  overlooking: OverlookingType | "";
+  paymentMethod: PaymentMethodType | "";
+  rentOrSell: RentOrSell | "";
 }
 
 export interface RealEstateStep3Data {
-  paymentMethod: PaymentMethodType | undefined;
-  rentOrSell: RentOrSell | undefined;
+  paymentMethod: PaymentMethodType | "";
+  rentOrSell: RentOrSell | "";
+}
+export interface Details {
+  floor?: number | "";
+  numberOfFloors?: number | "";
+  finalizationType?: FinalizationType | "";
+  numberOfRooms?: number | "";
+  numberOfBathRooms?: number | "";
+  yearOfDelivery?: number;
+  onMarketType?: OnMarketType | "";
+  rentType?: RentType | ""; // rent
+  endowmentType?: EndowmentType | ""; // sell
 }
 
-export type RealEstateFormData = RealEstateStep1Data & RealEstateStep2Data & {};
+export type RealEstateFormData = RealEstateStep1Data &
+  RealEstateStep2Data & {
+    details: Details;
+  };
+export enum FinalizationType {
+  SUPERLUX = "SUPERLUX",
+  LUX = "LUX",
+  HALF = "HALF",
+  NONE = "NONE",
+}
+export enum OnMarketType {
+  NEW = "NEW",
+  RESELL = "RESELL",
+}
+export enum RentType {
+  COMMERCIAL = "COMMERCIAL",
+  PERSONAL = "PERSONAL",
+  BOTH = "BOTH",
+}
+export enum EndowmentType {
+  ENDOWED = "ENDOWED",
+  FREELAND = "FREELAND",
+  MIXED = "MIXED",
+}

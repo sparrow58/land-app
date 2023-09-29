@@ -6,8 +6,6 @@ interface Props {
   realEstate: RealEstate;
 }
 const RealEstateCard = ({ realEstate }: Props) => {
-  console.log("apartment in component", realEstate);
-
   return (
     <div className="bg-white rounded overflow-hidden shadow relative">
       <Image
@@ -24,7 +22,7 @@ const RealEstateCard = ({ realEstate }: Props) => {
         <h3 className="font-bold">{realEstate.title}</h3>
 
         <span className="block text-gray-500 text-sm">
-          {realEstate.size} Labna
+          {realEstate.size} Squar Metter
         </span>
 
         <span className="block text-gray-500 text-sm">

@@ -10,7 +10,7 @@ export async function getAppartments() {
   return data;
 }
 export async function getAppartment(id: string) {
-  const data = await prisma.realEstate.findFirst({
+  const data = await prisma.realEstate.findUnique({
     where: {
       id: id,
     },

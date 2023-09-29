@@ -14,40 +14,22 @@ import SelectField from "@/app/components/SelectField";
 import { OverlookingType, PaymentMethodType, RentOrSell } from "@prisma/client";
 import SubmitButton from "@/app/components/SubmitButton";
 import Button from "@/app/components/Button";
-import useCreateRealEstate from "@/app/hooks/realEstate/useCreateRealEstate";
-import { useRouter } from "next/navigation";
 
 function FormStep2() {
-  const {
-    activeStepIndex,
-    setActiveStepIndex,
-    formData,
-    setFormData,
-    setItemId,
-  } = useContext(FormContext) || {};
-  const router = useRouter();
+  const { activeStepIndex, setActiveStepIndex, formData, setFormData } =
+    useContext(FormContext);
 
-  const { create, isLoading } = useCreateRealEstate({
-    onSuccess: (response: any) => {
-      console.log(response);
-      setItemId?.(response.id as string);
-      console.log("redirecting to ", `/realEstate/edit/${response.id}/images`);
-      router.replace(`/realEstate/edit/${response.id}/images`);
-      //setActiveStepIndex?.((i) => i + 1);
-    },
-    onFailure: (error: any) => {},
-  });
   const validationSchema = yup.object().shape({
     overlooking: yup.string().required("overlooking is required"),
     price: yup.number().min(1).required("price is required"),
     size: yup.string().required("size is required"),
     paymentMethod: yup.string().required("payment_method time is required"),
-    rentOrSell: yup.string().required("rentOrSell is required"),
   });
 
   const handleBack = (values: {}) => {
+    const data: RealEstateFormData = processData(areaOption, values, formData);
+    setFormData?.(data);
     setActiveStepIndex?.((i) => i - 1);
-    formData && setFormData?.({ ...formData, ...values });
   };
 
   const [areaOption, setAreaOption] = useState("meter");
@@ -57,28 +39,17 @@ function FormStep2() {
       initialValues={{ ...formData }}
       validationSchema={validationSchema}
       onSubmit={(values) => {
-        let newValues: any;
-        if (areaOption === "lebnah") {
-          if (values.size)
-            newValues = { ...values, size: convertToMeter(values.size) };
-        } else newValues = values;
-        const data: RealEstateFormData | {} = { ...formData, ...newValues };
+        const data: RealEstateFormData = processData(
+          areaOption,
+          values,
+          formData
+        );
         setFormData?.(data);
-        console.log("sending", data);
 
-        // api
-        //   .post("/realEstates", data)
-        //   .then(function (response) {
-        //     console.log(response);
-        //   })
-        //   .catch(function (error) {
-        //     console.log(error);
-        //   });
-
-        create(data);
+        setActiveStepIndex?.((i) => i + 1);
       }}
     >
-      {({ values, setFieldValue, errors }) => (
+      {({ values, setFieldValue }) => (
         <Form className="flex flex-col justify-center items-center">
           <TextField
             name="price"
@@ -154,12 +125,7 @@ function FormStep2() {
             options={enumToKeyValues(OverlookingType)}
             placeholder="select overlooking"
           />
-          <SelectField
-            name="rentOrSell"
-            options={enumToKeyValues(RentOrSell)}
-            label="Rent or Sell"
-            placeholder="Select Rent or Sell"
-          />
+
           <SelectField
             name="paymentMethod"
             options={enumToKeyValues(PaymentMethodType)}
@@ -168,13 +134,27 @@ function FormStep2() {
           />
           <div className="flex justify-between gap-6">
             <Button text="Back" onClick={() => handleBack(values)} />
-            <SubmitButton text="Continue" disabled={isLoading} />
+            <SubmitButton text="Continue" />
           </div>
         </Form>
       )}
     </Formik>
   );
 }
+function processData(
+  areaOption: string,
+  values: any,
+  formData: RealEstateFormData | undefined
+) {
+  let newValues: any;
+  if (areaOption === "lebnah") {
+    if (values.size)
+      newValues = { ...values, size: convertToMeter(values.size) };
+  } else newValues = values;
+  const data: RealEstateFormData = { ...formData, ...newValues };
+  return data;
+}
+
 function convertToMeter(size: number) {
   return Math.round(size && size * 44.44 * 100) / 100;
 }

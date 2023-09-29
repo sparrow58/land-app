@@ -4,5 +4,5 @@ export async function getLand(id: string): Promise<RealEstate | null> {
   return prisma.realEstate.findFirst({ where: { id: id, type: "LAND" } });
 }
 export async function getLands() {
-  return await prisma.realEstate.findMany();
+  return await prisma.realEstate.findMany({ where: { type: "LAND" } });
 }

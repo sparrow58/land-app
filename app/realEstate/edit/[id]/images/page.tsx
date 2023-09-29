@@ -8,7 +8,7 @@ interface Props {
   };
 }
 const page = ({ params }: Props) => {
-  return <EditImages id={params.id} />;
+  return <EditImages realEstateId={params.id} />;
 };
 
 export default page;
