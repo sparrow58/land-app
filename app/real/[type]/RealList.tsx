@@ -22,7 +22,7 @@ const RealList = async ({ type }: Props) => {
                 key={item.id}
                 href={`/real/${item.type.toLowerCase()}s/${item.id}`}
               >
-                <RealEstateCard realEstate={item} />
+                <RealEstateCard data={item} />
               </Link>
             ))}
           </div>

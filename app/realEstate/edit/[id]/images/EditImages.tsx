@@ -22,7 +22,7 @@ interface Props {
 const EditImages = ({ realEstateId }: Props) => {
   console.log("id", realEstateId);
   const [images, setImages] = useState<FileProps[]>([]);
-  const [isPopupOpen, setPopupOpen] = useState<boolean>(false);
+  const [isPopupOpen, setPopupOpen] = useState(false);
   const [selectedUrl, setSelectedUrl] = useState<string>("");
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 

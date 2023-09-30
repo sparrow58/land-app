@@ -17,7 +17,7 @@ const page = async ({ params }: Props) => {
   if (data == null) return <NotFound />;
   return (
     <>
-      <RealEstateCard realEstate={data} />
+      <RealEstateCard data={data} />
       <div className="max-w-6xl mt-8 grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 ">
         {data.images?.map((image, index) => {
           return (

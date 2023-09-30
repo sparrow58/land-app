@@ -19,7 +19,7 @@ const LandsList = async () => {
           <div className="mt-8 grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {data.map((item) => (
               <Link key={item.id} href={`/lands/${item.id}`}>
-                <RealEstateCard realEstate={item} key={item.id} />
+                <RealEstateCard data={item} key={item.id} />
               </Link>
             ))}
           </div>

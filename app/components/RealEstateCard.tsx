@@ -1,39 +1,72 @@
 import { RealEstate } from "@prisma/client";
 import Image from "next/image";
 import React from "react";
-
+import { ImImages } from "react-icons/im";
+import { PiBathtub } from "react-icons/pi";
+import { SlSizeFullscreen } from "react-icons/sl";
+import { MdOutlineBedroomParent } from "react-icons/md";
+import { GrLocation } from "react-icons/Gr";
+import { Details } from "@/app/dataObjects/RealEstateFormData";
 interface Props {
-  realEstate: RealEstate;
+  data: RealEstate;
 }
-const RealEstateCard = ({ realEstate }: Props) => {
-  return (
-    <div className="bg-white rounded overflow-hidden shadow relative">
-      <Image
-        src={
-          realEstate.images.length !== 0 ? realEstate.images[0] : "/land.jpeg"
-        }
-        width={600}
-        height={100}
-        quality={100}
-        alt={realEstate.title}
-        className="w-full h-23 sm:h-48 object-cover"
-      />
-      <div className="m-4">
-        <h3 className="font-bold">{realEstate.title}</h3>
+const RealEstateCard = ({ data }: Props) => {
+  const details: Details = data.details
+    ? JSON.parse(data.details!.toString())
+    : {};
 
-        <span className="block text-gray-500 text-sm">
-          {realEstate.size} Squar Metter
-        </span>
+  return (
+    <div className="bg-white rounded overflow-hidden shadow ">
+      <div className="relative">
+        <Image
+          src={data.images.length !== 0 ? data.images[0] : "/land.jpeg"}
+          width={600}
+          height={200}
+          quality={100}
+          alt={data.title}
+          className="w-full h-28 sm:h-48 object-cover"
+        />
+        <div className="bg-gray-100  text-xs uppercase font-bold rounded-full p-2 absolute top-0 ml-2 mt-2 opacity-70">
+          <span>Verified</span>
+        </div>
+        <div className="bg-black text-gray-100  text-xs uppercase font-bold rounded-bl-md p-2 absolute top-0 right-0 opacity-70">
+          <span>{data.price.toLocaleString()} YR</span>
+        </div>
+        <div className="absolute items-center bottom-0 right-0 gap-1 bg-black opacity-50 rounded flex align-bottom text-gray-100 px-1 text-sm  mr-1">
+          <span>{data.images.length}</span>
+          <ImImages />
+        </div>
+      </div>
+
+      <div className="m-4">
+        <h3 className="font-bold">{data.title}</h3>
+        <div className="flex items-center gap-1 text-gray-500 text-sm mt-3">
+          <GrLocation />
+          <span className="block  ">{"Sana'a, Bab Alyemen"}</span>
+        </div>
+
+        <div className="flex items-center gap-6 pt-2">
+          <div className="flex items-center gap-1 text-gray-500 text-sm">
+            <span className="block  ">{data.size} m&#178;</span>
+            <SlSizeFullscreen />
+          </div>
+          {details.numberOfBathRooms && (
+            <div className="flex items-center gap-1 text-gray-500 text-sm">
+              <span className="block  ">{details.numberOfBathRooms}</span>
+              <PiBathtub />
+            </div>
+          )}
+          {details.numberOfRooms && (
+            <div className="flex items-center gap-1 text-gray-500 text-sm">
+              <span className="block  ">{details.numberOfRooms}</span>
+              <MdOutlineBedroomParent />
+            </div>
+          )}
+        </div>
 
         <span className="block text-gray-500 text-sm">
           {/* {realEstate.created_at.toString()} */}
         </span>
-      </div>
-      <div className="bg-secondary-100  text-xs uppercase font-bold rounded-full p-2 absolute top-0 ml-2 mt-2">
-        <span>Verified</span>
-      </div>
-      <div className="bg-blue-300 text-gray-500  text-xs uppercase font-bold rounded-bl-md p-2 absolute top-0 right-0">
-        <span>{realEstate.price} YR</span>
       </div>
     </div>
   );

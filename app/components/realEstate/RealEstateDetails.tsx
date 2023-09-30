@@ -10,8 +10,10 @@ import {
   RentOrSell,
 } from "@prisma/client";
 import React from "react";
+import DeleteRealEstate from "./DeleteRealEstate";
 
 interface Props {
+  id: string;
   title: string;
   description: string;
   type: RealEstateType;
@@ -49,6 +51,7 @@ const parseDetailsKey = (value: string) => {
 };
 const RealEstateDetails = ({
   title,
+  id,
   description,
   type,
   price,
@@ -68,9 +71,10 @@ const RealEstateDetails = ({
   };
   return (
     <div className="relative overflow-x-auto">
+      <DeleteRealEstate id={id} />
       <div className="mx-1 mb-5">
-        <p className="text-gray-400">
-          {type} for {rentOrSellParsed(rentOrSell)}{" "}
+        <p className="text-gray-400 capitalize  ">
+          {type.toLocaleLowerCase()} for {rentOrSellParsed(rentOrSell)}{" "}
           {createdAt.toLocaleDateString()}
         </p>
         <h1 className="h3 my-3">{price.toLocaleString()} YR</h1>

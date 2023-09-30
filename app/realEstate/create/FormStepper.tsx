@@ -25,6 +25,7 @@ export const FormStepper = () => {
     size: "",
     paymentMethod: "",
     rentOrSell: "",
+    advisorType: "",
     details: {
       floor: "",
       endowmentType: "",
