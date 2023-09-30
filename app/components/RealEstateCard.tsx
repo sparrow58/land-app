@@ -5,7 +5,7 @@ import { ImImages } from "react-icons/im";
 import { PiBathtub } from "react-icons/pi";
 import { SlSizeFullscreen } from "react-icons/sl";
 import { MdOutlineBedroomParent } from "react-icons/md";
-import { GrLocation } from "react-icons/Gr";
+import { GrLocation } from "react-icons/gr";
 import { Details } from "@/app/dataObjects/RealEstateFormData";
 interface Props {
   data: RealEstate;
