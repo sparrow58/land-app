@@ -79,7 +79,7 @@ const RealEstateDetails = ({
       <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 table-auto">
         <thead>
           <tr className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-            <th className="px-6 py-3">Details</th>
+            <th className="px-2 py-3">Details</th>
             <th></th>
           </tr>
         </thead>
@@ -104,7 +104,7 @@ function TableRow(key: string, value: string) {
     <tr className=" bg-white border-b dark:bg-gray-800 dark:border-gray-700">
       <th
         scope="row"
-        className=" px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+        className=" px-2 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
       >
         {key}
       </th>

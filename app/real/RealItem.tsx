@@ -23,7 +23,7 @@ const RealItem = async ({ type, id }: Props) => {
         alt={data.title}
         className="w-full relative h-0 sm:h-1 md:h-48 object-cover blur-sm  md:blur-sm"
       />
-      <div className="w-full absolute h-20  hidden md:flex md:grow bg-slate-200 opacity-50"></div>
+      <div className="w-full absolute h-0 md:h-20  hidden md:flex md:grow bg-slate-200 opacity-50"></div>
 
       <div className="w-full  mt-8 py-10 flex flex-col md:flex-row shadow rounded">
         <div className="flex-[3] px-4">

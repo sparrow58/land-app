@@ -26,7 +26,7 @@ const ImageSlider = ({ slides }: Props) => {
   };
 
   return (
-    <div className=" h-[40rem] w-full m-auto pb-10 relative group">
+    <div className="h-96 md:h-[40rem]  w-full m-auto pb-10 relative group">
       <Image
         src={slides[currentIndex]}
         width={0}
