@@ -1,6 +1,5 @@
 import Image from "next/image";
 import React from "react";
-import NotFound from "../not-found";
 import { RealEstateType } from "@prisma/client";
 import { getRealEstate } from "../services/reatState/getService";
 import ImageSlider from "../components/realEstate/ImageSlider";
@@ -12,7 +11,7 @@ interface Props {
 }
 const RealItem = async ({ type, id }: Props) => {
   const data = await getRealEstate(id, type);
-  if (data == null) return <NotFound />;
+  if (data == null) return null; //<NotFound />;
   return (
     <>
       <Image
