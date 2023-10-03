@@ -219,7 +219,7 @@ const EditImages = ({ realEstateId }: Props) => {
             allImages?.map((image, index) => {
               //const percentage = image.progress && image.progress * 100;
               return (
-                <div className="w-full " key={index}>
+                <div className="w-full border rounded " key={index}>
                   {image.file && image.progress && !image.isDone && (
                     <ProgressBar progress={image.progress} />
                   )}

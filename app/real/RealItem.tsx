@@ -13,7 +13,7 @@ const RealItem = async ({ type, id }: Props) => {
   const data = await getRealEstate(id, type);
   if (data == null) return null; //<NotFound />;
   return (
-    <>
+    <div className="relative">
       <Image
         src={data.images.length !== 0 ? data.images[0] : "/land.jpeg"}
         width={600}
@@ -39,7 +39,7 @@ const RealItem = async ({ type, id }: Props) => {
           />
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

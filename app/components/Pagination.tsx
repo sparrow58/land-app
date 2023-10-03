@@ -17,20 +17,21 @@ const Pagination = ({ hasNextPage, hasPrevPage, perPage }: Props) => {
     <div className="flex justify-center p-3">
       <nav aria-label="Page navigation example">
         <ul className="list-style-none flex">
-          {hasPrevPage && (
-            <>
-              <li>
-                <Link
-                  href={`${pathname}?page=${
-                    Number(page) - 1
-                  }&per_page=${per_page}`}
-                  className="relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300
-              hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white"
-                >
-                  Previous{" "}
-                </Link>
-              </li>
-              {/* <li>
+          <>
+            <li>
+              <Link
+                href={`${pathname}?page=${
+                  Number(page) - 1
+                }&per_page=${per_page}`}
+                className={`${
+                  !hasPrevPage && "pointer-events-none opacity-50"
+                } relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300
+                  hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white`}
+              >
+                Previous{" "}
+              </Link>
+            </li>
+            {/* <li>
                 <a
                   className="relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-100  dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white"
                   href="#!"
@@ -38,8 +39,7 @@ const Pagination = ({ hasNextPage, hasPrevPage, perPage }: Props) => {
                   1
                 </a>
               </li> */}
-            </>
-          )}
+          </>
 
           <li aria-current="page">
             <a
@@ -52,9 +52,9 @@ const Pagination = ({ hasNextPage, hasPrevPage, perPage }: Props) => {
               </span>
             </a>
           </li>
-          {hasNextPage && (
-            <>
-              {/* <li>
+
+          <>
+            {/* <li>
                 <a
                   className="relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white"
                   href="#!"
@@ -62,17 +62,16 @@ const Pagination = ({ hasNextPage, hasPrevPage, perPage }: Props) => {
                   {Number(page) + 1}
                 </a>
               </li> */}
-              <Link
-                href={`${pathname}?page=${
-                  Number(page) + 1
-                }&per_page=${per_page}`}
-                className="relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300
-              hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white"
-              >
-                Next
-              </Link>
-            </>
-          )}
+            <Link
+              href={`${pathname}?page=${Number(page) + 1}&per_page=${per_page}`}
+              className={`${
+                !hasNextPage && "pointer-events-none opacity-50"
+              } relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300
+              hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white`}
+            >
+              Next
+            </Link>
+          </>
         </ul>
       </nav>
     </div>

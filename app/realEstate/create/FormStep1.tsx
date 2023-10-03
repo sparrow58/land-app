@@ -37,53 +37,51 @@ function FormStep1() {
       <div className="max-w-6xlxl mx-auto text-center pb-12 md:pb-20">
         <h2 className="h2"> Welcome!</h2>
       </div>
-      <div className="max-w-md mx-auto">
-        <Formik
-          initialValues={{ ...formData }}
-          validationSchema={validationSchema}
-          onSubmit={(values) => {
-            const data = { ...formData, ...values };
+      <Formik
+        initialValues={{ ...formData }}
+        validationSchema={validationSchema}
+        onSubmit={(values) => {
+          const data = { ...formData, ...values };
 
-            setFormData?.(data);
-            console.log(data);
-            setActiveStepIndex?.((lastValue) => lastValue + 1);
-          }}
-        >
-          <Form>
-            <TextField
-              name="title"
-              label="Title"
-              type="text"
-              placeholder="Add title to your ad"
-            />
-            <TextField
-              name="description"
-              label="Description"
-              placeholder="Descrip your real estate"
-            />
+          setFormData?.(data);
+          console.log(data);
+          setActiveStepIndex?.((lastValue) => lastValue + 1);
+        }}
+      >
+        <Form className="flex flex-col justify-center items-center">
+          <TextField
+            name="title"
+            label="Title"
+            type="text"
+            placeholder="Add title to your ad"
+          />
+          <TextField
+            name="description"
+            label="Description"
+            placeholder="Descrip your real estate"
+          />
 
-            <SelectField
-              name="type"
-              label="Type"
-              placeholder="Select type"
-              options={enumToKeyValues(RealEstateType)}
-            />
-            <SelectField
-              name="rentOrSell"
-              options={enumToKeyValues(RentOrSell)}
-              label="Rent or Sell"
-              placeholder="Select Rent or Sell"
-            />
-            <SelectField
-              name="advisorType"
-              options={enumToKeyValues(AdvisorType)}
-              label="Advisor Type"
-              placeholder="Select advisor type"
-            />
-            <SubmitButton text="Continue" />
-          </Form>
-        </Formik>
-      </div>
+          <SelectField
+            name="type"
+            label="Type"
+            placeholder="Select type"
+            options={enumToKeyValues(RealEstateType)}
+          />
+          <SelectField
+            name="rentOrSell"
+            options={enumToKeyValues(RentOrSell)}
+            label="Rent or Sell"
+            placeholder="Select Rent or Sell"
+          />
+          <SelectField
+            name="advisorType"
+            options={enumToKeyValues(AdvisorType)}
+            label="Advisor Type"
+            placeholder="Select advisor type"
+          />
+          <SubmitButton text="Continue" />
+        </Form>
+      </Formik>
     </>
   );
 }

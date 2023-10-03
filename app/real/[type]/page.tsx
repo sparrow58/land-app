@@ -12,16 +12,17 @@ interface Props {
   searchParams: { [key: string]: string | string[] | undefined };
 }
 const page = async ({ params: { type }, searchParams }: Props) => {
-  const MAX = 10;
+  const MAX_PER_PAGE = 1;
+
   const realType = stringToEnum(RealEstateType, getTypeFromRoute(type));
   const page = Number(searchParams["page"] ?? "1");
-  const parPageT = Number(searchParams["per_page"] ?? "1");
-  const per_page = parPageT > MAX ? MAX : parPageT;
-  const start = (page - 1) * per_page; // 0, 5, 10 ...
-  const end = start + per_page; // 5, 10, 15 ...
+  const parPageT = Number(searchParams["per_page"] ?? MAX_PER_PAGE);
+  const perPage = parPageT > MAX_PER_PAGE ? MAX_PER_PAGE : parPageT;
+  const start = (page - 1) * perPage; // 0, 5, 10 ...
+  const end = start + perPage; // 5, 10, 15 ...
   const { data, count } = await getRealEstates({
     page: page,
-    pageSize: per_page,
+    pageSize: perPage,
     type: realType,
   });
   // console.log("start end", start, end);
