@@ -10,7 +10,7 @@ interface uploadImageProps {
     progress: number | undefined;
     name: string;
   }) => void;
-  onSuccess: ({ name, response }: { name: string; response: any }) => void;
+  onSuccess: ({ name, data }: { name: string; data: any }) => void;
   onFailure: ({ name, error }: { name: string; error: any }) => void;
 }
 const uploadImageService = async ({
@@ -40,7 +40,7 @@ const uploadImageService = async ({
         },
       }
     );
-    onSuccess({ name: selectedFile.name, response: response.data });
+    onSuccess({ name: selectedFile.name, data: response.data });
   } catch (error) {
     onFailure({ name: selectedFile.name, error: error });
   }

@@ -30,7 +30,7 @@ export async function PATCH(req: NextRequest, { params: { id } }: Props) {
 
   return NextResponse.json({
     success: true,
-    data: { imageUrl: imageUrl },
+    data: { url: imageUrl },
   });
 }
 
@@ -55,11 +55,14 @@ export async function DELETE(request: Request, { params: { id } }: Props) {
     if (item) {
       await del(urlToDelete);
       console.log("updated images", item.images);
-      return NextResponse.json({ seccuss: true }, { status: 200 });
+      return NextResponse.json(
+        { success: true, data: { url: urlToDelete } },
+        { status: 200 }
+      );
     } else {
       console.log("no image found");
-      return NextResponse.json({ seccuss: false }, { status: 404 });
+      return NextResponse.json({ success: false }, { status: 404 });
     }
   }
-  return NextResponse.json({ seccuss: false }, { status: 404 });
+  return NextResponse.json({ success: false }, { status: 404 });
 }

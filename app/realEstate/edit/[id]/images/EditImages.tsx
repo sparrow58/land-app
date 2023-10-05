@@ -14,31 +14,31 @@ import { compressImage } from "@/app/helpers/compressionHelper";
 import { Dimensions, FileProps, ApiEvents } from "@/app/Props/CommonProps";
 import { AiTwotoneDelete } from "react-icons/ai";
 import ConfirmationDialog from "@/app/components/ConfirmationDialog";
+import { it } from "node:test";
 
 interface Props {
   realEstateId: string;
+  exImages: FileProps[];
 }
 
-const EditImages = ({ realEstateId }: Props) => {
-  console.log("id", realEstateId);
-  const [images, setImages] = useState<FileProps[]>([]);
+const EditImages = ({ realEstateId, exImages }: Props) => {
+  const [allImages, setAllImages] = useState<FileProps[]>(exImages);
   const [isPopupOpen, setPopupOpen] = useState(false);
   const [selectedUrl, setSelectedUrl] = useState<string>("");
+  const [isLoading, setLoading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const toastIds = useRef<string[]>([]);
 
-  const isFinishedUploading = images.every((image) => image.isDone);
+  const isFinishedUploading = allImages.every((image) => image.isDone);
 
-  const isAnyImage = images.length > 0;
+  const isAnyImage = allImages.length > 0;
 
-  const { data, error, isLoading, refetch } = useRealEstateImages(realEstateId);
-  console.log("data", data);
-  console.log("error", error);
+  // const { data: exImages, error, isLoading, refetch } = useRealEstateImages(realEstateId);
 
-  const allImages = useMemo<FileProps[]>(() => {
-    return [...data, ...images];
-  }, [images, data]);
+  // const allImages = useMemo<FileProps[]>(() => {
+  //   return [...exImages, ...allImages];
+  // }, [allImages]);
   //   useEffect(() => {
   //     setImages((prev) => [...prev, ...fetchedImages]);
   //   }, [fetchedImages]);
@@ -52,10 +52,10 @@ const EditImages = ({ realEstateId }: Props) => {
 
       const dimensions = await getImagePropsAsync(fileUrl);
 
-      const newFile = await compressImage(file, dimensions);
+      const compressedFile = await compressImage(file, dimensions);
 
       const image = {
-        file: newFile as File,
+        file: compressedFile as File,
         isDone: false,
         progress: 0.01,
         url: fileUrl,
@@ -89,19 +89,19 @@ const EditImages = ({ realEstateId }: Props) => {
     // Handle confirmation logic here
     // For example, delete an item
     console.log("Confirmed");
+    setLoading(true);
     deleteImage(realEstateId, selectedUrl, {
-      onSuccess: (respose) => {
-        if (respose.status === 200) {
-          //setImages((prev) => prev.filter((i) => i.url !== url));
-          handleCloseConfirmation();
+      onSuccess: (data) => {
+        console.log("deleted response", data);
+        setAllImages((prev) => prev.filter((i) => i.url !== data.url));
+        handleCloseConfirmation();
 
-          refetch();
-        } else {
-          toast.error(respose.status + " " + respose.data);
-        }
+        // refetch();
+        setLoading(false);
       },
       onFailure: (error) => {
         toast.error(error);
+        setLoading(false);
       },
     });
   };
@@ -114,9 +114,11 @@ const EditImages = ({ realEstateId }: Props) => {
       .delete(`/realEstates/${id}/images`, {
         params: { url: url },
       })
-      .then((respose) => {
-        console.log("ok", respose.status);
-        onSuccess(respose);
+      .then((response) => {
+        console.log("ok", response);
+        if (response.data.success === true) {
+          onSuccess(response.data.data);
+        }
       })
       .catch((error) => {
         onFailure(error);
@@ -134,7 +136,7 @@ const EditImages = ({ realEstateId }: Props) => {
         id: realEstateId,
         selectedFile: images[i].file as File,
         onUplading: ({ name, progress }) => {
-          setImages((prev) => {
+          setAllImages((prev) => {
             const uploadedImages = prev?.map((image) => {
               const newImage = { ...image, progress: progress };
               updateToast(newImage, toastIds);
@@ -145,14 +147,23 @@ const EditImages = ({ realEstateId }: Props) => {
             return uploadedImages;
           });
         },
-        onSuccess: ({ name, response }) => {
+        onSuccess: ({ name, data: { data } }) => {
           const toastId = toastIds.current.find((id) => id === name);
           if (toastId) toast.update(toastId, { icon: true });
           if (toastId) toast.dismiss(toastId);
           else toast.error("toast undefiend");
-          console.log("response", response);
-          setImages([]);
-          refetch();
+          console.log("response", data);
+          setAllImages((prev) => {
+            return prev.map((item) => {
+              if (item.file?.name === name) {
+                console.log("updating url", data.url);
+                item.url = data.url;
+                item.isDone = true;
+              }
+              return item;
+            });
+          });
+          //refetch();
         },
         onFailure: (error) => {},
       });
@@ -168,7 +179,7 @@ const EditImages = ({ realEstateId }: Props) => {
         error: "Error while compressing images",
       });
 
-      setImages((prev) => {
+      setAllImages((prev) => {
         // Create a Set of unique URLs from the existing images
         const existingUrls = new Set(prev.map((image) => image.url));
 
@@ -207,6 +218,7 @@ const EditImages = ({ realEstateId }: Props) => {
         isOpen={isPopupOpen}
         onClose={handleCloseConfirmation}
         onConfirm={handleConfirm}
+        isLoading={isLoading}
         message="Are you sure you want to perform this action?"
       />
       <div className="max-w-3xl mx-auto  px-6 text-center pb-1 md:pb-1 pt-20 ">

@@ -5,9 +5,16 @@ interface Props {
   onClose: () => void;
   onConfirm: () => void;
   message: string;
+  isLoading: boolean;
 }
 
-const ConfirmationDialog = ({ isOpen, onClose, onConfirm, message }: Props) => {
+const ConfirmationDialog = ({
+  isOpen,
+  onClose,
+  onConfirm,
+  message,
+  isLoading,
+}: Props) => {
   if (!isOpen) return null;
 
   return (
@@ -24,10 +31,11 @@ const ConfirmationDialog = ({ isOpen, onClose, onConfirm, message }: Props) => {
             Cancel
           </button>
           <button
+            disabled={isLoading}
             onClick={() => {
               onConfirm();
             }}
-            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none"
+            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none disabled:opacity-50"
           >
             Confirm
           </button>

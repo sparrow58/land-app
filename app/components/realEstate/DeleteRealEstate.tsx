@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 
 const DeleteRealEstate = ({ id }: { id: string }) => {
   const [isPopupOpen, setPopupOpen] = useState(false);
+  const [isLoading, setLoading] = useState(false);
   const route = useRouter();
   console.log("item id", id);
   function handleDelete(id: string): void {
@@ -19,7 +20,6 @@ const DeleteRealEstate = ({ id }: { id: string }) => {
   };
   function deleteRealEstate(id: string, { onSuccess, onFailure }: ApiEvents) {
     console.log("item to delete id", id);
-
     api
       .delete(`/realEstates/${id}`)
       .then((respose) => {
@@ -34,6 +34,7 @@ const DeleteRealEstate = ({ id }: { id: string }) => {
     // Handle confirmation logic here
     // For example, delete an item
     console.log("Confirmed");
+    setLoading(true);
     deleteRealEstate(id, {
       onSuccess: (respose) => {
         if (respose.status === 200) {
@@ -44,9 +45,11 @@ const DeleteRealEstate = ({ id }: { id: string }) => {
         } else {
           toast.error(respose.status + " " + respose.data);
         }
+        setLoading(false);
       },
       onFailure: (error) => {
         toast.error(error);
+        setLoading(false);
       },
     });
   };
@@ -54,6 +57,7 @@ const DeleteRealEstate = ({ id }: { id: string }) => {
     <>
       <ConfirmationDialog
         isOpen={isPopupOpen}
+        isLoading={isLoading}
         onClose={handleCloseConfirmation}
         onConfirm={handleConfirm}
         message="Are you sure you want to delete this Item?"
