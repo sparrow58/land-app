@@ -1,16 +1,15 @@
 import Image from "next/image";
 import React from "react";
 import { RealEstateType } from "@prisma/client";
-import { getRealEstate } from "../services/reatState/getService";
-import ImageSlider from "../components/realEstate/ImageSlider";
-import RealEstateDetails from "../components/realEstate/RealEstateDetails";
+import { getRealEstate } from "@/app/services/reatState/getService";
+import ImageSlider from "@/app/components/realEstate/ImageSlider";
+import RealEstateDetails from "@/app/components/realEstate/RealEstateDetails";
 
 interface Props {
-  type: RealEstateType;
   id: string;
 }
-const RealItem = async ({ type, id }: Props) => {
-  const data = await getRealEstate(id, type);
+const RealItem = async ({ id }: Props) => {
+  const data = await getRealEstate(id);
   if (data == null) return null; //<NotFound />;
   return (
     <div className="relative">

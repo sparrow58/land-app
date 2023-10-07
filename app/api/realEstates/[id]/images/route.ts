@@ -26,6 +26,7 @@ export async function PATCH(req: NextRequest, { params: { id } }: Props) {
   // const imageUrl = join(req.nextUrl.origin, relativePath);
 
   const imageUrl = blob.url;
+  console.log("adding image", file.name);
   const updated = await addRealEstateImageUrlAsync(id, imageUrl);
 
   return NextResponse.json({
@@ -49,12 +50,10 @@ export async function DELETE(request: Request, { params: { id } }: Props) {
   const { searchParams } = new URL(request.url);
   const urlToDelete = searchParams.get("url");
 
-  console.log("deleting image", urlToDelete);
   if (urlToDelete) {
     const item = await deleteImageAsync(id, urlToDelete);
     if (item) {
       await del(urlToDelete);
-      console.log("updated images", item.images);
       return NextResponse.json(
         { success: true, data: { url: urlToDelete } },
         { status: 200 }

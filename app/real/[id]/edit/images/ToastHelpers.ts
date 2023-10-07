@@ -2,7 +2,7 @@ import { toast } from "react-toastify";
 import { MutableRefObject } from "react";
 import { FileProps } from "@/app/Props/CommonProps";
 
-export const showToast = (
+export const showUploadToast = (
   file: FileProps,
   toastIds: MutableRefObject<string[]>
 ) => {
@@ -21,5 +21,5 @@ export const updateToast = (
 
   if (toastId) {
     toast.update(toastId, { progress: file.progress });
-  } else showToast(file, toastIds);
+  } else showUploadToast(file, toastIds);
 };

@@ -29,8 +29,7 @@ const FormStep3 = () => {
     onSuccess: (response) => {
       console.log(response);
 
-      console.log("redirecting to ", `/realEstate/edit/${response.id}/images`);
-      router.replace(`/realEstate/edit/${response.id}/images`);
+      router.replace(`/real/${response.id}/edit/images`);
     },
     onFailure: (error) => {},
   });

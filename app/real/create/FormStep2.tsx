@@ -52,19 +52,19 @@ function FormStep2() {
       {({ values, setFieldValue }) => (
         <Form className="flex flex-col justify-center items-center">
           <TextField
+            name="size"
+            label="Total Area"
+            type="number"
+            placeholder={`Total area in ${
+              areaOption === "meter" ? "Square Meters" : "Lebnah"
+            } `}
+          />
+          <TextField
             name="price"
             label="Price"
             type="number"
             autoFocus
             placeholder="Total price"
-          />
-          <TextField
-            name="size"
-            label="Size"
-            type="number"
-            placeholder={`Total size in ${
-              areaOption === "meter" ? "Square Meters" : "Lebnah"
-            } `}
           />
           <div className="flex flex-row justify-between gap-6">
             <div className="flex items-center">

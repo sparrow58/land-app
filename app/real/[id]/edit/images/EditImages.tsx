@@ -5,16 +5,14 @@ import Button from "@/app/components/Button";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import uploadImageService from "@/app/services/reatState/uploadImageService";
-import { showToast, updateToast } from "./ToastHelpers";
+import { showUploadToast, updateToast } from "./ToastHelpers";
 import { readFileAsync } from "@/app/helpers/fileHelper";
-import useRealEstateImages from "@/app/hooks/useRealStateImages";
 import api from "@/app/helpers/api";
 import ProgressBar from "@/app/components/ProgressBar";
 import { compressImage } from "@/app/helpers/compressionHelper";
 import { Dimensions, FileProps, ApiEvents } from "@/app/Props/CommonProps";
 import { AiTwotoneDelete } from "react-icons/ai";
 import ConfirmationDialog from "@/app/components/ConfirmationDialog";
-import { it } from "node:test";
 
 interface Props {
   realEstateId: string;
@@ -26,6 +24,8 @@ const EditImages = ({ realEstateId, exImages }: Props) => {
   const [isPopupOpen, setPopupOpen] = useState(false);
   const [selectedUrl, setSelectedUrl] = useState<string>("");
   const [isLoading, setLoading] = useState(false);
+  const imageCursorRef = useRef(allImages.length - 1);
+
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const toastIds = useRef<string[]>([]);
@@ -33,7 +33,16 @@ const EditImages = ({ realEstateId, exImages }: Props) => {
   const isFinishedUploading = allImages.every((image) => image.isDone);
 
   const isAnyImage = allImages.length > 0;
-
+  // if (latestRef.current === -1) {
+  //   for (let index = prev.length - 1; index > 0; index--) {
+  //     if (prev[index].isDone == true) {
+  //       latestRef.current = index;
+  //       break;
+  //     }
+  //   }
+  // } else {
+  //   latestRef.current = latestRef.current + 1;
+  // }
   // const { data: exImages, error, isLoading, refetch } = useRealEstateImages(realEstateId);
 
   // const allImages = useMemo<FileProps[]>(() => {
@@ -95,7 +104,7 @@ const EditImages = ({ realEstateId, exImages }: Props) => {
         console.log("deleted response", data);
         setAllImages((prev) => prev.filter((i) => i.url !== data.url));
         handleCloseConfirmation();
-
+        imageCursorRef.current -= 1;
         // refetch();
         setLoading(false);
       },
@@ -138,10 +147,12 @@ const EditImages = ({ realEstateId, exImages }: Props) => {
         onUplading: ({ name, progress }) => {
           setAllImages((prev) => {
             const uploadedImages = prev?.map((image) => {
-              const newImage = { ...image, progress: progress };
-              updateToast(newImage, toastIds);
+              if (image.file?.name === name) {
+                const newImage = { ...image, progress: progress };
+                updateToast(newImage, toastIds);
 
-              return image.file?.name === name ? newImage : image;
+                return image.file?.name === name ? newImage : image;
+              } else return image;
             });
 
             return uploadedImages;
@@ -154,14 +165,35 @@ const EditImages = ({ realEstateId, exImages }: Props) => {
           else toast.error("toast undefiend");
           console.log("response", data);
           setAllImages((prev) => {
-            return prev.map((item) => {
-              if (item.file?.name === name) {
-                console.log("updating url", data.url);
-                item.url = data.url;
-                item.isDone = true;
+            const updatedItem = prev.find((item) => item.file?.name === name);
+
+            if (updatedItem) {
+              prev = prev.filter((item) => item !== updatedItem);
+              updatedItem.url = data.url;
+              updatedItem.isDone = true;
+
+              console.log(
+                "adding ",
+                updatedItem.file!.name,
+                imageCursorRef.current + 1
+              );
+              // const latest = prev.findIndex((item) => item.isDone === true);
+              updatedItem.file = null;
+
+              if (imageCursorRef.current === -1) {
+                // If there's no item with isDone === true, move the updated item to the beginning
+                console.log("no image in the begining");
+                prev.unshift(updatedItem);
+              } else {
+                // Otherwise, move it next to the latest item with isDone === true
+                prev.splice(imageCursorRef.current + 1, 0, updatedItem);
               }
-              return item;
-            });
+              imageCursorRef.current += 1;
+            } else {
+              console.log("not found", updatedItem);
+            }
+            //console.log("returning ", prev);
+            return prev;
           });
           //refetch();
         },
@@ -172,42 +204,21 @@ const EditImages = ({ realEstateId, exImages }: Props) => {
   const handleImageChanged = async (e: ChangeEvent<HTMLInputElement>) => {
     console.log("uploading");
     const files = e.target.files;
-
+    if (files && allImages.length + files.length > 6) {
+      toast.error("you can't upload more than 6 images", {
+        autoClose: 5000,
+      });
+      return;
+    }
     if (files && files.length > 0) {
       const readImages = await toast.promise(readFilesAsync(files), {
         pending: "Compressing images",
         error: "Error while compressing images",
       });
 
+      uploadImages(readImages);
       setAllImages((prev) => {
-        // Create a Set of unique URLs from the existing images
-        const existingUrls = new Set(prev.map((image) => image.url));
-
-        // Filter out images from readImages that have URLs not present in prev
-        const filteredImages = readImages.filter((newImage) => {
-          const isNew = !existingUrls.has(newImage.url);
-          if (!isNew) {
-            if (newImage.file)
-              toast.error("Image " + newImage.file.name + " Already selected");
-          } else {
-            showToast(newImage, toastIds);
-          }
-          return isNew;
-        });
-
-        // Combine the filtered images with the existing images
-        const combinedImages = [...prev, ...filteredImages];
-        if (combinedImages.length + allImages.length > 6) {
-          toast.error("you can't upload more than 6 images", {
-            autoClose: 5000,
-          });
-
-          return prev;
-        }
-
-        uploadImages(filteredImages);
-
-        return combinedImages;
+        return [...prev, ...readImages];
       });
     }
   };
@@ -245,7 +256,7 @@ const EditImages = ({ realEstateId, exImages }: Props) => {
                     height={400}
                     alt="image"
                   />
-                  {index !== 0 && (
+                  {index !== -1 && (
                     <div className="w-full">
                       <button onClick={() => handleDeleteImage(image.url)}>
                         <AiTwotoneDelete size={30} />

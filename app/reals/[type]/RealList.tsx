@@ -1,6 +1,5 @@
 import RealEstateCard from "@/app/components/RealEstateCard";
-import { getRealEstates } from "@/app/services/reatState/getService";
-import { RealEstate, RealEstateType } from "@prisma/client";
+import { RealEstate } from "@prisma/client";
 import Link from "next/link";
 import React from "react";
 
@@ -13,10 +12,7 @@ const RealList = async ({ data }: Props) => {
     <>
       <div className="mt-8 grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         {data.map((item) => (
-          <Link
-            key={item.id}
-            href={`/real/${item.type.toLowerCase()}s/${item.id}`}
-          >
+          <Link key={item.id} href={`/real/${item.id}`}>
             <RealEstateCard data={item} />
           </Link>
         ))}

@@ -5,7 +5,7 @@ const MainMenu = () => {
     <ul className="flex grow justify-start flex-wrap items-center">
       <li>
         <Link
-          href="/real/apartments"
+          href="/reals/apartments"
           className="font-medium text-gray-600 hover:text-gray-900 px-5 py-3 flex items-center transition duration-150 ease-in-out"
         >
           Apartments
@@ -13,7 +13,7 @@ const MainMenu = () => {
       </li>
       <li>
         <Link
-          href="/real/lands"
+          href="/reals/lands"
           className="font-medium text-gray-600 hover:text-gray-900 px-5 py-3 flex items-center transition duration-150 ease-in-out"
         >
           Lands
@@ -21,7 +21,7 @@ const MainMenu = () => {
       </li>
       <li>
         <Link
-          href="/realEstate/create"
+          href="/real/create"
           className="font-medium text-gray-600 hover:text-gray-900 px-5 py-3 flex items-center transition duration-150 ease-in-out"
         >
           Create Ad

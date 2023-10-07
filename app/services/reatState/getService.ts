@@ -45,6 +45,6 @@ export async function getRealEstates(queryParams: QueryParams) {
   const count = await prisma.realEstate.count({ where: query.where });
   return { data, count };
 }
-export async function getRealEstate(id: string, type: RealEstateType) {
-  return await prisma.realEstate.findUnique({ where: { id: id, type: type } });
+export async function getRealEstate(id: string) {
+  return await prisma.realEstate.findUnique({ where: { id: id } });
 }

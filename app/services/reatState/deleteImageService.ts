@@ -18,5 +18,4 @@ export default async function deleteImageAsync(
       },
     });
   }
-  return null;
 }
