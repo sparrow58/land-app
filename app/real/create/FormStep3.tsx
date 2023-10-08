@@ -27,9 +27,15 @@ const FormStep3 = () => {
 
   const { create, update, isLoading } = useCreateRealEstate({
     onSuccess: (response) => {
-      console.log(response);
-      toast.success(`${formData.type.toLocaleLowerCase()} created`);
-      router.replace(`/real/${response.id}/edit/images`);
+      // console.log(response);
+      // toast.success(
+      //   `${formData.type.toLocaleLowerCase()} ${
+      //     formData.id ? "updated" : "created"
+      //   }`
+      // );
+      // console.log("id", formData.id);
+      if (formData.id) router.replace(`/real/${response.id}`);
+      else router.replace(`/real/${response.id}/edit/images`);
     },
     onFailure: (error) => {
       toast.error("Error occured " + error);
@@ -64,7 +70,7 @@ const FormStep3 = () => {
     );
     console.log("filtered", filteredDetails);
     const final = { ...formData, details: { ...filteredDetails } };
-
+    // setFormData(final);
     console.log("final Data", final);
     if (final.id) {
       update(final);
