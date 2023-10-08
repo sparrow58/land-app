@@ -14,6 +14,7 @@ interface Props {
 }
 const page = async ({ params: { id } }: Props) => {
   const data = await getRealEstate(id);
+  console.log("data", data);
   if (data) {
     const mapped: RealEstateFormData = {
       id: data.id,
@@ -27,9 +28,7 @@ const page = async ({ params: { id } }: Props) => {
       rentOrSell: data.rentOrSell,
       size: data.size,
       areaOption: AreaOption.METER,
-      details: JSON.parse(
-        data.details ? JSON.parse(data.details.toString()) : {}
-      ),
+      details: data.details ? JSON.parse(data.details.toString()) : {},
     };
     return <FormStepper data={mapped} />;
   }
