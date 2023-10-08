@@ -39,7 +39,7 @@ const RealItem = async ({ id }: Props) => {
         <div className="flex-1 px-4">
           <RealEstateDetails
             {...data}
-            details={data.details ? JSON.parse(data.details!.toString()) : {}}
+            details={data.details ? JSON.parse(data.details.toString()) : {}}
           />
         </div>
       </div>

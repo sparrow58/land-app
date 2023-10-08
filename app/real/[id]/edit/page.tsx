@@ -27,7 +27,9 @@ const page = async ({ params: { id } }: Props) => {
       rentOrSell: data.rentOrSell,
       size: data.size,
       areaOption: AreaOption.METER,
-      details: JSON.parse(data.details!.toString()),
+      details: JSON.parse(
+        data.details ? JSON.parse(data.details.toString()) : {}
+      ),
     };
     return <FormStepper data={mapped} />;
   }

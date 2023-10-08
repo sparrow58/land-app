@@ -5,7 +5,6 @@ import {
   AdvisorType,
   OverlookingType,
   PaymentMethodType,
-  Prisma,
   RealEstateType,
   RentOrSell,
 } from "@prisma/client";
