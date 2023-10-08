@@ -3,41 +3,50 @@ import Stepper from "./Stepper";
 
 import { Dispatch, SetStateAction, createContext, useState } from "react";
 import Step from "./Step";
-import { RealEstateFormData } from "@/app/dataObjects/RealEstateFormData";
+import {
+  AreaOption,
+  RealEstateFormData,
+} from "@/app/dataObjects/RealEstateFormData";
 interface StepperProps {
   activeStepIndex: number;
   setActiveStepIndex: Dispatch<SetStateAction<number>>;
   formData: RealEstateFormData;
   setFormData: Dispatch<SetStateAction<RealEstateFormData>>;
 }
+interface Props {
+  data?: RealEstateFormData;
+}
 export const FormContext = createContext<StepperProps>({} as StepperProps);
 
-export const FormStepper = () => {
+export const FormStepper = ({ data }: Props) => {
   const [activeStepIndex, setActiveStepIndex] = useState(0);
   const [itemId, setItemId] = useState<string>("");
 
-  const [formData, setFormData] = useState<RealEstateFormData>({
-    title: "",
-    description: "",
-    type: "",
-    overlooking: "",
-    price: "",
-    size: "",
-    paymentMethod: "",
-    rentOrSell: "",
-    advisorType: "",
-    details: {
-      floor: "",
-      endowmentType: "",
-      yearOfDelivery: new Date().getFullYear(),
-      finalizationType: "",
-      onMarketType: "",
-      numberOfBathRooms: "",
-      numberOfFloors: "",
-      numberOfRooms: "",
-      rentType: "",
-    },
-  });
+  const [formData, setFormData] = useState<RealEstateFormData>(
+    data ?? {
+      title: "",
+      description: "",
+      type: "",
+      overlooking: "",
+      price: "",
+      size: "",
+      paymentMethod: "",
+      rentOrSell: "",
+      advisorType: "",
+      areaOption: AreaOption.METER,
+      details: {
+        floor: "",
+        endowmentType: "",
+        yearOfDelivery: new Date().getFullYear(),
+        finalizationType: "",
+        onMarketType: "",
+        numberOfBathRooms: "",
+        numberOfFloors: "",
+        numberOfRooms: "",
+        rentType: "",
+      },
+    }
+  );
 
   return (
     <FormContext.Provider

@@ -11,6 +11,8 @@ import {
 } from "@prisma/client";
 import React from "react";
 import DeleteRealEstate from "./DeleteRealEstate";
+import { MdModeEdit } from "react-icons/md";
+import Link from "next/link";
 
 interface Props {
   id: string;
@@ -71,7 +73,12 @@ const RealEstateDetails = ({
   };
   return (
     <div className="relative overflow-x-auto">
-      <DeleteRealEstate id={id} />
+      <div className="flex gap-5">
+        <DeleteRealEstate id={id} />
+        <Link href={`/real/${id}/edit`}>
+          <MdModeEdit className="cursor-pointer" size={30} />
+        </Link>
+      </div>
       <div className="mx-1 mb-5">
         <p className="text-gray-400 capitalize  ">
           {type.toLocaleLowerCase()} for {rentOrSellParsed(rentOrSell)}{" "}

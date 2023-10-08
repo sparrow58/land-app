@@ -13,6 +13,7 @@ import { compressImage } from "@/app/helpers/compressionHelper";
 import { Dimensions, FileProps, ApiEvents } from "@/app/Props/CommonProps";
 import { AiTwotoneDelete } from "react-icons/ai";
 import ConfirmationDialog from "@/app/components/ConfirmationDialog";
+import { useRouter } from "next/navigation";
 
 interface Props {
   realEstateId: string;
@@ -24,6 +25,7 @@ const EditImages = ({ realEstateId, exImages }: Props) => {
   const [isPopupOpen, setPopupOpen] = useState(false);
   const [selectedUrl, setSelectedUrl] = useState<string>("");
   const [isLoading, setLoading] = useState(false);
+  const router = useRouter();
   const imageCursorRef = useRef(allImages.length - 1);
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -292,32 +294,12 @@ const EditImages = ({ realEstateId, exImages }: Props) => {
           <Button
             text="Continue"
             onClick={() => {
-              if (isAnyImage) {
-                toast.success("we are cool");
-              } else if (isFinishedUploading) {
-                toast("all finished uploading");
-              } else {
-                toast.error("wait for images to finish upload");
-              }
+              router.push(`/real/${realEstateId}`);
             }}
             disabled={false}
           />
         )}
       </div>
-
-      <ToastContainer
-        position="bottom-right"
-        autoClose={5000}
-        // autoClose={false}
-        hideProgressBar={false}
-        newestOnTop={true}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
     </>
   );
 };

@@ -12,13 +12,15 @@ const TexAreaField = ({
   const [field, meta] = useField(name);
 
   return (
-    <div className="flex flex-wrap -mx-3 mb-4">
+    <div className="flex max-w-xl w-full flex-wrap -mx-3 mb-4">
       <div className="w-full px-3">
         <label className="block text-gray-800 text-xl font-medium mb-1">
           {label}
         </label>
         <textarea
-          className="form-input w-80 text-gray-800"
+          className={`appearance-none block w-full bg-gray-50 text-gray-700 border ${
+            meta.error && meta.touched && "border-red-500"
+          }  rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
           {...field}
           autoFocus={autoFocus}
           placeholder={placeholder}

@@ -6,6 +6,7 @@ import Header from "./components/ui/header";
 import Banner from "./components/banner";
 import "aos/dist/aos.css";
 import { Analytics } from "@vercel/analytics/react";
+import MainToastContainer from "./components/MainToastContainer";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -31,6 +32,7 @@ export default function RootLayout({
         <div className="flex flex-col min-h-screen overflow-hidden supports-[overflow:clip]:overflow-clip">
           <Header />
           {children}
+          <MainToastContainer />
           <Banner />
         </div>
         <Analytics />

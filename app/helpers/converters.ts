@@ -29,3 +29,7 @@ export function getTypeFromRoute(inputString: string): string {
 
   return stringWithoutLastLetter;
 }
+export function convertToMeter(size: number) {
+  console.log("converting to meter");
+  return Math.round(size && size * 44.44 * 100) / 100;
+}

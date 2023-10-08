@@ -11,7 +11,6 @@ import {
   EndowmentType,
   FinalizationType,
   OnMarketType,
-  RealEstateFormData,
   RentType,
 } from "@/app/dataObjects/RealEstateFormData";
 import * as yup from "yup";
@@ -19,19 +18,22 @@ import TextField from "@/app/components/TextField";
 import SelectField from "@/app/components/SelectField";
 import { enumToKeyValues } from "@/app/helpers/converters";
 import { RentOrSell } from "@prisma/client";
+import { toast } from "react-toastify";
 
 const FormStep3 = () => {
-  const { activeStepIndex, setActiveStepIndex, formData, setFormData } =
+  const { setActiveStepIndex, formData, setFormData } =
     useContext(FormContext) || {};
   const router = useRouter();
 
-  const { create, isLoading } = useCreateRealEstate({
+  const { create, update, isLoading } = useCreateRealEstate({
     onSuccess: (response) => {
       console.log(response);
-
+      toast.success(`${formData.type.toLocaleLowerCase()} created`);
       router.replace(`/real/${response.id}/edit/images`);
     },
-    onFailure: (error) => {},
+    onFailure: (error) => {
+      toast.error("Error occured " + error);
+    },
   });
   const handleBack = (values: {}) => {
     setActiveStepIndex?.((i) => i - 1);
@@ -64,7 +66,11 @@ const FormStep3 = () => {
     const final = { ...formData, details: { ...filteredDetails } };
 
     console.log("final Data", final);
-    create(final);
+    if (final.id) {
+      update(final);
+    } else {
+      create(final);
+    }
   };
   return (
     <>

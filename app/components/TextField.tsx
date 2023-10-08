@@ -22,7 +22,7 @@ const TextField = ({
         </label>
         <input
           className={`appearance-none block w-full bg-gray-50 text-gray-700 border ${
-            meta.error && "border-red-500"
+            meta.error && meta.touched && "border-red-500"
           }  rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
           {...field}
           autoFocus={autoFocus}

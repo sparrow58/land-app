@@ -1,9 +1,9 @@
 import Image from "next/image";
 import React from "react";
-import { RealEstateType } from "@prisma/client";
 import { getRealEstate } from "@/app/services/reatState/getService";
 import ImageSlider from "@/app/components/realEstate/ImageSlider";
 import RealEstateDetails from "@/app/components/realEstate/RealEstateDetails";
+import InfoAlert from "../components/InfoAlert";
 
 interface Props {
   id: string;
@@ -25,6 +25,11 @@ const RealItem = async ({ id }: Props) => {
 
       <div className="w-full  mx-8 py-10 flex flex-col md:flex-row shadow rounded">
         <div className="flex-[3] px-4">
+          {data.status === "UNDER_REVIEW" && (
+            <InfoAlert
+              message={`Your ${data.type.toLocaleLowerCase()} is under review`}
+            />
+          )}
           <ImageSlider id={data.id} slides={data.images} />
           <div className="mx-1 my-5">
             <h5 className="h4"> {"Description"}</h5>

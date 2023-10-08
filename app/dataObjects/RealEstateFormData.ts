@@ -7,6 +7,7 @@ import {
 } from "@prisma/client";
 
 export interface RealEstateStep1Data {
+  id?: string;
   title: string;
   description: string;
   type: RealEstateType | "";
@@ -19,6 +20,7 @@ export interface RealEstateStep2Data {
   overlooking: OverlookingType | "";
   paymentMethod: PaymentMethodType | "";
   rentOrSell: RentOrSell | "";
+  areaOption: AreaOption;
 }
 
 export interface RealEstateStep3Data {
@@ -41,6 +43,10 @@ export type RealEstateFormData = RealEstateStep1Data &
   RealEstateStep2Data & {
     details: Details;
   };
+export enum AreaOption {
+  METER = "METER",
+  LEBNAH = "LEBNAH",
+}
 export enum FinalizationType {
   SUPERLUX = "SUPERLUX",
   LUX = "LUX",

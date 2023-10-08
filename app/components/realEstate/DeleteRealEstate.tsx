@@ -62,11 +62,9 @@ const DeleteRealEstate = ({ id }: { id: string }) => {
         onConfirm={handleConfirm}
         message="Are you sure you want to delete this Item?"
       />
-      <div className="w-full">
-        <button onClick={() => handleDelete(id)}>
-          <AiTwotoneDelete size={30} />
-        </button>
-      </div>
+      <button onClick={() => handleDelete(id)}>
+        <AiTwotoneDelete size={30} />
+      </button>
     </>
   );
 };

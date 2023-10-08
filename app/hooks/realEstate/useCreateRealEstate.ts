@@ -4,7 +4,8 @@ import api from "@/app/helpers/api";
 import { ApiEvents } from "@/app/Props/CommonProps";
 
 interface UseCreateRealEstateResult {
-  create: (data: RealEstateFormData | {}) => void;
+  create: (data: RealEstateFormData) => void;
+  update: (data: RealEstateFormData) => void;
   isLoading: boolean;
   error: any;
   responseData: any;
@@ -38,8 +39,27 @@ const useCreateRealEstate = ({
         setIsLoading(false);
       });
   };
+  const update = (data: RealEstateFormData) => {
+    setIsLoading(true);
+    setError(null);
+    setResponseData(null);
 
-  return { create, isLoading, error, responseData };
+    api
+      .put(`/realEstates/${data.id}`, data)
+      .then(function (response) {
+        // Assuming response.data contains the response data
+        setResponseData(response.data);
+        onSuccess(response.data);
+      })
+      .catch(function (err) {
+        setError(err);
+        onFailure(err);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+  return { create, update, isLoading, error, responseData };
 };
 
 export default useCreateRealEstate;

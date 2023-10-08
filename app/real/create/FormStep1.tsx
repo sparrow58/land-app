@@ -1,20 +1,21 @@
 // Workspace.js
-import { ErrorMessage, Field, Form, Formik } from "formik";
-import React, { useContext } from "react";
+import { Form, Formik } from "formik";
+import React, { useContext, useEffect } from "react";
 import * as yup from "yup";
 import { FormContext } from "./FormStepper";
-import {
-  RealEstateFormData,
-  RealEstateStep1Data,
-} from "@/app/dataObjects/RealEstateFormData";
 import { enumToKeyValues } from "@/app/helpers/converters";
 import { AdvisorType, RealEstateType, RentOrSell } from "@prisma/client";
 import TextField from "@/app/components/TextField";
 import SelectField from "@/app/components/SelectField";
 import TexAreaField from "@/app/components/TexAreaField";
 import SubmitButton from "@/app/components/SubmitButton";
+import { ToastContainer, toast } from "react-toastify";
+import MainToastContainer from "@/app/components/MainToastContainer";
 
 function FormStep1() {
+  // useEffect(() => {
+  //   toast.success("cool");
+  // }, []);
   const { activeStepIndex, setActiveStepIndex, formData, setFormData } =
     useContext(FormContext);
 
@@ -53,9 +54,10 @@ function FormStep1() {
             name="title"
             label="Title"
             type="text"
+            autoFocus
             placeholder="Add title to your ad"
           />
-          <TextField
+          <TexAreaField
             name="description"
             label="Description"
             placeholder="Descrip your real estate"

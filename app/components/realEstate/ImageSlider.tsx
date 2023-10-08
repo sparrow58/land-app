@@ -76,7 +76,7 @@ const ImageSlider = ({ id, slides }: Props) => {
   );
 
   function handleEdit() {
-    router.push(`/realEstate/edit/${id}/images`);
+    router.push(`/real/${id}/edit/images`);
   }
 };
 
