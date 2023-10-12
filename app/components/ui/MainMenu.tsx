@@ -10,7 +10,7 @@ const MainMenu = ({ linkItems }: Props) => {
       {linkItems &&
         linkItems.map((item) => {
           return (
-            <li>
+            <li key={item.text}>
               <MainMenuItem url={item.url} text={item.text} />
             </li>
           );
