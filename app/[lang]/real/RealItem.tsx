@@ -3,7 +3,7 @@ import React from "react";
 import { getRealEstate } from "@/app/services/reatState/getService";
 import ImageSlider from "@/app/components/realEstate/ImageSlider";
 import RealEstateDetails from "@/app/components/realEstate/RealEstateDetails";
-import InfoAlert from "../components/InfoAlert";
+import InfoAlert from "@/app/components/InfoAlert";
 
 interface Props {
   id: string;

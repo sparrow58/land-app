@@ -1,18 +1,29 @@
-"use client";
 import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
 import React from "react";
-interface Props {
+import { LangParams, SearchParams } from "../Props/RoutingProps";
+import { headers } from "next/headers";
+
+type Props = SearchParams & {
   hasNextPage: boolean;
   hasPrevPage: boolean;
   perPage: number;
-}
-const Pagination = ({ hasNextPage, hasPrevPage, perPage }: Props) => {
-  const pathname = usePathname();
+  next: string;
+  previous: string;
+};
+const Pagination = ({
+  hasNextPage,
+  hasPrevPage,
+  perPage,
+  searchParams,
+  next,
+  previous,
+}: Props) => {
+  const headersList = headers();
 
-  const searchParams = useSearchParams();
-  const page = searchParams.get("page") ?? "1";
-  const per_page = searchParams.get("per_page") ?? perPage.toString();
+  const pathname = headersList.get("x-invoke-path") || "";
+
+  const page = searchParams["page"] ?? "1";
+  const per_page = searchParams["per_page"] ?? perPage.toString();
   return (
     <div className="flex justify-center p-3">
       <nav aria-label="Page navigation example">
@@ -28,7 +39,7 @@ const Pagination = ({ hasNextPage, hasPrevPage, perPage }: Props) => {
                 } relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300
                   hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white`}
               >
-                Previous{" "}
+                {previous}
               </Link>
             </li>
             {/* <li>
@@ -69,7 +80,7 @@ const Pagination = ({ hasNextPage, hasPrevPage, perPage }: Props) => {
               } relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300
               hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white`}
             >
-              Next
+              {next}
             </Link>
           </>
         </ul>

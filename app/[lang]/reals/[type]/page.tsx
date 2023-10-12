@@ -3,17 +3,28 @@ import { RealEstateType } from "@prisma/client";
 import React, { Suspense } from "react";
 import RealList from "./RealList";
 import { getRealEstates } from "@/app/services/reatState/getService";
-import Loading from "@/app/loading";
+import Loading from "@/app/[lang]/loading";
 import Pagination from "@/app/components/Pagination";
-interface Props {
-  params: {
-    type: string;
+import { LangParams, SearchParams } from "@/app/Props/RoutingProps";
+import { getDictionary } from "@/lib/dictionary";
+type Props = LangParams &
+  SearchParams & {
+    params: {
+      type: string;
+    };
   };
-  searchParams: { [key: string]: string | string[] | undefined };
-}
-const page = async ({ params: { type }, searchParams }: Props) => {
-  const MAX_PER_PAGE = 1;
+const page = async ({ params: { type, lang }, searchParams }: Props) => {
+  const MAX_PER_PAGE = 3;
+  const PAR_PAGE = 6;
 
+  const {
+    verified,
+    currencies: { YR },
+    next,
+    previous,
+    explore_the,
+    real_estate: { type_p },
+  } = await getDictionary(lang);
   const realType = stringToEnum(RealEstateType, getTypeFromRoute(type));
   const page = Number(searchParams["page"] ?? "1");
   const parPageT = Number(searchParams["per_page"] ?? MAX_PER_PAGE);
@@ -32,16 +43,20 @@ const page = async ({ params: { type }, searchParams }: Props) => {
         <div className="py-12 md:py-20">
           <div className="max-w-3xl mx-auto text-center pb-5 md:pb-5">
             <h2 className="h2 mb-4 capitalize">
-              Explore the {realType?.toLowerCase()}s
+              {realType &&
+                `${explore_the} ${(type_p as any)[realType.toLowerCase()]}`}
             </h2>
           </div>
           <Suspense fallback={<Loading />}>
-            <RealList data={data} />
+            <RealList data={data} YR={YR} verified={verified} />
             {count > data.length && (
               <Pagination
                 hasNextPage={end < count}
                 hasPrevPage={start > 0}
-                perPage={6}
+                perPage={PAR_PAGE}
+                searchParams={searchParams}
+                next={next}
+                previous={previous}
               />
             )}
           </Suspense>

@@ -6,11 +6,14 @@ import Link from "next/link";
 import Logo from "./logo";
 import MobileMenu from "./mobile-menu";
 import Dropdown from "../utils/dropdown";
-import SigninMenu from "./SigninMenu";
+import SigninMenu, { SignInProps } from "./SigninMenu";
 import MainMenu from "./MainMenu";
 import AOS from "aos";
-
-export default function Header() {
+import { LinkItemProps } from "@/app/Props/RoutingProps";
+type Props = SignInProps & {
+  linkItems: LinkItemProps[];
+};
+export default function Header({ linkItems, sign_in, sign_up, rtl }: Props) {
   const [top, setTop] = useState<boolean>(true);
   // detect whether user has scrolled the page down by 10px
   const scrollHandler = () => {
@@ -46,8 +49,8 @@ export default function Header() {
           {/* Desktop navigation */}
           <nav className="hidden md:flex md:grow">
             {/* Desktop sign in links */}
-            <MainMenu />
-            <SigninMenu />
+            <MainMenu linkItems={linkItems} />
+            <SigninMenu sign_in={sign_in} sign_up={sign_up} rtl={rtl} />
           </nav>
 
           <MobileMenu />

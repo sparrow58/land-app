@@ -5,15 +5,17 @@ import React from "react";
 
 interface Props {
   data: RealEstate[];
+  verified: string;
+  YR: string;
 }
-const RealList = async ({ data }: Props) => {
+const RealList = async ({ data, verified, YR }: Props) => {
   // console.log("list Data", data);
   return (
     <>
       <div className="mt-8 grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         {data.map((item) => (
           <Link key={item.id} href={`/real/${item.id}`}>
-            <RealEstateCard data={item} />
+            <RealEstateCard data={item} verified={verified} YR={YR} />
           </Link>
         ))}
       </div>

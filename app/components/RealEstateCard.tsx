@@ -9,8 +9,10 @@ import { GrLocation } from "react-icons/gr";
 import { Details } from "@/app/dataObjects/RealEstateFormData";
 interface Props {
   data: RealEstate;
+  verified: string;
+  YR: string;
 }
-const RealEstateCard = ({ data }: Props) => {
+const RealEstateCard = ({ data, verified, YR }: Props) => {
   const details: Details = data.details
     ? JSON.parse(data.details!.toString())
     : {};
@@ -26,11 +28,13 @@ const RealEstateCard = ({ data }: Props) => {
           alt={data.title}
           className="w-full h-28 sm:h-48 object-cover"
         />
-        <div className="bg-gray-100  text-xs uppercase font-bold rounded-full p-2 absolute top-0 ml-2 mt-2 opacity-70">
-          <span>Verified</span>
+        <div className="bg-gray-100  text-xs uppercase font-bold rounded-full p-2 absolute left-0 top-0 ml-2 mt-2 opacity-70">
+          <span>{verified}</span>
         </div>
         <div className="bg-black text-gray-100  text-xs uppercase font-bold rounded-bl-md p-2 absolute top-0 right-0 opacity-70">
-          <span>{data.price.toLocaleString()} YR</span>
+          <span>
+            {data.price.toLocaleString()} {YR}
+          </span>
         </div>
         <div className="absolute items-center bottom-0 right-0 gap-1 bg-black opacity-50 rounded flex align-bottom text-gray-100 px-1 text-sm  mr-1">
           <span>{data.images.length}</span>
