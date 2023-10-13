@@ -1,29 +1,29 @@
+import { Locale } from "@/i18n.config";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import MainMenuItem from "./MainMenuItem";
 export interface SignInProps {
   sign_in: string;
   sign_up: string;
-  rtl: boolean;
+  lang: Locale;
 }
-const SigninMenu = ({ sign_in, sign_up, rtl }: SignInProps) => {
+const SigninMenu = ({ sign_in, sign_up, lang }: SignInProps) => {
+  const url = usePathname();
+
   return (
-    <ul className="flex grow justify-end flex-wrap items-center">
+    <ul className="flex justify-end flex-wrap items-center">
       <li>
-        <Link
-          href="/signin"
-          className="font-medium text-gray-600 hover:text-gray-900 px-5 py-3 flex items-center transition duration-150 ease-in-out"
-        >
-          {sign_in}
-        </Link>
+        <MainMenuItem url={`/${lang}/signin`} text={sign_in} />
       </li>
       <li>
         <Link
-          href="/signup"
-          className="btn-sm text-gray-200 bg-gray-900 hover:bg-gray-800 ml-3"
+          href={`/${lang}/signup`}
+          className="btn-sm text-gray-200 bg-gray-900 hover:bg-gray-800 ml-3 "
         >
-          <span className={`${rtl && "ml-2"}`}>{sign_up}</span>
+          <span className={`${lang === "ar" && "ml-2"}`}>{sign_up}</span>
           <svg
             className={`w-3 h-3 fill-current text-gray-400 shrink-0 ml-2 -mr-1 ${
-              rtl && "transform scale-x-[-1]"
+              lang === "ar" && "transform scale-x-[-1]"
             }`}
             viewBox="0 0 12 12"
             xmlns="http://www.w3.org/2000/svg"

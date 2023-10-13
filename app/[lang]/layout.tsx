@@ -52,7 +52,7 @@ export default async function RootLayout({
             linkItems={linkItems}
             sign_in={sign_in}
             sign_up={sign_up}
-            rtl={dir === "rtl"}
+            lang={lang}
           />
           {children}
           <MainToastContainer />

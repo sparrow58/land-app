@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import { Locale } from "./../../i18n.config";
 export type LangParams = {
   params: {
@@ -15,4 +16,5 @@ export type SearchParams = {
 export interface LinkItemProps {
   url: string;
   text: string;
+  children?: ReactNode;
 }
