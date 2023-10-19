@@ -36,7 +36,6 @@ const page = async ({ params: { type, lang }, searchParams }: Props) => {
     pageSize: perPage,
     type: realType,
   });
-  // console.log("start end", start, end);
   return (
     <section>
       <div className="max-w-6xl mx-auto px-4 sm:px-6">

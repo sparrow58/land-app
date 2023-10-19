@@ -19,7 +19,7 @@ const page = async ({ params }: Props) => {
         file: null,
       };
       return file;
-    }) || [];
+    }) ?? [];
   return <EditImages realEstateId={params.id} exImages={files} />;
 };
 

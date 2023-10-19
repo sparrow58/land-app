@@ -14,7 +14,7 @@ interface Props {
 }
 const RealEstateCard = ({ data, verified, YR }: Props) => {
   const details: Details = data.details
-    ? JSON.parse(data.details!.toString())
+    ? JSON.parse(data.details as string)
     : {};
 
   return (
@@ -69,7 +69,7 @@ const RealEstateCard = ({ data, verified, YR }: Props) => {
         </div>
 
         <span className="block text-gray-500 text-sm">
-          {/* {realEstate.created_at.toString()} */}
+          {data.createdAt.toString()}
         </span>
       </div>
     </div>

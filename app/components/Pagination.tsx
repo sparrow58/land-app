@@ -1,6 +1,6 @@
 import Link from "next/link";
 import React from "react";
-import { LangParams, SearchParams } from "../Props/RoutingProps";
+import { SearchParams } from "../Props/RoutingProps";
 import { headers } from "next/headers";
 
 type Props = SearchParams & {
@@ -20,7 +20,7 @@ const Pagination = ({
 }: Props) => {
   const headersList = headers();
 
-  const pathname = headersList.get("x-invoke-path") || "";
+  const pathname = headersList.get("x-invoke-path") ?? "";
 
   const page = searchParams["page"] ?? "1";
   const per_page = searchParams["per_page"] ?? perPage.toString();

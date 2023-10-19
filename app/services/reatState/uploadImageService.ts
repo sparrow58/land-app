@@ -1,6 +1,6 @@
 import api from "@/app/helpers/api";
 import { AxiosProgressEvent } from "axios";
-interface uploadImageProps {
+interface UploadImageProps {
   id: string;
   selectedFile: File | Blob;
   onUplading: ({
@@ -17,9 +17,9 @@ const uploadImageService = async ({
   id,
   selectedFile,
   onUplading,
-  onSuccess: onSuccess,
+  onSuccess,
   onFailure,
-}: uploadImageProps) => {
+}: UploadImageProps) => {
   if (!selectedFile) return;
   const formData = new FormData();
   formData.append("image", selectedFile, selectedFile.name);

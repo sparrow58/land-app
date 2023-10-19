@@ -9,6 +9,7 @@ import { Analytics } from "@vercel/analytics/react";
 import MainToastContainer from "../components/MainToastContainer";
 import { Locale, i18n } from "@/i18n.config";
 import { getDictionary } from "@/lib/dictionary";
+import { inDevEnvironment } from "../helpers/devMode";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -58,7 +59,7 @@ export default async function RootLayout({
           <MainToastContainer />
           <Banner />
         </div>
-        <Analytics />
+        {inDevEnvironment === false && <Analytics />}
       </body>
     </html>
   );

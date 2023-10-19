@@ -1,11 +1,11 @@
 "use client";
-import React, { ChangeEvent, useMemo, useRef, useState } from "react";
+import React, { ChangeEvent, useRef, useState } from "react";
 import Image from "next/image";
 import Button from "@/app/components/Button";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import uploadImageService from "@/app/services/reatState/uploadImageService";
-import { showUploadToast, updateToast } from "./ToastHelpers";
+import { updateToast } from "./ToastHelpers";
 import { readFileAsync } from "@/app/helpers/fileHelper";
 import api from "@/app/helpers/api";
 import ProgressBar from "@/app/components/ProgressBar";
@@ -35,24 +35,7 @@ const EditImages = ({ realEstateId, exImages }: Props) => {
   const isFinishedUploading = allImages.every((image) => image.isDone);
 
   const isAnyImage = allImages.length > 0;
-  // if (latestRef.current === -1) {
-  //   for (let index = prev.length - 1; index > 0; index--) {
-  //     if (prev[index].isDone == true) {
-  //       latestRef.current = index;
-  //       break;
-  //     }
-  //   }
-  // } else {
-  //   latestRef.current = latestRef.current + 1;
-  // }
-  // const { data: exImages, error, isLoading, refetch } = useRealEstateImages(realEstateId);
 
-  // const allImages = useMemo<FileProps[]>(() => {
-  //   return [...exImages, ...allImages];
-  // }, [allImages]);
-  //   useEffect(() => {
-  //     setImages((prev) => [...prev, ...fetchedImages]);
-  //   }, [fetchedImages]);
   const readFilesAsync = async (fileList: FileList) => {
     const files: FileProps[] = [];
 
@@ -107,7 +90,6 @@ const EditImages = ({ realEstateId, exImages }: Props) => {
         setAllImages((prev) => prev.filter((i) => i.url !== data.url));
         handleCloseConfirmation();
         imageCursorRef.current -= 1;
-        // refetch();
         setLoading(false);
       },
       onFailure: (error) => {
@@ -143,62 +125,35 @@ const EditImages = ({ realEstateId, exImages }: Props) => {
   }
   async function uploadImages(images: FileProps[]) {
     for (let i = 0; i < images.length; i++) {
+      const handelUploading = ({
+        name,
+        progress,
+      }: {
+        progress: number | undefined;
+        name: string;
+      }): void => {
+        setAllImages((prev) => {
+          const uploadedImages = prev?.map((image) => {
+            if (image.file?.name === name) {
+              const newImage = { ...image, progress: progress };
+              updateToast(newImage, toastIds);
+
+              return image.file?.name === name ? newImage : image;
+            } else return image;
+          });
+
+          return uploadedImages;
+        });
+      };
       uploadImageService({
         id: realEstateId,
         selectedFile: images[i].file as File,
-        onUplading: ({ name, progress }) => {
-          setAllImages((prev) => {
-            const uploadedImages = prev?.map((image) => {
-              if (image.file?.name === name) {
-                const newImage = { ...image, progress: progress };
-                updateToast(newImage, toastIds);
-
-                return image.file?.name === name ? newImage : image;
-              } else return image;
-            });
-
-            return uploadedImages;
-          });
-        },
-        onSuccess: ({ name, data: { data } }) => {
-          const toastId = toastIds.current.find((id) => id === name);
-          if (toastId) toast.update(toastId, { icon: true });
-          if (toastId) toast.dismiss(toastId);
-          else toast.error("toast undefiend");
-          console.log("response", data);
-          setAllImages((prev) => {
-            const updatedItem = prev.find((item) => item.file?.name === name);
-
-            if (updatedItem) {
-              prev = prev.filter((item) => item !== updatedItem);
-              updatedItem.url = data.url;
-              updatedItem.isDone = true;
-
-              console.log(
-                "adding ",
-                updatedItem.file!.name,
-                imageCursorRef.current + 1
-              );
-              // const latest = prev.findIndex((item) => item.isDone === true);
-              updatedItem.file = null;
-
-              if (imageCursorRef.current === -1) {
-                // If there's no item with isDone === true, move the updated item to the beginning
-                console.log("no image in the begining");
-                prev.unshift(updatedItem);
-              } else {
-                // Otherwise, move it next to the latest item with isDone === true
-                prev.splice(imageCursorRef.current + 1, 0, updatedItem);
-              }
-              imageCursorRef.current += 1;
-            } else {
-              console.log("not found", updatedItem);
-            }
-            //console.log("returning ", prev);
-            return prev;
-          });
-          //refetch();
-        },
+        onUplading: handelUploading,
+        onSuccess: handleSuccessImageUpload(
+          toastIds,
+          setAllImages,
+          imageCursorRef
+        ),
         onFailure: (error) => {},
       });
     }
@@ -240,34 +195,34 @@ const EditImages = ({ realEstateId, exImages }: Props) => {
           Total Selected {allImages?.length}{" "}
         </h6>
         <div className="relative max-w-6xl mt-8 grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 ">
-          {allImages &&
-            allImages?.map((image, index) => {
-              //const percentage = image.progress && image.progress * 100;
-              return (
-                <div className="w-full border rounded " key={index}>
-                  {image.file && image.progress && !image.isDone && (
-                    <ProgressBar progress={image.progress} />
-                  )}
+          {allImages
+            ? allImages?.map((image, index) => {
+                return (
+                  <div className="w-full border rounded " key={image.url}>
+                    {image.file && image.progress && !image.isDone && (
+                      <ProgressBar progress={image.progress} />
+                    )}
 
-                  <Image
-                    className={`${
-                      image.isDone ? "" : "opacity-50"
-                    } w-full h-24 sm:h-48 object-cover`}
-                    src={image.url}
-                    width={300}
-                    height={400}
-                    alt="image"
-                  />
-                  {index !== -1 && (
-                    <div className="w-full">
-                      <button onClick={() => handleDeleteImage(image.url)}>
-                        <AiTwotoneDelete size={30} />
-                      </button>
-                    </div>
-                  )}
-                </div>
-              );
-            })}
+                    <Image
+                      className={`${
+                        image.isDone ? "" : "opacity-50"
+                      } w-full h-24 sm:h-48 object-cover`}
+                      src={image.url}
+                      width={300}
+                      height={400}
+                      alt="image"
+                    />
+                    {index !== -1 && (
+                      <div className="w-full">
+                        <button onClick={() => handleDeleteImage(image.url)}>
+                          <AiTwotoneDelete size={30} />
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                );
+              })
+            : null}
         </div>
       </div>
 
@@ -305,3 +260,45 @@ const EditImages = ({ realEstateId, exImages }: Props) => {
 };
 
 export default EditImages;
+function handleSuccessImageUpload(
+  toastIds: React.MutableRefObject<string[]>,
+  setAllImages: React.Dispatch<React.SetStateAction<FileProps[]>>,
+  imageCursorRef: React.MutableRefObject<number>
+): ({ name, data }: { name: string; data: any }) => void {
+  return ({ name, data: { data } }) => {
+    const toastId = toastIds.current.find((id) => id === name);
+    if (toastId) toast.update(toastId, { icon: true });
+    if (toastId) toast.dismiss(toastId);
+    else toast.error("toast undefiend");
+    console.log("response", data);
+    setAllImages((prev) => {
+      const updatedItem = prev.find((item) => item.file?.name === name);
+
+      if (updatedItem) {
+        prev = prev.filter((item) => item !== updatedItem);
+        updatedItem.url = data.url;
+        updatedItem.isDone = true;
+
+        console.log(
+          "adding ",
+          updatedItem.file!.name,
+          imageCursorRef.current + 1
+        );
+        updatedItem.file = null;
+
+        if (imageCursorRef.current === -1) {
+          // If there's no item with isDone === true, move the updated item to the beginning
+          console.log("no image in the begining");
+          prev.unshift(updatedItem);
+        } else {
+          // Otherwise, move it next to the latest item with isDone === true
+          prev.splice(imageCursorRef.current + 1, 0, updatedItem);
+        }
+        imageCursorRef.current += 1;
+      } else {
+        console.log("not found", updatedItem);
+      }
+      return prev;
+    });
+  };
+}

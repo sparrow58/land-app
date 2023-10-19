@@ -1,8 +1,7 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { FieldProps } from "../Props/CommonProps";
 import ErrorLabel from "./ErrorLabel";
 import { useField } from "formik";
-import { toast } from "react-toastify";
 type Props = FieldProps & {
   options: { label: string; value: string }[];
 };
