@@ -1,5 +1,4 @@
 import { toggleLanguage } from "@/app/helpers/urlHelpers";
-import { Locale } from "@/i18n.config";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 

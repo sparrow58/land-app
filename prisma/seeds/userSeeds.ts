@@ -2,7 +2,6 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function main() {
-  //await prisma.user.deleteMany();
   const superAdmin = await prisma.user.upsert({
     where: { email: "superadmin@mail.com" },
     update: {},
@@ -10,8 +9,6 @@ async function main() {
       id: "clmjhsx490000ac7g03dkr0zf",
       name: "SuperAdmin",
       email: "superadmin@mail.com",
-      dateOfBirth: new Date("1993-6-13"),
-      role: "SUPERADMIN",
     },
   });
 

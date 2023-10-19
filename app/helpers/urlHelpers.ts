@@ -15,8 +15,3 @@ export function toggleLanguage(relativePath: string) {
 
   return { relativePath, currentLanguage: "en" }; // Return the original relative path if no language code was found
 }
-
-// Example usage:
-const originalPath = "/en/reals/lands";
-const newRelativePath = toggleLanguage(originalPath);
-console.log(newRelativePath);

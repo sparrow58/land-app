@@ -1,21 +1,19 @@
 "use client";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import React from "react";
 interface Props {
   continue_with_google: string;
   continue_with_facebook: string;
 }
 const OAuthForm = ({ continue_with_google }: Props) => {
-  function handleGoogleClick(): void {
-    console.log("google clicked");
-  }
-
   return (
     <form>
       <div className="flex flex-wrap -mx-3">
         <div className="w-full px-3">
           <button
             type="button"
-            onClick={handleGoogleClick}
+            onClick={() => signIn("google")}
             className="btn px-0 text-white bg-red-600 hover:bg-red-700 w-full relative flex items-center"
           >
             <svg

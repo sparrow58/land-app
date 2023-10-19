@@ -64,12 +64,9 @@ export default function Hero() {
                 data-aos-delay="300"
               >
                 <div>
-                  <a
-                    className="btn text-white bg-blue-600 hover:bg-blue-700 w-full mb-4 sm:w-auto sm:mb-0"
-                    href="#0"
-                  >
+                  <button className="btn text-white bg-blue-600 hover:bg-blue-700 w-full mb-4 sm:w-auto sm:mb-0">
                     Start free trial
-                  </a>
+                  </button>
                 </div>
                 <div>
                   <a

@@ -10,7 +10,7 @@ import MainToastContainer from "../components/MainToastContainer";
 import { Locale, i18n } from "@/i18n.config";
 import { getDictionary } from "@/lib/dictionary";
 import { inDevEnvironment } from "../helpers/devMode";
-
+import AuthProvider from "../components/providers/AuthProvider";
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
@@ -48,18 +48,20 @@ export default async function RootLayout({
       <body
         className={`${inter.variable} font-inter antialiased bg-white text-gray-900 tracking-tight`}
       >
-        <div className="flex flex-col min-h-screen overflow-hidden supports-[overflow:clip]:overflow-clip">
-          <Header
-            linkItems={linkItems}
-            sign_in={sign_in}
-            sign_up={sign_up}
-            lang={lang}
-          />
-          {children}
-          <MainToastContainer />
-          <Banner />
-        </div>
-        {inDevEnvironment === false && <Analytics />}
+        <AuthProvider>
+          <div className="flex flex-col min-h-screen overflow-hidden supports-[overflow:clip]:overflow-clip">
+            <Header
+              linkItems={linkItems}
+              sign_in={sign_in}
+              sign_up={sign_up}
+              lang={lang}
+            />
+            {children}
+            <MainToastContainer />
+            <Banner />
+          </div>
+          {inDevEnvironment === false && <Analytics />}
+        </AuthProvider>
       </body>
     </html>
   );

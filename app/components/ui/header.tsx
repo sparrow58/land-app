@@ -10,10 +10,14 @@ import MainMenu from "./MainMenu";
 import AOS from "aos";
 import { LinkItemProps } from "@/app/Props/RoutingProps";
 import PreferenceMenu from "./PreferenceMenu";
+import { useSession } from "next-auth/react";
+import { stat } from "fs";
+import UserMenu from "./UserMenu";
 type Props = SignInProps & {
   linkItems: LinkItemProps[];
 };
 export default function Header({ linkItems, sign_in, sign_up, lang }: Props) {
+  const { status, data: session } = useSession();
   const [top, setTop] = useState<boolean>(true);
   // detect whether user has scrolled the page down by 10px
   const scrollHandler = () => {
@@ -51,7 +55,11 @@ export default function Header({ linkItems, sign_in, sign_up, lang }: Props) {
             {/* Desktop sign in links */}
             <MainMenu linkItems={linkItems} />
             <PreferenceMenu />
-            <SigninMenu sign_in={sign_in} sign_up={sign_up} lang={lang} />
+
+            {status === "unauthenticated" && (
+              <SigninMenu sign_in={sign_in} sign_up={sign_up} lang={lang} />
+            )}
+            {status === "authenticated" && <UserMenu {...session.user} />}
           </nav>
 
           <MobileMenu />
