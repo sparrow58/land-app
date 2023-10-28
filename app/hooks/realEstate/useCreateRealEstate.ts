@@ -2,19 +2,14 @@ import { useState } from "react";
 import { RealEstateFormData } from "@/app/dataObjects/RealEstateFormData";
 import api from "@/app/helpers/api";
 import { ApiEvents } from "@/app/Props/CommonProps";
-
-interface UseCreateRealEstateResult {
-  create: (data: RealEstateFormData) => void;
-  update: (data: RealEstateFormData) => void;
-  isLoading: boolean;
-  error: any;
-  responseData: any;
-}
+import { CreateResult } from "@/app/dataObjects/Generics";
 
 const useCreateRealEstate = ({
   onSuccess,
   onFailure,
-}: ApiEvents): UseCreateRealEstateResult => {
+}: ApiEvents): CreateResult<RealEstateFormData> & {
+  update: (data: RealEstateFormData) => void;
+} => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<any>(null);
   const [responseData, setResponseData] = useState<any>(null);
@@ -29,11 +24,11 @@ const useCreateRealEstate = ({
       .then(function (response) {
         // Assuming response.data contains the response data
         setResponseData(response.data);
-        onSuccess(response.data);
+        if (onSuccess) onSuccess(response.data);
       })
       .catch(function (err) {
         setError(err);
-        onFailure(err);
+        if (onFailure) onFailure(err);
       })
       .finally(() => {
         setIsLoading(false);
@@ -49,11 +44,11 @@ const useCreateRealEstate = ({
       .then(function (response) {
         // Assuming response.data contains the response data
         setResponseData(response.data);
-        onSuccess(response.data);
+        if (onSuccess) onSuccess(response.data);
       })
       .catch(function (err) {
         setError(err);
-        onFailure(err);
+        if (onFailure) onFailure(err);
       })
       .finally(() => {
         setIsLoading(false);

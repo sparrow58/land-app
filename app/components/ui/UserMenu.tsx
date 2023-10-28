@@ -1,7 +1,8 @@
+import useOutsideClick from "@/app/hooks/ui/useOutsideClick";
 import { Transition } from "@headlessui/react";
 import { signOut } from "next-auth/react";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 export interface DefaultSession {
   name?: string | null;
   email?: string | null;
@@ -10,9 +11,13 @@ export interface DefaultSession {
 import { BiSolidUserCircle } from "react-icons/bi";
 const UserMenu = ({ name, email, image }: DefaultSession) => {
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
+  const wrapperRef = useRef(null);
 
+  useOutsideClick(wrapperRef, () => {
+    setDropdownOpen(false);
+  });
   return (
-    <div className="relative  mx-4">
+    <div ref={wrapperRef} className="relative  mx-4">
       <button
         className="rounded-full overflow-hidden"
         onClick={() => setDropdownOpen((prev) => !prev)}

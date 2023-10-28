@@ -10,7 +10,7 @@ import OAuthForm from "../signin/OAuthForm";
 import { getDictionary } from "@/lib/dictionary";
 
 export default async function SignUp({ params: { lang } }: LangParams) {
-  const { authentication, or } = await getDictionary(lang);
+  const { authentication, errors, or } = await getDictionary(lang);
   return (
     <section className="bg-gradient-to-b from-gray-100 to-white">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
@@ -22,7 +22,7 @@ export default async function SignUp({ params: { lang } }: LangParams) {
 
           {/* Form */}
           <div className="max-w-sm mx-auto">
-            <SignUpForm {...authentication} />
+            <SignUpForm locals={{ ...authentication, errors: { ...errors } }} />
             <div className="flex items-center my-6">
               <div
                 className="border-t border-gray-300 grow mr-3"

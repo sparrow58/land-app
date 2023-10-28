@@ -7,14 +7,15 @@ interface Props {
 const MainMenu = ({ linkItems }: Props) => {
   return (
     <ul className="flex grow justify-start flex-wrap items-center">
-      {linkItems &&
-        linkItems.map((item) => {
-          return (
-            <li key={item.text}>
-              <MainMenuItem url={item.url} text={item.text} />
-            </li>
-          );
-        })}
+      {linkItems
+        ? linkItems.map((item) => {
+            return (
+              <li key={item.text}>
+                <MainMenuItem url={item.url} text={item.text} />
+              </li>
+            );
+          })
+        : null}
     </ul>
   );
 };

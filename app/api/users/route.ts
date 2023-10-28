@@ -26,12 +26,15 @@ export async function POST(request: NextRequest) {
 
   const user = await createUser(body);
   if (user) {
-    const response = { message: "created", data: user };
+    const response = { message: "created", data: { id: user.id } };
     return NextResponse.json(response);
   } else return NextResponse.json({ error: "Couldn't create user" });
 }
 
 const getFieldErrorResponse = (field: string, message: string) =>
-  NextResponse.json({
-    error: { field: field, message: message },
-  });
+  NextResponse.json(
+    {
+      error: { field: field, message: message },
+    },
+    { status: 400 }
+  );

@@ -1,6 +1,8 @@
 import { Locale } from "@/i18n.config";
 import Link from "next/link";
 import MainMenuItem from "./MainMenuItem";
+import useOutsideClick from "@/app/hooks/ui/useOutsideClick";
+import { useRef } from "react";
 export interface SignInProps {
   sign_in: string;
   sign_up: string;

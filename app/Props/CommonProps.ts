@@ -3,6 +3,7 @@ export type FieldProps = {
   placeholder?: string;
   name: string;
   autoFocus?: boolean;
+  required?: boolean;
 };
 export interface FileBase {
   url: string;
@@ -25,6 +26,6 @@ export interface ApiResponse<T> {
   data: T;
 }
 export interface ApiEvents {
-  onSuccess: (response: any) => void;
-  onFailure: (error: any) => void;
+  onSuccess?: (response: any) => void;
+  onFailure?: (error: any) => void;
 }
