@@ -22,7 +22,8 @@ const uploadImageService = async ({
 }: UploadImageProps) => {
   if (!selectedFile) return;
   const formData = new FormData();
-  formData.append("image", selectedFile, selectedFile.name);
+  const fileName = (selectedFile as File).name;
+  formData.append("image", selectedFile, fileName);
   try {
     const response = await api.patchForm(
       `/realEstates/${id}/images`,
@@ -35,14 +36,14 @@ const uploadImageService = async ({
 
           onUplading({
             progress: percentCompleted,
-            name: selectedFile.name,
+            name: fileName,
           });
         },
       }
     );
-    onSuccess({ name: selectedFile.name, data: response.data });
+    onSuccess({ name: fileName, data: response.data });
   } catch (error) {
-    onFailure({ name: selectedFile.name, error: error });
+    onFailure({ name: fileName, error: error });
   }
 };
 

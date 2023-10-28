@@ -2,7 +2,7 @@ export type FieldProps = {
   label?: string;
   placeholder?: string;
   name: string;
-  autoFocus?: boolean | undefined;
+  autoFocus?: boolean;
 };
 export interface FileBase {
   url: string;

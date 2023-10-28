@@ -5,6 +5,7 @@ import prisma from "@/lib/prisma";
 import { NextAuthOptions } from "next-auth";
 import bcrypt from "bcrypt";
 import { use } from "react";
+import { getUserByLogin } from "@/app/services/user/getUserService";
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
@@ -32,9 +33,7 @@ export const authOptions: NextAuthOptions = {
         // Add logic here to look up the user from the credentials supplied
         // const user = { id: "1", name: "J Smith", email: "jsmith@example.com" };
         if (!credentials?.username || !credentials?.password) return null;
-        const user = await prisma.user.findUnique({
-          where: { email: credentials.username },
-        });
+        const user = await getUserByLogin(credentials.username);
         if (!user) return null;
         if (!user?.hashedPassword) return null;
 

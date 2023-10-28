@@ -27,7 +27,6 @@ export async function getRealEstates(queryParams: QueryParams) {
     where: { type: type },
   } as any;
 
-  // console.log("Query", query);
   if (searchQuery) {
     query = {
       ...query,
