@@ -17,7 +17,7 @@ const TextField = ({
   const [field, meta] = useField(name);
 
   return (
-    <div className="flex max-w-xl w-full flex-wrap -mx-3 mb-4">
+    <div className="flex max-w-xl  flex-wrap -mx-3 mb-4">
       <div className="w-full px-3">
         <label
           className="block text-gray-800 text-xl font-medium mb-1"

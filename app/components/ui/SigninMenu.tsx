@@ -1,20 +1,36 @@
 import { Locale } from "@/i18n.config";
 import Link from "next/link";
 import MainMenuItem from "./MainMenuItem";
+import { usePathname, useSearchParams } from "next/navigation";
 export interface SignInProps {
   sign_in: string;
   sign_up: string;
   lang: Locale;
 }
 const SigninMenu = ({ sign_in, sign_up, lang }: SignInProps) => {
+  const pathName = usePathname();
+  const searchParams = useSearchParams();
+
+  const callbackUrl = searchParams.get("callbackUrl");
+  let callbackUrlArgs = "";
+
+  if (callbackUrl) {
+    callbackUrlArgs = `/?callbackUrl=${callbackUrl}`;
+  } else if (!pathName.endsWith("/signin") && !pathName.endsWith("/signup")) {
+    callbackUrlArgs = `/?callbackUrl=${pathName}`;
+  }
+
   return (
     <ul className="flex justify-end flex-wrap items-center gap-4">
       <li>
-        <MainMenuItem url={`/${lang}/signin`} text={sign_in} />
+        <MainMenuItem
+          url={`/${lang}/signin${callbackUrlArgs}`}
+          text={sign_in}
+        />
       </li>
       <li>
         <Link
-          href={`/${lang}/signup`}
+          href={`/${lang}/signup${callbackUrlArgs}`}
           className="btn-sm text-gray-200 bg-gray-900 hover:bg-gray-800 ml-3 "
         >
           <span className="ml-2">{sign_up}</span>

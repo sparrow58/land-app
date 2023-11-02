@@ -22,7 +22,7 @@ export default async function SignIn({ params: { lang } }: LangParams) {
 
           {/* Form */}
           <div className="max-w-sm mx-auto">
-            <SignInForm {...authentication} />
+            <SignInForm t={authentication} />
             <div className="flex items-center my-6">
               <div
                 className="border-t border-gray-300 grow mr-3"
@@ -34,7 +34,7 @@ export default async function SignIn({ params: { lang } }: LangParams) {
                 aria-hidden="true"
               ></div>
             </div>
-            <OAuthForm {...authentication} />
+            <OAuthForm t={authentication} />
             <div className="text-gray-600 text-center mt-6">
               {authentication.dont_have_account}
               <Link

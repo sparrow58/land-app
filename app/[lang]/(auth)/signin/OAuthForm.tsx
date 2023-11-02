@@ -3,10 +3,12 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import React from "react";
 interface Props {
-  continue_with_google: string;
-  continue_with_facebook: string;
+  t: {
+    continue_with_google: string;
+    continue_with_facebook: string;
+  };
 }
-const OAuthForm = ({ continue_with_google }: Props) => {
+const OAuthForm = ({ t }: Props) => {
   return (
     <form>
       <div className="flex flex-wrap -mx-3">
@@ -23,7 +25,7 @@ const OAuthForm = ({ continue_with_google }: Props) => {
             >
               <path d="M7.9 7v2.4H12c-.2 1-1.2 3-4 3-2.4 0-4.3-2-4.3-4.4 0-2.4 2-4.4 4.3-4.4 1.4 0 2.3.6 2.8 1.1l1.9-1.8C11.5 1.7 9.9 1 8 1 4.1 1 1 4.1 1 8s3.1 7 7 7c4 0 6.7-2.8 6.7-6.8 0-.5 0-.8-.1-1.2H7.9z" />
             </svg>
-            <span className="flex-auto">{continue_with_google}</span>
+            <span className="flex-auto">{t.continue_with_google}</span>
           </button>
         </div>
       </div>

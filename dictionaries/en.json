@@ -80,7 +80,8 @@
     "login_to_your_account": "Login to your Account",
     "welcome_back": "Welcome back! \r\n Select method to log in:",
     "or_continue_with_email": "or continue with email",
-    "unlock_all_features": "Unlock all features"
+    "unlock_all_features": "Unlock all features",
+    "invalid_credentials": "The username or password is invalid. Please verify your credentials and try again."
   },
   "user": {
     "user": "User",

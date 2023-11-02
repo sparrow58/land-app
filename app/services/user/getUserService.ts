@@ -5,7 +5,7 @@ export async function getUserById(id: string) {
 }
 export async function getUserByLogin(username: string) {
   return await prisma.user.findUnique({
-    where: { email: username, OR: [{ username: username, phone: username }] },
+    where: { email: username },
   });
 }
 

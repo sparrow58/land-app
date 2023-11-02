@@ -30,10 +30,12 @@ export const authOptions: NextAuthOptions = {
         },
       },
       async authorize(credentials, req) {
+        console.log("Authorizing...", credentials);
         // Add logic here to look up the user from the credentials supplied
         // const user = { id: "1", name: "J Smith", email: "jsmith@example.com" };
         if (!credentials?.username || !credentials?.password) return null;
         const user = await getUserByLogin(credentials.username);
+        console.log("user", user);
         if (!user) return null;
         if (!user?.hashedPassword) return null;
 
@@ -41,7 +43,7 @@ export const authOptions: NextAuthOptions = {
           credentials.password,
           user.hashedPassword
         );
-
+        console.log("passwordMatch", passwordMatch, user.hashedPassword);
         return passwordMatch ? user : null;
       },
     }),

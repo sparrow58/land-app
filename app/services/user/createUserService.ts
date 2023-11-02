@@ -8,7 +8,7 @@ export async function createUser(user: UserFormData) {
       name: user.name,
       email: user.email,
       dateOfBirth: user.dateOfBirth,
-      username: user.password,
+      username: user.username,
       phone: user.phone,
       hashedPassword: hashedPassword,
     },

@@ -6,7 +6,7 @@ import { Form, Formik } from "formik";
 import * as yup from "yup";
 
 export interface SignUpProps {
-  locals: {
+  t: {
     name: string;
     enter_name: string;
     email: string;
@@ -26,34 +26,23 @@ interface Errors {
   nameLong: string;
   validEmail: string;
 }
-const SignUpForm = ({
-  locals: {
-    name,
-    enter_name,
-    email,
-    enter_email,
-    password,
-    enter_password,
-    sign_up,
-    errors,
-  },
-}: SignUpProps) => {
+const SignUpForm = ({ t }: SignUpProps) => {
   const passwordRules =
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&;'*])(?=.{5,})/;
   const validationSchema = yup.object().shape({
     name: yup
       .string()
       .trim()
-      .min(3, errors.nameShort)
-      .max(100, errors.nameLong)
-      .required(errors.name),
-    email: yup.string().email(errors.validEmail).required(errors.email),
+      .min(3, t.errors.nameShort)
+      .max(100, t.errors.nameLong)
+      .required(t.errors.name),
+    email: yup.string().email(t.errors.validEmail).required(t.errors.email),
     password: yup
       .string()
       .trim()
-      .min(4, errors.password)
-      .matches(passwordRules, errors.passwordComplex)
-      .required(errors.password),
+      .min(4, t.errors.password)
+      .matches(passwordRules, t.errors.passwordComplex)
+      .required(t.errors.password),
   });
   const {
     create,
@@ -85,27 +74,27 @@ const SignUpForm = ({
           <Form>
             <TextField
               name="name"
-              label={name}
-              placeholder={enter_name}
+              label={t.name}
+              placeholder={t.enter_name}
               required
               autoFocus
             />
 
             <TextField
               name="email"
-              label={email}
-              placeholder={enter_email}
+              label={t.email}
+              placeholder={t.enter_email}
               required
             />
             <TextField
               name="password"
-              label={password}
+              label={t.password}
               type="password"
-              placeholder={enter_password}
+              placeholder={t.enter_password}
               required
             />
 
-            <SubmitButton text={sign_up} fullWidth disabled={isLoading} />
+            <SubmitButton text={t.sign_up} fullWidth disabled={isLoading} />
 
             {/* <div className="text-sm text-gray-500 text-center mt-3">
             By creating an account, you agree to the{" "}

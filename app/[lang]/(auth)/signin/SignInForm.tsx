@@ -1,88 +1,81 @@
+"use client";
+import ErrorLabel from "@/app/components/ErrorLabel";
+import PasswordSigninField from "@/app/components/PasswordSigninField";
+import SubmitButton from "@/app/components/SubmitButton";
+import TextField from "@/app/components/TextField";
+import { Form, Formik } from "formik";
+import { signIn } from "next-auth/react";
 import Link from "next/link";
-import React from "react";
+import { useSearchParams, useRouter } from "next/navigation";
+import React, { useState } from "react";
 interface Props {
-  email: string;
-  enter_email: string;
-  password: string;
-  enter_password: string;
-  remember_me: string;
-  forgot_password: string;
-  continue_with_google: string;
-  continue_with_facebook: string;
-  sign_in: string;
+  t: {
+    email: string;
+    enter_email: string;
+    password: string;
+    enter_password: string;
+    remember_me: string;
+    forgot_password: string;
+    continue_with_google: string;
+    continue_with_facebook: string;
+    sign_in: string;
+    invalid_credentials: string;
+  };
 }
-const SignInForm = ({
-  email,
-  enter_email,
-  password,
-  enter_password,
-  continue_with_google,
-  forgot_password,
-  remember_me,
-  sign_in,
-}: Props) => {
+const SignInForm = ({ t }: Props) => {
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl") ?? "/";
+  const router = useRouter();
+  const [isLoading, setLoading] = useState(false);
+
+  const [error, setError] = useState<string | undefined>(undefined);
   return (
-    <form>
-      <div className="flex flex-wrap -mx-3 mb-4">
-        <div className="w-full px-3">
-          <label
-            className="block text-gray-800 text-sm font-medium mb-1"
-            htmlFor="email"
-          >
-            {email}
-          </label>
-          <input
-            id="email"
-            type="email"
-            className="form-input w-full text-gray-800"
-            placeholder={enter_email}
-            required
-          />
-        </div>
-      </div>
-      <div className="flex flex-wrap -mx-3 mb-4">
-        <div className="w-full px-3">
-          <div className="flex justify-between">
-            <label
-              className="block text-gray-800 text-sm font-medium mb-1"
-              htmlFor="password"
-            >
-              {password}
-            </label>
-            <Link
-              href="/reset-password"
-              className="text-sm font-medium text-blue-600 hover:underline"
-            >
-              {forgot_password}
-            </Link>
-          </div>
-          <input
-            id="password"
-            type="password"
-            className="form-input w-full text-gray-800"
-            placeholder={enter_password}
-            required
-          />
-        </div>
-      </div>
-      <div className="flex flex-wrap -mx-3 mb-4">
-        <div className="w-full px-3">
-          <div className="flex justify-between">
-            <label className="flex items-center">
-              <input type="checkbox" className="form-checkbox" />
-              <span className="text-gray-600 ms-2">{remember_me}</span>
-            </label>
+    <Formik
+      initialValues={{ email: "", password: "" }}
+      onSubmit={async (values) => {
+        console.log("on submit", values);
+        setLoading(true);
+        const signinResponse = await signIn("credentials", {
+          redirect: false,
+          username: values.email,
+          password: values.password,
+          callbackUrl,
+        });
+        console.log(signinResponse);
+        setLoading(false);
+        if (signinResponse?.ok) {
+          router.replace(callbackUrl);
+        }
+        if (signinResponse?.error === "CredentialsSignin") {
+          setError(t.invalid_credentials);
+        }
+      }}
+    >
+      <Form>
+        <TextField
+          name="email"
+          label={t.email}
+          placeholder={t.enter_email}
+          required
+        />
+
+        <PasswordSigninField t={t} />
+
+        <div className="flex flex-wrap -mx-3 mb-4">
+          <div className="w-full px-3">
+            <div className="flex justify-between">
+              <label className="flex items-center">
+                <input type="checkbox" className="form-checkbox" />
+                <span className="text-gray-600 ms-2">{t.remember_me}</span>
+              </label>
+            </div>
           </div>
         </div>
-      </div>
-      <div className="flex flex-wrap -mx-3 mt-6">
-        <div className="w-full px-3">
-          <button className="btn text-white bg-blue-600 hover:bg-blue-700 w-full">
-            {sign_in}
-          </button>
-        </div>
-      </div>
-    </form>
+        <ErrorLabel error={error} touched={error !== undefined} />
+
+        <SubmitButton text={t.sign_in} fullWidth disabled={isLoading} />
+      </Form>
+    </Formik>
   );
 };
 
