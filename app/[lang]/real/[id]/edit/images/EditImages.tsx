@@ -109,12 +109,12 @@ const EditImages = ({ realEstateId, exImages }: Props) => {
       })
       .then((response) => {
         console.log("ok", response);
-        if (response.data.success === true) {
+        if (response.data.success === true && onSuccess) {
           onSuccess(response.data.data);
         }
       })
       .catch((error) => {
-        onFailure(error);
+        if (onFailure) onFailure(error);
       });
   }
 

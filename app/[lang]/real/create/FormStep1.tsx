@@ -1,6 +1,6 @@
 // Workspace.js
 import { Form, Formik } from "formik";
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import * as yup from "yup";
 import { FormContext } from "./FormStepper";
 import { enumToKeyValues } from "@/app/helpers/converters";
@@ -9,13 +9,8 @@ import TextField from "@/app/components/TextField";
 import SelectField from "@/app/components/SelectField";
 import TexAreaField from "@/app/components/TexAreaField";
 import SubmitButton from "@/app/components/SubmitButton";
-import { ToastContainer, toast } from "react-toastify";
-import MainToastContainer from "@/app/components/MainToastContainer";
 
 function FormStep1() {
-  // useEffect(() => {
-  //   toast.success("cool");
-  // }, []);
   const { activeStepIndex, setActiveStepIndex, formData, setFormData } =
     useContext(FormContext);
 

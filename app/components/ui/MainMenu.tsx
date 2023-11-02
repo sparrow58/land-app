@@ -1,4 +1,3 @@
-import Link from "next/link";
 import MainMenuItem from "./MainMenuItem";
 import { LinkItemProps } from "@/app/Props/RoutingProps";
 interface Props {

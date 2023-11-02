@@ -1,13 +1,13 @@
 // Basic.js
 "use client";
 import { Form, Formik } from "formik";
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import * as yup from "yup";
 import { FormContext } from "./FormStepper";
 import TextField from "@/app/components/TextField";
 import { convertToMeter, enumToKeyValues } from "@/app/helpers/converters";
 import SelectField from "@/app/components/SelectField";
-import { OverlookingType, PaymentMethodType, RentOrSell } from "@prisma/client";
+import { OverlookingType, PaymentMethodType } from "@prisma/client";
 import SubmitButton from "@/app/components/SubmitButton";
 import Button from "@/app/components/Button";
 import AreaUnitSelect from "./AreaUnitSelect";
@@ -27,8 +27,6 @@ function FormStep2() {
     setFormData?.({ ...formData, ...values });
     setActiveStepIndex?.((i) => i - 1);
   };
-
-  // const [areaOption, setAreaOption] = useState("meter");
 
   return (
     <Formik

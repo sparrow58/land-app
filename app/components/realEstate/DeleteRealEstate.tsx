@@ -24,10 +24,10 @@ const DeleteRealEstate = ({ id }: { id: string }) => {
       .delete(`/realEstates/${id}`)
       .then((respose) => {
         console.log("ok", respose.status);
-        onSuccess(respose);
+        if (onSuccess) onSuccess(respose);
       })
       .catch((error) => {
-        onFailure(error);
+        if (onFailure) onFailure(error);
       });
   }
   const handleConfirm = () => {
