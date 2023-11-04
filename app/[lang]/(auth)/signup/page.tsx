@@ -1,14 +1,16 @@
-export const metadata = {
-  title: "Sign Up - Simple",
-  description: "Page description",
-};
 import { LangParams } from "@/app/Props/RoutingProps";
 
 import Link from "next/link";
 import SignUpForm from "./SignUpForm";
 import OAuthForm from "../signin/OAuthForm";
 import { getDictionary } from "@/lib/dictionary";
+export async function generateMetadata({ params: { lang } }: LangParams) {
+  const { authentication } = await getDictionary(lang);
 
+  return {
+    title: authentication.sign_up,
+  };
+}
 export default async function SignUp({ params: { lang } }: LangParams) {
   const { authentication, errors, or } = await getDictionary(lang);
   return (
@@ -41,7 +43,6 @@ export default async function SignUp({ params: { lang } }: LangParams) {
                 href="/signin"
                 className="text-blue-600 hover:underline transition duration-150 ease-in-out"
               >
-                {" "}
                 {authentication.sign_in}
               </Link>
             </div>

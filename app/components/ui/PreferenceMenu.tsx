@@ -1,10 +1,8 @@
-import { toggleLanguage } from "@/app/helpers/urlHelpers";
+import { useToggleLanguage } from "@/app/hooks/ui/languageHooks";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 
 const PreferenceMenu = () => {
-  const url = usePathname();
-  const { newPath, currentLanguage } = toggleLanguage(url);
+  const { newPath, currentLanguage } = useToggleLanguage();
   return (
     <ul className="flex grow justify-end flex-wrap items-center">
       <li>

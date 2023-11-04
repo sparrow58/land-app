@@ -1,8 +1,11 @@
-export const metadata = {
-  title: "Sign In - Simple",
-  description: "Page description",
-};
+// or Dynamic metadata
+export async function generateMetadata({ params: { lang } }: LangParams) {
+  const { authentication } = await getDictionary(lang);
 
+  return {
+    title: authentication.sign_in,
+  };
+}
 import Link from "next/link";
 import SignInForm from "./SignInForm";
 import OAuthForm from "./OAuthForm";

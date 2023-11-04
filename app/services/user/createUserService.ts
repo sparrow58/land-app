@@ -11,6 +11,7 @@ export async function createUser(user: UserFormData) {
       username: user.username,
       phone: user.phone,
       hashedPassword: hashedPassword,
+      language: user.language,
     },
   });
 }

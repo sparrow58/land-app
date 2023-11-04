@@ -1,3 +1,12 @@
+export function getCurrentLanguage(relativePath: string) {
+  const pathParts = relativePath.split("/");
+
+  if (pathParts.length > 0) {
+    return pathParts[1];
+  }
+  return null;
+}
+
 export function toggleLanguage(relativePath: string) {
   const languages = ["en", "ar"];
   const pathParts = relativePath.split("/");

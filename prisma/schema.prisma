@@ -52,6 +52,7 @@ model User {
     image          String?
     dateOfBirth    DateTime?
     role           Roles?       @default(BASIC)
+    language       String?
     prefrences     Json?
     RealEstate     RealEstate[]
     createdAt      DateTime     @default(now())

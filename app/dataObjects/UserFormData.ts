@@ -5,4 +5,5 @@ export interface UserFormData {
   phone?: string;
   password: string;
   dateOfBirth?: Date;
+  language?: string;
 }

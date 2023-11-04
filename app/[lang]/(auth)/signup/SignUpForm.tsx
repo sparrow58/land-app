@@ -2,6 +2,7 @@
 import SubmitButton from "@/app/components/SubmitButton";
 import TextField from "@/app/components/TextField";
 import useCreateUser from "@/app/hooks/user/useCreateUser";
+import useSignIn from "@/app/hooks/user/useSignIn";
 import { Form, Formik } from "formik";
 import * as yup from "yup";
 
@@ -15,6 +16,7 @@ export interface SignUpProps {
     enter_password: string;
     sign_up: string;
     errors: Errors;
+    invalid_credentials: string;
   };
 }
 interface Errors {
@@ -44,6 +46,7 @@ const SignUpForm = ({ t }: SignUpProps) => {
       .matches(passwordRules, t.errors.passwordComplex)
       .required(t.errors.password),
   });
+
   const {
     create,
     error: signUpErrors,
@@ -56,6 +59,7 @@ const SignUpForm = ({ t }: SignUpProps) => {
       console.log("error creating user", errors);
     },
   });
+
   return (
     <Formik
       initialValues={{ name: "", email: "", password: "" }}

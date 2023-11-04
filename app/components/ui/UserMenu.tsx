@@ -1,8 +1,10 @@
+"use client";
 import useOutsideClick from "@/app/hooks/ui/useOutsideClick";
 import { Transition } from "@headlessui/react";
 import { signOut } from "next-auth/react";
 import Image from "next/image";
-import React, { useRef, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useRef, useState } from "react";
 export interface DefaultSession {
   name?: string | null;
   email?: string | null;
@@ -12,6 +14,7 @@ import { BiSolidUserCircle } from "react-icons/bi";
 const UserMenu = ({ name, email, image }: DefaultSession) => {
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
   const wrapperRef = useRef(null);
+  const router = useRouter();
 
   useOutsideClick(wrapperRef, () => {
     setDropdownOpen(false);
@@ -55,7 +58,9 @@ const UserMenu = ({ name, email, image }: DefaultSession) => {
           </div>
           <div className="mb-20 mt-2">{name}</div>
           <button
-            onClick={() => signOut()}
+            onClick={async () => {
+              await signOut({ redirect: false });
+            }}
             className="btn bg-gray-800 text-white absolute bottom-0 m-3"
           >
             Sign Out
