@@ -3,7 +3,10 @@ import { Form, Formik } from "formik";
 import React, { useContext } from "react";
 import * as yup from "yup";
 import { FormContext } from "./FormStepper";
-import { enumToKeyValues } from "@/app/helpers/converters";
+import {
+  enumToKeyValues,
+  enumToLocalKeyValues,
+} from "@/app/helpers/converters";
 import { AdvisorType, RealEstateType, RentOrSell } from "@prisma/client";
 import TextField from "@/app/components/TextField";
 import SelectField from "@/app/components/SelectField";
@@ -71,19 +74,25 @@ function FormStep1({
             name="type"
             label={fields.type.label}
             placeholder={fields.type.placeholder}
-            options={enumToKeyValues(RealEstateType)}
+            options={enumToLocalKeyValues(RealEstateType, fields.type.options)}
             fullWidth
           />
           <SelectField
             name="rentOrSell"
-            options={enumToKeyValues(RentOrSell)}
+            options={enumToLocalKeyValues(
+              RentOrSell,
+              fields.rentOrSell.options
+            )}
             label={fields.rentOrSell.label}
             placeholder={fields.rentOrSell.placeholder}
             fullWidth
           />
           <SelectField
             name="advisorType"
-            options={enumToKeyValues(AdvisorType)}
+            options={enumToLocalKeyValues(
+              AdvisorType,
+              fields.advisorType.options
+            )}
             label={fields.advisorType.label}
             placeholder={fields.advisorType.placeholder}
             fullWidth

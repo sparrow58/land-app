@@ -6,6 +6,15 @@ export function enumToKeyValues(
     label: enumObject[key],
   }));
 }
+export function enumToLocalKeyValues(
+  enumObject: any,
+  tOptions: any
+): { value: string; label: any }[] {
+  return Object.keys(enumObject).map((key) => ({
+    value: key,
+    label: tOptions[key.toLowerCase()],
+  }));
+}
 export function stringToEnum<T extends Record<string, string>>(
   enumType: T,
   value: string

@@ -449,15 +449,32 @@
         },
         "type": {
           "label": "Type",
-          "placeholder": "Select Real Estate Type"
+          "placeholder": "Select Real Estate Type",
+          "options": {
+            "land": "Land",
+            "apartment": "Appartment",
+            "villa": "Villa",
+            "building": "Building",
+            "warhouse": "Warhouse"
+          }
         },
         "rentOrSell": {
           "label": "Rent Or Sell",
-          "placeholder": "Do you want to Sell or Rent?"
+          "placeholder": "Do you want to Sell or Rent?",
+          "options": {
+            "rent": "Rent",
+            "sell": "Sell",
+            "both": "Rent Or Sell"
+          }
         },
         "advisorType": {
           "label": "Advisor Type",
-          "placeholder": "Select Advisor Type"
+          "placeholder": "Select Advisor Type",
+          "options": {
+            "owner": "Owner",
+            "proker": "Proker",
+            "company": "Company"
+          }
         },
         "size": {
           "label": "Area",
@@ -469,11 +486,22 @@
         },
         "overlooking": {
           "label": "Overlooking",
-          "placeholder": "Select Overlooking Type"
+          "placeholder": "Select Overlooking Type",
+          "options": {
+            "mainstreet": "Mainstreet",
+            "substreet": "Substreet",
+            "sea": "Sea",
+            "back": "Back"
+          }
         },
         "paymentMethod": {
           "label": "Payment Method",
-          "placeholder": "Select Payment Method"
+          "placeholder": "Select Payment Method",
+          "options": {
+            "cash": "Cash",
+            "installment": "Installment",
+            "both": "Cash or Installment"
+          }
         },
         "floor": {
           "label": "Floor",
@@ -493,11 +521,21 @@
         },
         "finalizationType": {
           "label": "Finalization Type",
-          "placeholder": "Select Finalization Type"
+          "placeholder": "Select Finalization Type",
+          "options": {
+            "superlux": "superlux",
+            "lux": "lux",
+            "half": "half",
+            "none": "none"
+          }
         },
         "onMarketType": {
           "label": "Type on Market",
-          "placeholder": "Select Type on Market"
+          "placeholder": "Select Type on Market",
+          "options": {
+            "new": "new",
+            "resell": "resell"
+          }
         },
         "yearOfDelivery": {
           "label": "Year of delivary",
@@ -505,11 +543,21 @@
         },
         "rentType": {
           "label": "Rent Purpose",
-          "placeholder": "Select Rent Purpose"
+          "placeholder": "Select Rent Purpose",
+          "options": {
+            "commercial": "Commercial",
+            "personal": "Personal",
+            "both": "Commercial or Personal"
+          }
         },
         "endowmentType": {
           "label": "Endowment Type",
-          "placeholder": "Select Endowment type"
+          "placeholder": "Select Endowment type",
+          "options": {
+            "endowed": "Endowed",
+            "freeland": "Freeland",
+            "mixed": "Mixed"
+          }
         }
       }
     },

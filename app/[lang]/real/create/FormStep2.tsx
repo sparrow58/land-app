@@ -5,7 +5,11 @@ import React, { useContext } from "react";
 import * as yup from "yup";
 import { FormContext } from "./FormStepper";
 import TextField from "@/app/components/TextField";
-import { convertToMeter, enumToKeyValues } from "@/app/helpers/converters";
+import {
+  convertToMeter,
+  enumToKeyValues,
+  enumToLocalKeyValues,
+} from "@/app/helpers/converters";
 import SelectField from "@/app/components/SelectField";
 import { OverlookingType, PaymentMethodType } from "@prisma/client";
 import SubmitButton from "@/app/components/SubmitButton";
@@ -80,14 +84,20 @@ function FormStep2({
           <SelectField
             name="overlooking"
             label={fields.overlooking.label}
-            options={enumToKeyValues(OverlookingType)}
+            options={enumToLocalKeyValues(
+              OverlookingType,
+              fields.overlooking.options
+            )}
             placeholder={fields.overlooking.placeholder}
             fullWidth
           />
 
           <SelectField
             name="paymentMethod"
-            options={enumToKeyValues(PaymentMethodType)}
+            options={enumToLocalKeyValues(
+              PaymentMethodType,
+              fields.paymentMethod.options
+            )}
             label={fields.paymentMethod.label}
             placeholder={fields.paymentMethod.placeholder}
             fullWidth

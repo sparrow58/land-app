@@ -409,15 +409,32 @@
         },
         "type": {
           "label": "نوع العقار",
-          "placeholder": "حدد نوع العقار"
+          "placeholder": "حدد نوع العقار",
+          "options": {
+            "land": "ارض",
+            "apartment": "شقة",
+            "villa": "فلة",
+            "building": "مبنى",
+            "warhouse": "هنجر"
+          }
         },
         "rentOrSell": {
           "label": "بيع او إيجار",
-          "placeholder": "هل تريد البيع ام الإيجار؟"
+          "placeholder": "هل تريد البيع ام الإيجار؟",
+          "options": {
+            "rent": "إيجار",
+            "sell": "بيع",
+            "both": "بيع او إيجار"
+          }
         },
         "advisorType": {
           "label": "نوع المعلن",
-          "placeholder": "اختر نوع المعلن"
+          "placeholder": "اختر نوع المعلن",
+          "options": {
+            "owner": "مالك العقار",
+            "proker": "وسيط/ساعي",
+            "company": "شركة عقارات"
+          }
         },
         "size": {
           "label": "المساحة",
@@ -429,11 +446,22 @@
         },
         "overlooking": {
           "label": "الإطلالة",
-          "placeholder": "أدخل نوع الإطلالة"
+          "placeholder": "أدخل نوع الإطلالة",
+          "options": {
+            "mainstreet": "شارع رئيسي",
+            "substreet": "شارع فرعي",
+            "sea": "بحر",
+            "back": "خلفية"
+          }
         },
         "paymentMethod": {
           "label": "طريقة الدفع",
-          "placeholder": "ادخل طريقة الدفع"
+          "placeholder": "ادخل طريقة الدفع",
+          "options": {
+            "cash": "نقداً",
+            "installment": "تقصيد",
+            "both": "نقداً او تقصيد"
+          }
         },
         "floor": {
           "label": "الطابق",
@@ -453,11 +481,21 @@
         },
         "finalizationType": {
           "label": "نوع التشطيب",
-          "placeholder": "حدد نوع التشطيب"
+          "placeholder": "حدد نوع التشطيب",
+          "options": {
+            "superlux": "superlux",
+            "lux": "lux",
+            "half": "half",
+            "none": "none"
+          }
         },
         "onMarketType": {
           "label": "نوع العقار في السوق",
-          "placeholder": "حدد نوع العقار في السوق"
+          "placeholder": "حدد نوع العقار في السوق",
+          "options": {
+            "new": "جديد",
+            "resell": "إعادة بيع/مستخدم"
+          }
         },
         "yearOfDelivery": {
           "label": "سنة التسليم",
@@ -465,11 +503,23 @@
         },
         "rentType": {
           "label": "الغرض من الإيجار",
-          "placeholder": "حدد الغرض من الإيجار"
+          "placeholder": "حدد الغرض من الإيجار",
+          "options": {
+            "commercial": "تجاري",
+            "personal": "شخصي",
+            "both": "تجاري او شخصي"
+          }
         },
         "endowmentType": {
           "label": "نوع الوقف",
-          "placeholder": "حدد نوع الوقف"
+          "placeholder": "حدد نوع الوقف",
+          "options": {
+            "label": "نوع الوقف",
+            "placeholder": "حدد نوع الوقف",
+            "endowed": "وقف",
+            "freeland": "حر",
+            "mixed": "مختلط"
+          }
         }
       },
       "titles": {}

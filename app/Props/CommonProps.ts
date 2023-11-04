@@ -30,9 +30,12 @@ export interface ApiEvents {
   onSuccess?: (response: any) => void;
   onFailure?: (error: any) => void;
 }
-interface FieldLableProps {
+interface FieldLocalProps {
   label: string;
   placeholder?: string;
+}
+interface SelectLocalProps extends FieldLocalProps {
+  options: any;
 }
 interface FieldValidationProps {
   required: string;
@@ -41,26 +44,26 @@ interface FieldValidationProps {
 export interface RealFormLocalProps {
   real: {
     fields: {
-      squareMeter: FieldLableProps;
-      lebnah: FieldLableProps;
-      title: FieldLableProps;
-      Description: FieldLableProps;
-      type: FieldLableProps;
-      rentOrSell: FieldLableProps;
-      advisorType: FieldLableProps;
-      size: FieldLableProps;
-      price: FieldLableProps;
-      overlooking: FieldLableProps;
-      floor: FieldLableProps;
-      numberOfFloors: FieldLableProps;
-      numberOfRooms: FieldLableProps;
-      numberOfBathRooms: FieldLableProps;
-      finalizationType: FieldLableProps;
-      onMarketType: FieldLableProps;
-      yearOfDelivery: FieldLableProps;
-      rentType: FieldLableProps;
-      endowmentType: FieldLableProps;
-      paymentMethod: FieldLableProps;
+      squareMeter: FieldLocalProps;
+      lebnah: FieldLocalProps;
+      title: FieldLocalProps;
+      Description: FieldLocalProps;
+      type: SelectLocalProps;
+      rentOrSell: SelectLocalProps;
+      advisorType: SelectLocalProps;
+      size: FieldLocalProps;
+      price: FieldLocalProps;
+      overlooking: SelectLocalProps;
+      floor: FieldLocalProps;
+      numberOfFloors: FieldLocalProps;
+      numberOfRooms: FieldLocalProps;
+      numberOfBathRooms: FieldLocalProps;
+      finalizationType: SelectLocalProps;
+      onMarketType: SelectLocalProps;
+      yearOfDelivery: FieldLocalProps;
+      rentType: SelectLocalProps;
+      endowmentType: SelectLocalProps;
+      paymentMethod: SelectLocalProps;
     };
   };
   validations: {

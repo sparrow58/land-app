@@ -16,7 +16,10 @@ import {
 import * as yup from "yup";
 import TextField from "@/app/components/TextField";
 import SelectField from "@/app/components/SelectField";
-import { enumToKeyValues } from "@/app/helpers/converters";
+import {
+  enumToKeyValues,
+  enumToLocalKeyValues,
+} from "@/app/helpers/converters";
 import { RentOrSell } from "@prisma/client";
 import { toast } from "react-toastify";
 import { RealFormLocalProps } from "@/app/Props/CommonProps";
@@ -138,14 +141,20 @@ const FormStep3 = ({
                   name="finalizationType"
                   label={fields.finalizationType.label}
                   placeholder={fields.finalizationType.placeholder}
-                  options={enumToKeyValues(FinalizationType)}
+                  options={enumToLocalKeyValues(
+                    FinalizationType,
+                    fields.finalizationType.options
+                  )}
                   fullWidth
                 />
                 <SelectField
                   name="onMarketType"
                   label={fields.onMarketType.label}
                   placeholder={fields.onMarketType.placeholder}
-                  options={enumToKeyValues(OnMarketType)}
+                  options={enumToLocalKeyValues(
+                    OnMarketType,
+                    fields.onMarketType.options
+                  )}
                   fullWidth
                 />
                 <TextField
@@ -163,7 +172,10 @@ const FormStep3 = ({
                 name="rentType"
                 label={fields.rentType.label}
                 placeholder={fields.rentType.placeholder}
-                options={enumToKeyValues(RentType)}
+                options={enumToLocalKeyValues(
+                  RentType,
+                  fields.rentType.options
+                )}
                 fullWidth
               />
             )}
@@ -172,7 +184,10 @@ const FormStep3 = ({
                 name="endowmentType"
                 label={fields.endowmentType.label}
                 placeholder={fields.endowmentType.placeholder}
-                options={enumToKeyValues(EndowmentType)}
+                options={enumToLocalKeyValues(
+                  EndowmentType,
+                  fields.endowmentType.options
+                )}
                 fullWidth
               />
             )}
