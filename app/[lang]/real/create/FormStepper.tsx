@@ -7,18 +7,21 @@ import {
   AreaOption,
   RealEstateFormData,
 } from "@/app/dataObjects/RealEstateFormData";
+import { RealFormLocalProps } from "@/app/Props/CommonProps";
 interface StepperProps {
   activeStepIndex: number;
   setActiveStepIndex: Dispatch<SetStateAction<number>>;
   formData: RealEstateFormData;
   setFormData: Dispatch<SetStateAction<RealEstateFormData>>;
 }
+
 interface Props {
   data?: RealEstateFormData;
+  t: RealFormLocalProps;
 }
 export const FormContext = createContext<StepperProps>({} as StepperProps);
 
-export const FormStepper = ({ data }: Props) => {
+export const FormStepper = ({ data, t }: Props) => {
   const [activeStepIndex, setActiveStepIndex] = useState(0);
   const [itemId, setItemId] = useState<string>("");
 
@@ -61,7 +64,7 @@ export const FormStepper = ({ data }: Props) => {
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="pt-32 pb-10 md:pt-10 md:pb-10">
             <Stepper />
-            <Step />
+            <Step t={t} />
           </div>
         </div>
       </section>

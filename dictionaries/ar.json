@@ -359,23 +359,120 @@
           "error": "يجب تحديد عدد"
         }
       },
-      "room": {
-        "name": {
-          "required": "يرجى إدخال اسم الغرفة.",
-          "min": "يجب أن يكون الاسم على الأقل 2 أحرفاً"
+      "real": {
+        "title": {
+          "required": "ادخل العنوان من فضلك",
+          "min": "العنوان يجب ان يحتوي على 5 حروف على الأقل"
+        },
+        "description": {
+          "required": "ادخل الوصف من فظلك",
+          "min": "الوصف يجب ان يحتوي على 10 حروف على الأقل"
+        },
+        "size": {
+          "required": "ادخل المساحة من فضلك"
+        },
+        "type": {
+          "required": "اختر نوع العقار من فضلك"
+        },
+        "rentOrSell": {
+          "required": "اختر بيع او إيجار من فضلك"
+        },
+        "paymentMethod": {
+          "required": "اختر الية الدفع من فضلك"
+        },
+        "advisorType": {
+          "required": "اختر نوع المعلن من فضلك"
+        },
+        "overlooking": {
+          "required": "اختر نوع الإطلالة من فضلك"
+        },
+        "price": {
+          "required": "ادخل السعر من فضلك"
         }
-      },
-      "url": {
-        "invalid": "رابط غير صالح"
       }
     },
-    "room": {
+    "real": {
       "fields": {
-        "name": {
-          "label": "اسم الغرفة",
-          "placeholder": "أدخل اسم الغرفة..."
+        "squareMeter": {
+          "label": "متر مربع"
+        },
+        "lebnah": {
+          "label": "لبنة"
+        },
+        "title": {
+          "label": "العنوان",
+          "placeholder": "ادخل العنوان..."
+        },
+        "Description": {
+          "label": "الوصف",
+          "placeholder": "قم بوصف العقار..."
+        },
+        "type": {
+          "label": "نوع العقار",
+          "placeholder": "حدد نوع العقار"
+        },
+        "rentOrSell": {
+          "label": "بيع او إيجار",
+          "placeholder": "هل تريد البيع ام الإيجار؟"
+        },
+        "advisorType": {
+          "label": "نوع المعلن",
+          "placeholder": "اختر نوع المعلن"
+        },
+        "size": {
+          "label": "المساحة",
+          "placeholder": "المساحة الإجمالية"
+        },
+        "price": {
+          "label": "السعر",
+          "placeholder": "أدخل السعر الإجمالي"
+        },
+        "overlooking": {
+          "label": "الإطلالة",
+          "placeholder": "أدخل نوع الإطلالة"
+        },
+        "paymentMethod": {
+          "label": "طريقة الدفع",
+          "placeholder": "ادخل طريقة الدفع"
+        },
+        "floor": {
+          "label": "الطابق",
+          "placeholder": "ادخل رقم الطابق الذي تقع فيه الشقة"
+        },
+        "numberOfFloors": {
+          "label": "عدد الطوابق",
+          "placeholder": "ادخل عدد إجمالي الطوابق للعقار"
+        },
+        "numberOfRooms": {
+          "label": "عدد الغرف",
+          "placeholder": "ادخل عدد الغرف"
+        },
+        "numberOfBathRooms": {
+          "label": "عدد الحمامات",
+          "placeholder": "ادخل عدد الحمامات"
+        },
+        "finalizationType": {
+          "label": "نوع التشطيب",
+          "placeholder": "حدد نوع التشطيب"
+        },
+        "onMarketType": {
+          "label": "نوع العقار في السوق",
+          "placeholder": "حدد نوع العقار في السوق"
+        },
+        "yearOfDelivery": {
+          "label": "سنة التسليم",
+          "placeholder": "حدد سنة التسليم او البناء"
+        },
+        "rentType": {
+          "label": "الغرض من الإيجار",
+          "placeholder": "حدد الغرض من الإيجار"
+        },
+        "endowmentType": {
+          "label": "نوع الوقف",
+          "placeholder": "حدد نوع الوقف"
         }
-      }
+      },
+      "titles": {}
     },
     "user": {
       "signup": {

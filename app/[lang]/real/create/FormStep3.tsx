@@ -1,5 +1,5 @@
 "use client";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { FormContext } from "./FormStepper";
 import { useRouter } from "next/navigation";
 import useCreateRealEstate from "@/app/hooks/realEstate/useCreateRealEstate";
@@ -19,25 +19,28 @@ import SelectField from "@/app/components/SelectField";
 import { enumToKeyValues } from "@/app/helpers/converters";
 import { RentOrSell } from "@prisma/client";
 import { toast } from "react-toastify";
+import { RealFormLocalProps } from "@/app/Props/CommonProps";
 
-const FormStep3 = () => {
+const FormStep3 = ({
+  t: {
+    real: { fields },
+  },
+}: Readonly<{
+  t: RealFormLocalProps;
+}>) => {
   const { setActiveStepIndex, formData, setFormData } =
     useContext(FormContext) || {};
   const router = useRouter();
+  const [isSubmited, setIsSubmited] = useState(false);
 
   const { create, update, isLoading } = useCreateRealEstate({
     onSuccess: (response) => {
-      // console.log(response);
-      // toast.success(
-      //   `${formData.type.toLocaleLowerCase()} ${
-      //     formData.id ? "updated" : "created"
-      //   }`
-      // );
-      // console.log("id", formData.id);
+      toast.success("Created");
       if (formData.id) router.replace(`/real/${response.id}`);
       else router.replace(`/real/${response.id}/edit/images`);
     },
     onFailure: (error) => {
+      setIsSubmited(false);
       toast.error("Error occured " + error);
     },
   });
@@ -70,8 +73,8 @@ const FormStep3 = () => {
     );
     console.log("filtered", filteredDetails);
     const final = { ...formData, details: { ...filteredDetails } };
-    // setFormData(final);
     console.log("final Data", final);
+    setIsSubmited(true);
     if (final.id) {
       update(final);
     } else {
@@ -92,23 +95,25 @@ const FormStep3 = () => {
         validationSchema={validationSchema}
         onSubmit={handelSubmit}
       >
-        {({ values, setFieldValue, errors }) => (
+        {({ values }) => (
           <Form className="flex flex-col justify-center items-center">
             {formData.type === "APARTMENT" && (
               <TextField
                 name="floor"
-                placeholder="Specify the which floor the appartment located"
+                label={fields.floor.label}
+                placeholder={fields.floor.placeholder}
                 type="number"
-                label="Floor"
+                fullWidth
               />
             )}
             {formData.type === "BUILDING" ||
               (formData.type === "VILLA" && (
                 <TextField
                   name="numberOfFloors"
-                  label="Number of floors"
+                  label={fields.numberOfFloors.label}
                   type="number"
-                  placeholder="Number of floors"
+                  placeholder={fields.numberOfFloors.placeholder}
+                  fullWidth
                 />
               ))}
             {(formData.type === "APARTMENT" ||
@@ -117,33 +122,38 @@ const FormStep3 = () => {
               <>
                 <TextField
                   name="numberOfRooms"
-                  label="Number of rooms"
-                  placeholder="Number of rooms"
+                  label={fields.numberOfRooms.label}
+                  placeholder={fields.numberOfRooms.placeholder}
                   type="number"
+                  fullWidth
                 />
                 <TextField
                   name="numberOfBathRooms"
-                  label="Number of bathrooms"
-                  placeholder="Number of bathrooms"
+                  label={fields.numberOfBathRooms.label}
+                  placeholder={fields.numberOfBathRooms.placeholder}
                   type="number"
+                  fullWidth
                 />
                 <SelectField
                   name="finalizationType"
-                  label="Finalization Type"
-                  placeholder="Select Finalization Type"
+                  label={fields.finalizationType.label}
+                  placeholder={fields.finalizationType.placeholder}
                   options={enumToKeyValues(FinalizationType)}
+                  fullWidth
                 />
                 <SelectField
                   name="onMarketType"
-                  label="Type on market"
-                  placeholder="Type on market"
+                  label={fields.onMarketType.label}
+                  placeholder={fields.onMarketType.placeholder}
                   options={enumToKeyValues(OnMarketType)}
+                  fullWidth
                 />
                 <TextField
                   name="yearOfDelivery"
-                  label="Year of delivary"
-                  placeholder="Year of delivary"
+                  label={fields.yearOfDelivery.label}
+                  placeholder={fields.yearOfDelivery.placeholder}
                   type="date"
+                  fullWidth
                 />
               </>
             )}
@@ -151,23 +161,25 @@ const FormStep3 = () => {
             {formData.rentOrSell !== "SELL" && (
               <SelectField
                 name="rentType"
-                label="Rent purpose"
-                placeholder="Rent purpose"
+                label={fields.rentType.label}
+                placeholder={fields.rentType.placeholder}
                 options={enumToKeyValues(RentType)}
+                fullWidth
               />
             )}
             {formData.rentOrSell !== "RENT" && (
               <SelectField
                 name="endowmentType"
-                label="Endowment"
-                placeholder="Select Endowment type"
+                label={fields.endowmentType.label}
+                placeholder={fields.endowmentType.placeholder}
                 options={enumToKeyValues(EndowmentType)}
+                fullWidth
               />
             )}
 
             <div className="flex justify-between gap-6">
               <Button text="Back" onClick={() => handleBack(values)} />
-              <SubmitButton text="Continue" disabled={isLoading} />
+              <SubmitButton text="Continue" disabled={isSubmited} />
             </div>
           </Form>
         )}

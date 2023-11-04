@@ -3,8 +3,15 @@ import React from "react";
 interface Props {
   areaOption: AreaOption;
   onChange: (value: AreaOption) => void;
+  squarMeterLabel: string;
+  lebnahLabel: string;
 }
-const AreaUnitSelect = ({ areaOption, onChange }: Props) => {
+const AreaUnitSelect = ({
+  areaOption,
+  onChange,
+  squarMeterLabel,
+  lebnahLabel,
+}: Props) => {
   console.log("areaOption", areaOption);
   return (
     <div className="flex flex-row justify-between gap-6">
@@ -22,8 +29,8 @@ const AreaUnitSelect = ({ areaOption, onChange }: Props) => {
      
       dark:bg-gray-700 "
         />
-        <label htmlFor="default-radio-2" className="ml-2 text-sm font-medium ">
-          Meter Square
+        <label htmlFor="default-radio-2" className="ms-2 text-sm font-medium ">
+          {squarMeterLabel}
         </label>
       </div>
       <div className="flex items-center">
@@ -39,8 +46,8 @@ const AreaUnitSelect = ({ areaOption, onChange }: Props) => {
           className="w-4 h-4 text-gray-600 bg-gray-100 border-gray-300
       "
         />
-        <label htmlFor="default-radio-2" className="ml-2 text-sm font-medium ">
-          Lebnah
+        <label htmlFor="default-radio-2" className="ms-2 text-sm font-medium ">
+          {lebnahLabel}
         </label>
       </div>
     </div>

@@ -11,16 +11,27 @@ import { OverlookingType, PaymentMethodType } from "@prisma/client";
 import SubmitButton from "@/app/components/SubmitButton";
 import Button from "@/app/components/Button";
 import AreaUnitSelect from "./AreaUnitSelect";
+import { AreaOption } from "c:/Projects/NextJS/land-app/app/dataObjects/RealEstateFormData";
+import { RealFormLocalProps } from "@/app/Props/CommonProps";
 
-function FormStep2() {
+function FormStep2({
+  t: {
+    validations,
+    real: { fields },
+  },
+}: Readonly<{
+  t: RealFormLocalProps;
+}>) {
   const { activeStepIndex, setActiveStepIndex, formData, setFormData } =
     useContext(FormContext);
 
   const validationSchema = yup.object().shape({
-    overlooking: yup.string().required("overlooking is required"),
-    price: yup.number().min(1).required("price is required"),
-    size: yup.string().required("size is required"),
-    paymentMethod: yup.string().required("payment_method time is required"),
+    overlooking: yup.string().required(validations.real.overlooking.required),
+    price: yup.number().min(1).required(validations.real.price.required),
+    size: yup.string().required(validations.real.size.required),
+    paymentMethod: yup
+      .string()
+      .required(validations.real.paymentMethod.required),
   });
 
   const handleBack = (values: {}) => {
@@ -42,56 +53,44 @@ function FormStep2() {
         <Form className="flex flex-col justify-center items-center">
           <TextField
             name="size"
-            label="Total Area"
+            label={fields.size.label}
             type="number"
             autoFocus
-            placeholder={`Total area in ${
-              formData.areaOption === "METER" ? "Square Meters" : "Lebnah"
+            fullWidth
+            placeholder={`${fields.size.label} ${
+              formData.areaOption === "METER"
+                ? fields.squareMeter.label
+                : fields.lebnah.label
             } `}
           />
           <AreaUnitSelect
             areaOption={values.areaOption}
-            onChange={(value) => {
-              console.log("value changed", value);
-              if (value === "LEBNAH") {
-                setFieldValue("areaOption", value);
-                console.log("converting to lebnah");
-                if (values?.size) {
-                  const converted = values?.size && values.size / 44.44;
-                  setFieldValue("size", Math.round(converted * 100) / 100);
-                }
-              } else if (value === "METER") {
-                setFieldValue("areaOption", value);
-
-                console.log("converting to meter");
-
-                if (values?.size) {
-                  const converted = convertToMeter(values?.size);
-
-                  setFieldValue("size", converted);
-                }
-              }
-            }}
+            onChange={handleUnitChange(setFieldValue, values.size as number)}
+            lebnahLabel={fields.lebnah.label}
+            squarMeterLabel={fields.squareMeter.label}
           />
           <TextField
             name="price"
-            label="Price"
+            label={fields.price.label}
             type="number"
-            placeholder="Total price"
+            placeholder={fields.price.placeholder}
+            fullWidth
           />
 
           <SelectField
             name="overlooking"
-            label="Overlooking"
+            label={fields.overlooking.label}
             options={enumToKeyValues(OverlookingType)}
-            placeholder="select overlooking"
+            placeholder={fields.overlooking.placeholder}
+            fullWidth
           />
 
           <SelectField
             name="paymentMethod"
             options={enumToKeyValues(PaymentMethodType)}
-            label="Payment Method"
-            placeholder="Select Payment Method"
+            label={fields.paymentMethod.label}
+            placeholder={fields.paymentMethod.placeholder}
+            fullWidth
           />
           <div className="flex justify-between gap-6">
             <Button text="Back" onClick={() => handleBack(values)} />
@@ -101,6 +100,36 @@ function FormStep2() {
       )}
     </Formik>
   );
+
+  function handleUnitChange(
+    setFieldValue: (field: string, value: any) => Promise<any>,
+    size?: number
+  ): (value: AreaOption) => void {
+    const handleLebnahChange = () => {
+      setFieldValue("areaOption", "LEBNAH");
+      if (size) {
+        const convertedSize = size / 44.44;
+        setFieldValue("size", Math.round(convertedSize * 100) / 100);
+      }
+    };
+
+    const handleMeterChange = () => {
+      setFieldValue("areaOption", "METER");
+      if (size) {
+        const convertedSize = convertToMeter(size);
+        setFieldValue("size", convertedSize);
+      }
+    };
+
+    return (value) => {
+      console.log("value changed", value);
+      if (value === "LEBNAH") {
+        handleLebnahChange();
+      } else if (value === "METER") {
+        handleMeterChange();
+      }
+    };
+  }
 }
 
 export default FormStep2;

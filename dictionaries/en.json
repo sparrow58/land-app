@@ -227,11 +227,7 @@
         "enter_link": "Enter link here"
       },
       "settings": {
-        "settings": "Settings",
-        "allow_users_to_share_rooms": "Allow Users to Share Rooms",
-        "allow_users_to_share_rooms_description": "Setting to disabled will remove the button from the room options dropdown, preventing users from sharing rooms",
-        "allow_users_to_preupload_presentation": "Allow Users to Preupload Presentations",
-        "allow_users_to_preupload_presentation_description": "Users can preupload a presentation to be used as the default presentation for that specific room"
+        "settings": "Settings"
       },
       "registration": {
         "registration": "Registration",
@@ -249,31 +245,6 @@
           "invite": "Join by Invitation",
           "approval": "Approve/Decline"
         }
-      }
-    },
-    "room_configuration": {
-      "room_configuration": "Room Configuration",
-      "default": "Optional (default: enabled)",
-      "optional": "Optional (default: disabled)",
-      "enabled": "Force Enabled",
-      "disabled": "Disabled",
-      "configurations": {
-        "allow_room_to_be_recorded": "Allow Room to be recorded",
-        "allow_room_to_be_recorded_description": "Allows room owners to specify whether they want the option to record a room or not. If enabled, the moderator must still click the 'Record' button once the meeting has started.",
-        "require_user_signed_in": "Require users to be signed in before joining",
-        "require_user_signed_in_description": "Only allows users with a Greenlight account to join the meeting. If they are not signed in, they will be redirected to the login page when attempting to join a room.",
-        "require_mod_approval": "Require moderator approval before joining",
-        "require_mod_approval_description": "Prompts the moderator of the SohobMeet meeting when a user tries to join. If the user is approved, they will be able to join the meeting.",
-        "allow_any_user_to_start_meeting": "Allow any user to start a meeting",
-        "allow_any_user_to_start_meeting_description": "Allow any user to start the meeting at any time. By default, only the room owner can start the meeting.",
-        "allow_users_to_join_as_mods": "All users join as moderators",
-        "allow_users_to_join_as_mods_description": "Gives all users the moderator privileges in SohobMeet when they join the meeting",
-        "mute_users_on_join": "Mute users when they join",
-        "mute_users_on_join_description": "Automatically mutes the user when they join the SohobMeet meeting",
-        "viewer_access_code": "Viewer Access Code",
-        "viewer_access_code_description": "Allows room owners to have a random alphanumeric code that can be shared with users. The code, if generated, will be required for users to join the room meetings.",
-        "mod_access_code": "Moderator Access Code",
-        "mod_access_code_description": "Allows room owners to have a random alphanumeric code that can be shared with users. The code, if generated, will not be required and when used on any room meeting will join the user as a moderator."
       }
     },
     "roles": {
@@ -317,24 +288,6 @@
       },
       "session": {
         "signed_out": "You have been signed out."
-      },
-      "room": {
-        "room_created": "A new room has been created.",
-        "room_updated": "The room has been updated.",
-        "room_deleted": "The room has been deleted.",
-        "room_shared": "The room has been shared.",
-        "room_unshared": "The room has been unshared.",
-        "recordings_synced": "The room recordings have been synchronized.",
-        "room_configuration_updated": "The room configuration have been updated.",
-        "room_setting_updated": "The room setting has been updated.",
-        "presentation_updated": "The presentation has been updated.",
-        "presentation_deleted": "The presentation has been deleted.",
-        "joining_meeting": "Joining the meeting...",
-        "meeting_started": "Meeting started.",
-        "access_code_copied": "The access code has been copied.",
-        "access_code_generated": "A new access code has been generated.",
-        "access_code_deleted": "The access code has been deleted.",
-        "copied_meeting_url": "The meeting URL has been copied. The link can be used to join the meeting."
       },
       "site_settings": {
         "site_setting_updated": "The site setting has been updated.",
@@ -443,21 +396,120 @@
           "error": "You must specify a number"
         }
       },
-      "room": {
-        "name": {
-          "required": "Please enter the room name.",
-          "min": "Name must be at least 2 characters long"
+      "real": {
+        "title": {
+          "required": "Please enter the title",
+          "min": "Title must be at least 5 characters"
+        },
+        "description": {
+          "required": "Please enter the description",
+          "min": "Description must be at least 10 characters"
+        },
+        "size": {
+          "required": "Please enter the area"
+        },
+        "type": {
+          "required": "Please choose the type of the real estate"
+        },
+        "rentOrSell": {
+          "required": "Please choose Rent or sell"
+        },
+        "advisorType": {
+          "required": "Please choose Advisor type"
+        },
+        "paymentMethod": {
+          "required": "Please choose Payment Method"
+        },
+        "overlooking": {
+          "required": "Please choose type of overlooking"
+        },
+        "price": {
+          "required": "Please enter the price"
         }
       },
       "url": {
         "invalid": "Invalid URL"
       }
     },
-    "room": {
+    "real": {
       "fields": {
-        "name": {
-          "label": "Room Name",
-          "placeholder": "Enter a room name..."
+        "squareMeter": {
+          "label": "Square Meters"
+        },
+        "lebnah": {
+          "label": "Lebnah"
+        },
+        "title": {
+          "label": "Title",
+          "placeholder": "Enter a title..."
+        },
+        "Description": {
+          "label": "Description",
+          "placeholder": "Descripe your real estate..."
+        },
+        "type": {
+          "label": "Type",
+          "placeholder": "Select Real Estate Type"
+        },
+        "rentOrSell": {
+          "label": "Rent Or Sell",
+          "placeholder": "Do you want to Sell or Rent?"
+        },
+        "advisorType": {
+          "label": "Advisor Type",
+          "placeholder": "Select Advisor Type"
+        },
+        "size": {
+          "label": "Area",
+          "placeholder": "Enter Total Area in"
+        },
+        "price": {
+          "label": "Price",
+          "placeholder": "Enter Total Price"
+        },
+        "overlooking": {
+          "label": "Overlooking",
+          "placeholder": "Select Overlooking Type"
+        },
+        "paymentMethod": {
+          "label": "Payment Method",
+          "placeholder": "Select Payment Method"
+        },
+        "floor": {
+          "label": "Floor",
+          "placeholder": "Specify the which floor the appartment located"
+        },
+        "numberOfFloors": {
+          "label": "Number of Floors",
+          "placeholder": "Enter the Number of Floors"
+        },
+        "numberOfRooms": {
+          "label": "Number of Rooms",
+          "placeholder": "Enter the Number of Rooms"
+        },
+        "numberOfBathRooms": {
+          "label": "Number of Bathrooms",
+          "placeholder": "Enter the Number of bathrooms"
+        },
+        "finalizationType": {
+          "label": "Finalization Type",
+          "placeholder": "Select Finalization Type"
+        },
+        "onMarketType": {
+          "label": "Type on Market",
+          "placeholder": "Select Type on Market"
+        },
+        "yearOfDelivery": {
+          "label": "Year of delivary",
+          "placeholder": "Enter Year of Delivary/Built"
+        },
+        "rentType": {
+          "label": "Rent Purpose",
+          "placeholder": "Select Rent Purpose"
+        },
+        "endowmentType": {
+          "label": "Endowment Type",
+          "placeholder": "Select Endowment type"
         }
       }
     },

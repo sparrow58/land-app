@@ -10,7 +10,8 @@ const SelectField = ({
   name,
   placeholder,
   options,
-  autoFocus = false,
+  autoFocus,
+  fullWidth,
 }: Props) => {
   const [field, meta] = useField(name);
 
@@ -21,7 +22,9 @@ const SelectField = ({
           {label}
         </label>
         <select
-          className={`appearance-none block w-full bg-gray-50 text-gray-700 border ${
+          className={`appearance-none block bg-gray-50 text-gray-700 border ${
+            fullWidth && "w-full"
+          } ${
             meta.error && meta.touched && "border-red-500"
           }  rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
           {...field}

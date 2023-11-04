@@ -12,7 +12,9 @@ import OAuthForm from "./OAuthForm";
 import { LangParams } from "@/app/Props/RoutingProps";
 import { getDictionary } from "@/lib/dictionary";
 
-export default async function SignIn({ params: { lang } }: LangParams) {
+export default async function SignIn({
+  params: { lang },
+}: Readonly<LangParams>) {
   const { authentication, or } = await getDictionary(lang);
   return (
     <section className="bg-gradient-to-b from-gray-100 to-white">

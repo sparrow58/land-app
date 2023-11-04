@@ -28,10 +28,10 @@ export async function generateStaticParams() {
 export default async function RootLayout({
   children,
   params: { lang },
-}: {
+}: Readonly<{
   children: React.ReactNode;
   params: { lang: Locale };
-}) {
+}>) {
   const {
     nav,
     authentication: { sign_in, sign_up },

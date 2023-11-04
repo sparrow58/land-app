@@ -11,13 +11,16 @@ const TextField = ({
   label = name,
   type = "text",
   placeholder,
-  autoFocus = false,
-  required = false,
+  autoFocus,
+  required,
+  fullWidth,
 }: Props) => {
   const [field, meta] = useField(name);
 
   return (
-    <div className="flex max-w-xl  flex-wrap -mx-3 mb-4">
+    <div
+      className={`flex max-w-xl  flex-wrap -mx-3 mb-4 ${fullWidth && "w-full"}`}
+    >
       <div className="w-full px-3">
         <label
           className="block text-gray-800 text-xl font-medium mb-1"

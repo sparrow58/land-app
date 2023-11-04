@@ -6,20 +6,19 @@ import FormStep1 from "./FormStep1";
 import Success from "./Success";
 import FormStep3 from "./FormStep3";
 
-function Step() {
+function Step({ t }: { t: any }) {
   const context = useContext(FormContext);
-  // console.log("formData", context?.formData);
   const activeStepIndex = context?.activeStepIndex;
   let stepContent;
   switch (activeStepIndex) {
     case 0:
-      stepContent = <FormStep1 />;
+      stepContent = <FormStep1 t={t} />;
       break;
     case 1:
-      stepContent = <FormStep2 />;
+      stepContent = <FormStep2 t={t} />;
       break;
     case 2:
-      stepContent = <FormStep3 />;
+      stepContent = <FormStep3 t={t} />;
       break;
     case 3:
       stepContent = <Success />;

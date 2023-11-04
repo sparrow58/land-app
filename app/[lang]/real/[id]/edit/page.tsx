@@ -6,14 +6,19 @@ import {
   RealEstateFormData,
 } from "@/app/dataObjects/RealEstateFormData";
 import { AdvisorType } from "@prisma/client";
+import { getDictionary } from "@/lib/dictionary";
+import { LangParams } from "@/app/Props/RoutingProps";
 
 interface Props {
   params: {
     id: string;
   };
 }
-const page = async ({ params: { id } }: Props) => {
+const page = async ({ params: { id, lang } }: Props & LangParams) => {
   const data = await getRealEstate(id);
+
+  const { forms } = await getDictionary(lang);
+
   console.log("data", data);
   if (data) {
     const mapped: RealEstateFormData = {
@@ -30,7 +35,7 @@ const page = async ({ params: { id } }: Props) => {
       areaOption: AreaOption.METER,
       details: data.details ? JSON.parse(data.details.toString()) : {},
     };
-    return <FormStepper data={mapped} />;
+    return <FormStepper data={mapped} t={forms} />;
   }
 };
 

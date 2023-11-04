@@ -9,29 +9,36 @@ import TextField from "@/app/components/TextField";
 import SelectField from "@/app/components/SelectField";
 import TexAreaField from "@/app/components/TexAreaField";
 import SubmitButton from "@/app/components/SubmitButton";
+import { RealFormLocalProps } from "@/app/Props/CommonProps";
 
-function FormStep1() {
-  const { activeStepIndex, setActiveStepIndex, formData, setFormData } =
-    useContext(FormContext);
+function FormStep1({
+  t: {
+    validations,
+    real: { fields },
+  },
+}: Readonly<{
+  t: RealFormLocalProps;
+}>) {
+  const { setActiveStepIndex, formData, setFormData } = useContext(FormContext);
 
   const validationSchema = yup.object().shape({
     title: yup
       .string()
-      .min(5, "Title must be at least 5 characters")
-      .required("Title is required"),
+      .min(5, validations.real.title.min)
+      .required(validations.real.title.required),
     description: yup
       .string()
-      .min(10, "Description must be at least 10 characters")
-      .required("Description is required"),
-    type: yup.string().min(1).required("Type is required"),
-    rentOrSell: yup.string().required("Rent or sell is required"),
-    advisorType: yup.string().required("Advisor type is required"),
+      .min(10, validations.real.description.min)
+      .required(validations.real.description.required),
+    type: yup.string().min(1).required(validations.real.type.required),
+    rentOrSell: yup.string().required(validations.real.rentOrSell.required),
+    advisorType: yup.string().required(validations.real.advisorType.required),
   });
 
   return (
     <>
       <div className="max-w-6xlxl mx-auto text-center pb-12 md:pb-20">
-        <h2 className="h2"> Welcome!</h2>
+        <h2 className="h2"> Add your real estate!</h2>
       </div>
       <Formik
         initialValues={{ ...formData }}
@@ -47,34 +54,39 @@ function FormStep1() {
         <Form className="flex flex-col justify-center items-center">
           <TextField
             name="title"
-            label="Title"
+            label={fields.title.label}
             type="text"
             autoFocus
-            placeholder="Add title to your ad"
+            placeholder={fields.title.placeholder}
+            fullWidth
           />
           <TexAreaField
             name="description"
-            label="Description"
-            placeholder="Descrip your real estate"
+            label={fields.Description.label}
+            placeholder={fields.Description.placeholder}
+            fullWidth
           />
 
           <SelectField
             name="type"
-            label="Type"
-            placeholder="Select type"
+            label={fields.type.label}
+            placeholder={fields.type.placeholder}
             options={enumToKeyValues(RealEstateType)}
+            fullWidth
           />
           <SelectField
             name="rentOrSell"
             options={enumToKeyValues(RentOrSell)}
-            label="Rent or Sell"
-            placeholder="Select Rent or Sell"
+            label={fields.rentOrSell.label}
+            placeholder={fields.rentOrSell.placeholder}
+            fullWidth
           />
           <SelectField
             name="advisorType"
             options={enumToKeyValues(AdvisorType)}
-            label="Advisor Type"
-            placeholder="Select advisor type"
+            label={fields.advisorType.label}
+            placeholder={fields.advisorType.placeholder}
+            fullWidth
           />
           <SubmitButton text="Continue" />
         </Form>

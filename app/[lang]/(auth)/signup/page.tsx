@@ -11,7 +11,9 @@ export async function generateMetadata({ params: { lang } }: LangParams) {
     title: authentication.sign_up,
   };
 }
-export default async function SignUp({ params: { lang } }: LangParams) {
+export default async function SignUp({
+  params: { lang },
+}: Readonly<LangParams>) {
   const { authentication, errors, or } = await getDictionary(lang);
   return (
     <section className="bg-gradient-to-b from-gray-100 to-white">

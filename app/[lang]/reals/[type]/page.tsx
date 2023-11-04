@@ -31,11 +31,13 @@ const page = async ({ params: { type, lang }, searchParams }: Props) => {
   const perPage = parPageT > MAX_PER_PAGE ? MAX_PER_PAGE : parPageT;
   const start = (page - 1) * perPage; // 0, 5, 10 ...
   const end = start + perPage; // 5, 10, 15 ...
-  const { data, count } = await getRealEstates({
-    page: page,
-    pageSize: perPage,
-    type: realType,
-  });
+  // const { data, count } = await getRealEstates({
+  //   page: page,
+  //   pageSize: perPage,
+  //   type: realType,
+  // });
+  const data: any = [];
+  const count = 0;
   return (
     <section>
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
