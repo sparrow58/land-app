@@ -58,6 +58,14 @@
     "services": "Services",
     "download": "Download"
   },
+  "theme": {
+    "theme": "Theme",
+    "modes": {
+      "light": "Light",
+      "dark": "Dark",
+      "system": "System"
+    }
+  },
   "authentication": {
     "sign_in": "Sign In",
     "sign_up": "Sign Up",
@@ -705,7 +713,7 @@
       }
     }
   },
-  "sohobmeet": {
+  "main": {
     "language": "Language",
     "nav": {
       "menu": {

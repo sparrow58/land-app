@@ -60,7 +60,7 @@ export const FormStepper = ({ data, t }: Props) => {
         setFormData,
       }}
     >
-      <section className="bg-gradient-to-b from-gray-50 to-white">
+      <section className="bg-gradient-to-b">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="pt-32 pb-10 md:pt-10 md:pb-10">
             <Stepper />

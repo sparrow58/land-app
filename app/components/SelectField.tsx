@@ -14,7 +14,7 @@ const SelectField = ({
   fullWidth,
 }: Props) => {
   const [field, meta] = useField(name);
-
+  console.log("options", options);
   return (
     <div className="flex max-w-xl w-full flex-wrap -mx-3 mb-4">
       <div className="w-full px-3">
@@ -32,7 +32,7 @@ const SelectField = ({
         >
           <option value="">{placeholder}</option>
           {options.map((listValue) => (
-            <option key={listValue.label} value={listValue.label}>
+            <option key={listValue.value} value={listValue.value}>
               {listValue.label}
             </option>
           ))}

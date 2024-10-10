@@ -10,8 +10,8 @@ const MainMenuItem = ({ url, text, children }: LinkItemProps) => {
       href={url}
       className={`${
         currntUrl === url
-          ? "text-gray-200 rounded-md bg-gray-900"
-          : "text-gray-600 hover:text-gray-900"
+          ? "text-gray-200 rounded-xl bg-custom-primaryhover"
+          : " hover:text-custom-primaryhover"
       }
         font-medium   px-5 py-3 flex items-center transition duration-150 ease-in-out`}
     >

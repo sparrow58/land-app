@@ -11,12 +11,14 @@ export default function useSignIn(invalid_credentials: string) {
   const router = useRouter();
   async function signInCredentials(username: string, password: string) {
     setIsLoading(true);
+
     const signinResponse = await signIn("credentials", {
       redirect: false,
       username: username,
       password: password,
       callbackUrl,
     });
+
     console.log(signinResponse);
     setIsLoading(false);
     if (signinResponse?.ok) {

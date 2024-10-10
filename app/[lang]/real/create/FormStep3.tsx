@@ -84,6 +84,7 @@ const FormStep3 = ({
       create(final);
     }
   };
+  console.log("formData.rentOrSell", formData);
   return (
     <>
       <div className="max-w mx-auto text-center pb-6 md:pb-6">

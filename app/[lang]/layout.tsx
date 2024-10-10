@@ -1,7 +1,7 @@
 import "../css/style.css";
 
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Tajawal } from "next/font/google";
 import Header from "@/app/components/ui/header";
 import Banner from "@/app/components/banner";
 import "aos/dist/aos.css";
@@ -11,10 +11,17 @@ import { Locale, i18n } from "@/i18n.config";
 import { getDictionary } from "@/lib/dictionary";
 import { inDevEnvironment } from "../helpers/devMode";
 import AuthProvider from "../components/providers/AuthProvider";
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-  display: "swap",
+import { cn } from "@/lib/utils";
+import { ThemeProvider } from "@/components/ThemeProvider";
+// const inter = Inter({
+//   subsets: ["latin"],
+//   variable: "--font-inter",
+//   display: "swap",
+// });
+
+const tajawal = Tajawal({
+  subsets: ["latin", "arabic"],
+  weight: ["200", "300", "400", "500", "700", "800", "900"],
 });
 
 export const metadata: Metadata = {
@@ -34,6 +41,7 @@ export default async function RootLayout({
 }>) {
   const {
     nav,
+    theme,
     authentication: { sign_in, sign_up },
   } = await getDictionary(lang);
   const linkItems = [
@@ -45,23 +53,29 @@ export default async function RootLayout({
   const dir = lang === "ar" ? "rtl" : "ltr";
   return (
     <html lang={lang} dir={dir}>
-      <body
-        className={`${inter.variable} font-inter antialiased bg-white text-gray-900 tracking-tight`}
-      >
-        <AuthProvider>
-          <div className="flex flex-col min-h-screen overflow-hidden supports-[overflow:clip]:overflow-clip">
-            <Header
-              linkItems={linkItems}
-              sign_in={sign_in}
-              sign_up={sign_up}
-              lang={lang}
-            />
-            {children}
-            <MainToastContainer />
-            <Banner />
-          </div>
-          {inDevEnvironment === false && <Analytics />}
-        </AuthProvider>
+      <body className={cn("antialiased bg-background", tajawal.className)}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <AuthProvider>
+            <div className="flex flex-col min-h-screen overflow-hidden supports-[overflow:clip]:overflow-clip">
+              <Header
+                t={{ theme }}
+                linkItems={linkItems}
+                sign_in={sign_in}
+                sign_up={sign_up}
+                lang={lang}
+              />
+              {children}
+              <MainToastContainer />
+              <Banner />
+            </div>
+            {inDevEnvironment === false && <Analytics />}
+          </AuthProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

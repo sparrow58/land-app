@@ -58,6 +58,14 @@
     "services": "الخدمات",
     "download": "تنزيل"
   },
+  "theme": {
+    "theme": "الثيم",
+    "modes": {
+      "light": "فاتح",
+      "dark": "داكن",
+      "system": "نظام"
+    }
+  },
   "authentication": {
     "sign_in": "تسجيل الدخول",
     "sign_up": "إنشاء حساب",

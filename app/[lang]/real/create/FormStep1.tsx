@@ -13,6 +13,7 @@ import SelectField from "@/app/components/SelectField";
 import TexAreaField from "@/app/components/TexAreaField";
 import SubmitButton from "@/app/components/SubmitButton";
 import { RealFormLocalProps } from "@/app/Props/CommonProps";
+import ComboBoxField from "@/app/components/ComboboxField";
 
 function FormStep1({
   t: {
@@ -70,7 +71,7 @@ function FormStep1({
             fullWidth
           />
 
-          <SelectField
+          <ComboBoxField
             name="type"
             label={fields.type.label}
             placeholder={fields.type.placeholder}

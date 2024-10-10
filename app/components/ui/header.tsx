@@ -13,10 +13,18 @@ import PreferenceMenu from "./PreferenceMenu";
 import { useSession } from "next-auth/react";
 import { stat } from "fs";
 import UserMenu from "./UserMenu";
+import { ModeToggle } from "@/components/mode-toggle";
 type Props = SignInProps & {
   linkItems: LinkItemProps[];
+  t: { theme: any };
 };
-export default function Header({ linkItems, sign_in, sign_up, lang }: Props) {
+export default function Header({
+  linkItems,
+  sign_in,
+  sign_up,
+  t,
+  lang,
+}: Props) {
   const { status, data: session } = useSession();
   const [top, setTop] = useState<boolean>(true);
   // detect whether user has scrolled the page down by 10px
@@ -46,7 +54,7 @@ export default function Header({ linkItems, sign_in, sign_up, lang }: Props) {
       <div className="max-w-6xl mx-auto px-5 sm:px-6">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Site branding */}
-          <div className="shrink-0 mr-4">
+          <div className="shrink-0 me-4">
             <Logo />
           </div>
 
@@ -55,6 +63,7 @@ export default function Header({ linkItems, sign_in, sign_up, lang }: Props) {
             {/* Desktop sign in links */}
             <MainMenu linkItems={linkItems} />
             <PreferenceMenu />
+            <ModeToggle t={t} />
 
             {status === "unauthenticated" && (
               <SigninMenu sign_in={sign_in} sign_up={sign_up} lang={lang} />
