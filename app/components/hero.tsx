@@ -1,5 +1,6 @@
 import VideoThumb from "@/public/images/hero-image.png";
 import ModalVideo from "./modal-video";
+import { Button } from "@/components/ui/button";
 
 export default function Hero() {
   return (
@@ -59,22 +60,15 @@ export default function Hero() {
                 to set it up once, and get beautiful results forever.
               </p>
               <div
-                className="max-w-xs mx-auto sm:max-w-none sm:flex sm:justify-center"
+                className="max-w-xs mx-auto sm:max-w-none sm:flex sm:justify-center gap-4"
                 data-aos="zoom-y-out"
                 data-aos-delay="300"
               >
                 <div>
-                  <button className="btn text-white bg-blue-600 hover:bg-blue-700 w-full mb-4 sm:w-auto sm:mb-0">
-                    Start free trial
-                  </button>
+                  <Button variant={"default"}>Start free trial</Button>
                 </div>
                 <div>
-                  <a
-                    className="btn text-white bg-gray-900 hover:bg-gray-800 w-full sm:w-auto sm:ml-4"
-                    href="#0"
-                  >
-                    Learn more
-                  </a>
+                  <Button variant="ghost">Learn more</Button>
                 </div>
               </div>
             </div>
