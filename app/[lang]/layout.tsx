@@ -1,5 +1,4 @@
-import "../css/style.css";
-
+import "@/app/styles/globals.css";
 import type { Metadata } from "next";
 import { Inter, Tajawal } from "next/font/google";
 import Header from "@/app/components/ui/header";
