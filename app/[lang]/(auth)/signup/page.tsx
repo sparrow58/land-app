@@ -16,7 +16,7 @@ export default async function SignUp({
 }: Readonly<LangParams>) {
   const { authentication, errors, or } = await getDictionary(lang);
   return (
-    <section className="bg-gradient-to-b from-gray-100 to-white">
+    <section className="bg-gradient-to-">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="pt-32 pb-12 md:pt-40 md:pb-20">
           {/* Page header */}
@@ -28,18 +28,12 @@ export default async function SignUp({
           <div className="max-w-sm mx-auto">
             <SignUpForm t={{ ...authentication, errors: { ...errors } }} />
             <div className="flex items-center my-6">
-              <div
-                className="border-t border-gray-300 grow mr-3"
-                aria-hidden="true"
-              ></div>
-              <div className="text-gray-600 italic">{or}</div>
-              <div
-                className="border-t border-gray-300 grow ml-3"
-                aria-hidden="true"
-              ></div>
+              <div className="border-t grow mr-3" aria-hidden="true"></div>
+              <div className=" italic">{or}</div>
+              <div className="border-t  grow ml-3" aria-hidden="true"></div>
             </div>
             <OAuthForm t={authentication} />
-            <div className="text-gray-600 text-center mt-6">
+            <div className=" text-center mt-6">
               {authentication.already_have_account}
               <Link
                 href="/signin"

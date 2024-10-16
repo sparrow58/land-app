@@ -2,6 +2,7 @@ import {
   checkUserEmailExist,
   checkUserPhoneExist,
   checkUserUsernameExist,
+  getUsers,
 } from "@/app/services/user/getUserService";
 import { UserFormData } from "@/app/dataObjects/UserFormData";
 import { NextRequest, NextResponse } from "next/server";
@@ -29,6 +30,32 @@ export async function POST(request: NextRequest) {
     const response = { message: "created", data: { id: user.id } };
     return NextResponse.json(response);
   } else return NextResponse.json({ error: "Couldn't create user" });
+}
+export async function GET(req: NextRequest) {
+  try {
+    const searchParams = req.nextUrl.searchParams;
+    const page = Number(searchParams.get("page")) || 1;
+    const limit = Number(searchParams.get("limit")) || 10;
+    const sort = searchParams.get("sort") || "createdAt";
+    const order = searchParams.get("order") || "desc";
+    const search = searchParams.get("search") || "";
+
+    const { users, totalPages } = await getUsers({
+      search,
+      page,
+      limit,
+      order,
+      sort,
+    });
+
+    return NextResponse.json({ users, totalPages });
+  } catch (error) {
+    console.error("Error in GET /api/users:", error);
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
+  }
 }
 
 const getFieldErrorResponse = (field: string, message: string) =>

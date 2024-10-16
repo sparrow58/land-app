@@ -71,7 +71,7 @@ function FormStep1({
             fullWidth
           />
 
-          <ComboBoxField
+          <SelectField
             name="type"
             label={fields.type.label}
             placeholder={fields.type.placeholder}
