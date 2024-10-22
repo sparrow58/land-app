@@ -121,7 +121,9 @@ export function UserForm({ user, onClose }: UserFormProps) {
                 <FormControl>
                   <Input placeholder="John Doe" {...field} />
                 </FormControl>
-                <FormDescription>This is the user's full name.</FormDescription>
+                <FormDescription>
+                  This is the user&apos;s full name.
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -136,7 +138,7 @@ export function UserForm({ user, onClose }: UserFormProps) {
                   <Input placeholder="johndoe" {...field} />
                 </FormControl>
                 <FormDescription>
-                  This is the user's unique username.
+                  This is the user&apos;s unique username.
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -156,7 +158,7 @@ export function UserForm({ user, onClose }: UserFormProps) {
                   />
                 </FormControl>
                 <FormDescription>
-                  This is the user's email address.
+                  This is the user&apos;s email address.
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -172,7 +174,7 @@ export function UserForm({ user, onClose }: UserFormProps) {
                   <Input placeholder="+1234567890" {...field} />
                 </FormControl>
                 <FormDescription>
-                  This is the user's phone number (optional).
+                  This is the user&apos;s phone number (optional).
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -198,7 +200,7 @@ export function UserForm({ user, onClose }: UserFormProps) {
                   />
                 </FormControl>
                 <FormDescription>
-                  This is the user's date of birth (optional).
+                  This is the user&apos;s date of birth (optional).
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -225,7 +227,7 @@ export function UserForm({ user, onClose }: UserFormProps) {
                   </SelectContent>
                 </Select>
                 <FormDescription>
-                  This is the user's role in the system.
+                  This is the user&apos;s role in the system.
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -241,7 +243,7 @@ export function UserForm({ user, onClose }: UserFormProps) {
                   <Input placeholder="English" {...field} />
                 </FormControl>
                 <FormDescription>
-                  This is the user's preferred language (optional).
+                  This is the user&apos;s preferred language (optional).
                 </FormDescription>
                 <FormMessage />
               </FormItem>

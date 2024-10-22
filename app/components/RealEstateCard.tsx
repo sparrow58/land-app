@@ -7,14 +7,8 @@ import { SlSizeFullscreen } from "react-icons/sl";
 import { MdOutlineBedroomParent } from "react-icons/md";
 import { GrLocation } from "react-icons/gr";
 import { Details } from "@/app/dataObjects/RealEstateFormData";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import LandImage from "@/public/images/land.jpeg";
 
 interface Props {
   data: RealEstate;
@@ -30,7 +24,7 @@ const RealEstateCard = ({ data, verified, YR }: Props) => {
     <Card className=" rounded overflow-hidden shadow">
       <CardContent className="relative p-0">
         <Image
-          src={data.images.length !== 0 ? data.images[0] : "/land.jpeg"}
+          src={data.images.length !== 0 ? data.images[0] : LandImage}
           width={600}
           height={200}
           quality={100}

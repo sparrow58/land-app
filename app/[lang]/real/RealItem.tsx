@@ -4,6 +4,7 @@ import { getRealEstate } from "@/app/services/reatState/getService";
 import ImageSlider from "@/app/components/realEstate/ImageSlider";
 import RealEstateDetails from "@/app/components/realEstate/RealEstateDetails";
 import InfoAlert from "@/app/components/InfoAlert";
+import LandImage from "@/public/images/land.jpeg";
 
 interface Props {
   id: string;
@@ -14,7 +15,7 @@ const RealItem = async ({ id }: Props) => {
   return (
     <div className="relative">
       <Image
-        src={data.images.length !== 0 ? data.images[0] : "/land.jpeg"}
+        src={data.images.length !== 0 ? data.images[0] : LandImage}
         width={600}
         height={100}
         quality={20}

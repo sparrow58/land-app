@@ -20,7 +20,7 @@ export function SearchForm() {
   useEffect(() => {
     const search = searchParams.get("search");
     setSearchTerm(search ?? "");
-  });
+  }, []);
   return (
     <form onSubmit={handleSearch} className="flex items-center space-x-2 mb-4">
       <Input
