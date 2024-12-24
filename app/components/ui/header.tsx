@@ -4,14 +4,12 @@ import { useState, useEffect } from "react";
 
 import Logo from "./logo";
 import MobileMenu from "./mobile-menu";
-import Dropdown from "../utils/dropdown";
 import SigninMenu, { SignInProps } from "./SigninMenu";
 import MainMenu from "./MainMenu";
 import AOS from "aos";
 import { LinkItemProps } from "@/app/Props/RoutingProps";
 import PreferenceMenu from "./PreferenceMenu";
 import { useSession } from "next-auth/react";
-import { stat } from "fs";
 import UserMenu from "./UserMenu";
 import { ModeToggle } from "@/components/mode-toggle";
 type Props = SignInProps & {

@@ -6,7 +6,15 @@ import { i18n } from "@/i18n.config";
 import { match as matchLocale } from "@formatjs/intl-localematcher";
 import Negotiator from "negotiator";
 import { getToken, JWT } from "next-auth/jwt";
-
+import { Roles } from "@prisma/client";
+type RoleBasedAccess = {
+  [key: string]: Roles[]; // Key is a string, and value is an array of roles
+};
+// Define role-based access rules
+const roleBasedAccess: RoleBasedAccess = {
+  "/admin": ["ADMIN"], // Only allow admin role
+  "/user": ["ADMIN", "BASIC"], // Allow both admin and user roles
+};
 function getLocale(request: NextRequest): string | undefined {
   const negotiatorHeaders: Record<string, string> = {};
   request.headers.forEach((value, key) => (negotiatorHeaders[key] = value));
@@ -47,15 +55,30 @@ export async function middleware(request: NextRequest) {
     else return NextResponse.redirect(new URL("/", request.url));
   }
 
-  // Protect /admin routes with role-based access
-  const adminAuthResult = await protectAdminRoute(request, token);
-  if (adminAuthResult) return adminAuthResult;
-
+  // // Protect /admin routes with role-based access
+  protectRoutes(request, token);
   return NextResponse.next();
 
   // Continue with the existing response if no redirection is needed
 }
-
+const protectRoutes = (request: NextRequest, token: JWT | null) => {
+  for (const [path, roles] of Object.entries(roleBasedAccess)) {
+    const noLangPath = request.nextUrl.pathname.substring(3);
+    if (noLangPath.startsWith(path)) {
+      if (!token) {
+        // If no token, redirect to login page
+        return NextResponse.redirect(new URL("/api/auth/signin", request.url));
+      }
+      if (isSuperAdmin(token)) {
+        return NextResponse.next();
+      }
+      if (token?.role)
+        if (!roles.includes(token?.role)) {
+          return NextResponse.redirect(new URL("/", request.url));
+        }
+    }
+  }
+};
 const isSuperAdmin = (token: JWT) => {
   return token.role === "SUPERADMIN";
 };
