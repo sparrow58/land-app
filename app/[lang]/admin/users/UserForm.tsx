@@ -79,9 +79,7 @@ export function UserForm({ user, onClose }: UserFormProps) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...data,
-          dateOfBirth: data.dateOfBirth
-            ? format(data.dateOfBirth, "yyyy-MM-dd")
-            : null,
+          dateOfBirth: data.dateOfBirth ? data.dateOfBirth.toISOString() : null,
         }),
       });
 

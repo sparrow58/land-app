@@ -15,8 +15,8 @@ import { OverlookingType, PaymentMethodType } from "@prisma/client";
 import SubmitButton from "@/app/components/SubmitButton";
 import Button from "@/app/components/Button";
 import AreaUnitSelect from "./AreaUnitSelect";
-import { AreaOption } from "c:/Projects/NextJS/land-app/app/dataObjects/RealEstateFormData";
 import { RealFormLocalProps } from "@/app/Props/CommonProps";
+import { AreaOption } from "@/app/dataObjects/RealEstateFormData";
 
 function FormStep2({
   t: {
