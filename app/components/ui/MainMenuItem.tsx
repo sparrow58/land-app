@@ -1,19 +1,22 @@
+"use client";
+
 import { LinkItemProps } from "@/app/Props/RoutingProps";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React from "react";
+import { cn } from "@/lib/utils";
 
 const MainMenuItem = ({ url, text, children }: LinkItemProps) => {
-  const currntUrl = usePathname();
+  const currentUrl = usePathname();
+
   return (
     <Link
       href={url}
-      className={`${
-        currntUrl === url
-          ? "text-gray-200 rounded-xl bg-custom-primaryhover"
-          : " hover:text-custom-primaryhover"
-      }
-        font-medium   px-5 py-3 flex items-center transition duration-150 ease-in-out`}
+      className={cn(
+        "font-medium px-3 py-2 rounded-md transition duration-150 ease-in-out",
+        currentUrl === url
+          ? "bg-primary text-primary-foreground"
+          : "hover:bg-accent hover:text-accent-foreground"
+      )}
     >
       {text}
       {children}

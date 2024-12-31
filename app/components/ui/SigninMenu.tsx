@@ -17,16 +17,14 @@ const SigninMenu = ({ sign_in, sign_up, lang }: SignInProps) => {
   const searchParams = useSearchParams();
 
   const callbackUrl = searchParams.get("callbackUrl");
-  let callbackUrlArgs = "";
-
-  if (callbackUrl) {
-    callbackUrlArgs = `/?callbackUrl=${callbackUrl}`;
-  } else if (!pathName.endsWith("/signin") && !pathName.endsWith("/signup")) {
-    callbackUrlArgs = `/?callbackUrl=${pathName}`;
-  }
+  const callbackUrlArgs = callbackUrl
+    ? `/?callbackUrl=${callbackUrl}`
+    : !pathName.endsWith("/signin") && !pathName.endsWith("/signup")
+    ? `/?callbackUrl=${pathName}`
+    : "";
 
   return (
-    <div className="flex justify-end items-center gap-4">
+    <div className="flex items-center space-x-4">
       <Button variant="ghost" asChild>
         <Link href={`/${lang}/signin${callbackUrlArgs}`}>{sign_in}</Link>
       </Button>
