@@ -10,11 +10,15 @@ export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
   callbacks: {
     jwt({ token, user }) {
-      if (user) token.role = user.role;
+      if (user) {
+        token.id = user.id;
+        token.role = user.role;
+      }
       return token;
     },
     session({ session, token }) {
       session.user.role = token.role;
+      session.user.id = token.id;
       return session;
     },
   },

@@ -6,6 +6,7 @@ declare module "next-auth" {
    * or the second parameter of the `session` callback, when using a database.
    */
   interface User {
+    id: string;
     role?: any;
   }
   /**
@@ -32,5 +33,6 @@ declare module "next-auth/jwt" {
     /** OpenID ID Token */
     idToken?: string;
     role?: Roles;
+    id: string;
   }
 }

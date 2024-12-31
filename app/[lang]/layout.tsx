@@ -12,6 +12,7 @@ import { inDevEnvironment } from "../helpers/devMode";
 import AuthProvider from "../components/providers/AuthProvider";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { Toaster } from "sonner";
 // const inter = Inter({
 //   subsets: ["latin"],
 //   variable: "--font-inter",
@@ -68,8 +69,10 @@ export default async function RootLayout({
                 sign_up={sign_up}
                 lang={lang}
               />
-              {children}
+              <main className="pt-20">{children}</main>
               <MainToastContainer />
+              <Toaster />
+
               <Banner />
             </div>
             {inDevEnvironment === false && <Analytics />}

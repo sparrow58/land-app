@@ -1,73 +1,94 @@
 "use client";
-import useOutsideClick from "@/app/hooks/ui/useOutsideClick";
-import { Transition } from "@headlessui/react";
+
 import { signOut } from "next-auth/react";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { useRef, useState } from "react";
+import Link from "next/link";
+import { LogOut, Bookmark, Search, Clock, UserCircle2 } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
 export interface DefaultSession {
   name?: string | null;
   email?: string | null;
   image?: string | null;
 }
-import { BiSolidUserCircle } from "react-icons/bi";
-const UserMenu = ({ name, email, image }: DefaultSession) => {
-  const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
-  const wrapperRef = useRef(null);
-  const router = useRouter();
 
-  useOutsideClick(wrapperRef, () => {
-    setDropdownOpen(false);
-  });
+const UserMenu = ({ name, email, image }: DefaultSession) => {
   return (
-    <div ref={wrapperRef} className="relative  mx-4">
-      <button
-        className="rounded-full overflow-hidden"
-        onClick={() => setDropdownOpen((prev) => !prev)}
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost" className="relative h-10 w-10 rounded-full">
+          <Avatar className="h-10 w-10">
+            <AvatarImage src={image ?? ""} alt={name ?? ""} />
+            <AvatarFallback>
+              <UserCircle2 className="h-6 w-6" />
+            </AvatarFallback>
+          </Avatar>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent
+        className="w-80 p-0"
+        align="end"
+        forceMount
+        sideOffset={6}
       >
-        {image ? (
-          <Image src={image} height={50} width={50} alt={name ?? ""}></Image>
-        ) : (
-          <BiSolidUserCircle className="text-gray-500" size={50} />
-        )}
-      </button>
-      <Transition
-        show={dropdownOpen}
-        as="div"
-        className="origin-top-right  absolute top-full ltr:right-0 rtl:left-0 w-96 h-[70vh] min-h-fit bg-gradient-to-b from-gray-50 to-white   py-2 mt-3 ml-4 rounded-3xl shadow-lg"
-        enter="transition ease-out duration-200 transform"
-        enterFrom="opacity-0 -translate-y-2"
-        enterTo="opacity-100 translate-y-0"
-        leave="transition ease-out duration-200"
-        leaveFrom="opacity-100"
-        leaveTo="opacity-0"
-      >
-        <div className=" flex flex-col justify-between  items-center p-2">
-          <div className="text-sm text-gray-600 mb-4">{email}</div>
-          <div className="rounded-full overflow-hidden ">
-            {image ? (
-              <Image
-                src={image}
-                height={80}
-                width={80}
-                alt={name ?? ""}
-              ></Image>
-            ) : (
-              <BiSolidUserCircle size={80} />
-            )}
+        <div className="flex flex-col space-y-4 p-4">
+          <div className="flex items-center justify-center">
+            <Avatar className="h-24 w-24">
+              <AvatarImage src={image ?? ""} alt={name ?? ""} />
+              <AvatarFallback>
+                <UserCircle2 className="h-16 w-16" />
+              </AvatarFallback>
+            </Avatar>
           </div>
-          <div className="mb-20 mt-2">{name}</div>
-          <button
-            onClick={async () => {
-              await signOut({ redirect: false });
-            }}
-            className="btn bg-gray-800 text-white absolute bottom-0 m-3"
-          >
-            Sign Out
-          </button>
+          <div className="flex flex-col items-center space-y-1">
+            <p className="text-xl font-medium">Hi, {name}!</p>
+            <p className="text-sm text-muted-foreground">{email}</p>
+          </div>
+          <Button variant="outline" className="w-full" asChild>
+            <Link href="/user/real">My Real Estates</Link>
+          </Button>{" "}
+          <Button variant="outline" className="w-full" asChild>
+            <Link href="/user/account">Manage your Account</Link>
+          </Button>
         </div>
-      </Transition>
-    </div>
+        <Button
+          variant="ghost"
+          className="w-full justify-start gap-2"
+          onClick={() => signOut({ redirect: false })}
+        >
+          <LogOut className="h-4 w-4" />
+          Sign out
+        </Button>
+
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+          <DropdownMenuLabel className="px-2 py-1.5 text-sm font-normal text-muted-foreground">
+            More options
+          </DropdownMenuLabel>
+          <DropdownMenuItem className="gap-2">
+            <Clock className="h-4 w-4" />
+            My Real Estates
+          </DropdownMenuItem>
+          <DropdownMenuItem className="gap-2">
+            <Bookmark className="h-4 w-4" />
+            Saves & Collections
+          </DropdownMenuItem>
+          <DropdownMenuItem className="gap-2">
+            <Search className="h-4 w-4" />
+            Search personalization
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };
 
