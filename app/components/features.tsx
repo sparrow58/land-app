@@ -14,7 +14,7 @@ const features = [
     description:
       "Take collaboration to the next level with security and administrative features built for teams.",
     icon: ArrowRight,
-    image: "/placeholder.svg?height=400&width=400",
+    image: "/images/3.jpg?height=400&width=400",
   },
   {
     id: 2,
@@ -22,7 +22,7 @@ const features = [
     description:
       "Take collaboration to the next level with security and administrative features built for teams.",
     icon: MoveRight,
-    image: "/placeholder.svg?height=400&width=400",
+    image: "/images/2.jpg?height=400&width=400",
   },
   {
     id: 3,
@@ -30,7 +30,7 @@ const features = [
     description:
       "Take collaboration to the next level with security and administrative features built for teams.",
     icon: ArrowDown,
-    image: "/placeholder.svg?height=400&width=400",
+    image: "/images/1.jpg?height=400&width=400",
   },
 ];
 

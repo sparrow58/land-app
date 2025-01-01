@@ -1,19 +1,28 @@
-// Workspace.js
-import { Form, Formik } from "formik";
-import React, { useContext } from "react";
-import * as yup from "yup";
-import { FormContext } from "./FormStepper";
-import {
-  enumToKeyValues,
-  enumToLocalKeyValues,
-} from "@/app/helpers/converters";
+"use client";
+
+import React from "react";
+import { useFormContext } from "./FormStepper";
 import { AdvisorType, RealEstateType, RentOrSell } from "@prisma/client";
-import TextField from "@/app/components/TextField";
-import SelectField from "@/app/components/SelectField";
-import TexAreaField from "@/app/components/TexAreaField";
-import SubmitButton from "@/app/components/SubmitButton";
+import { enumToLocalKeyValues } from "@/app/helpers/converters";
 import { RealFormLocalProps } from "@/app/Props/CommonProps";
-import ComboBoxField from "@/app/components/ComboboxField";
+import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 function FormStep1({
   t: {
@@ -23,84 +32,148 @@ function FormStep1({
 }: Readonly<{
   t: RealFormLocalProps;
 }>) {
-  const { setActiveStepIndex, formData, setFormData } = useContext(FormContext);
+  const { setActiveStepIndex, form } = useFormContext();
 
-  const validationSchema = yup.object().shape({
-    title: yup
-      .string()
-      .min(5, validations.real.title.min)
-      .required(validations.real.title.required),
-    description: yup
-      .string()
-      .min(10, validations.real.description.min)
-      .required(validations.real.description.required),
-    type: yup.string().min(1).required(validations.real.type.required),
-    rentOrSell: yup.string().required(validations.real.rentOrSell.required),
-    advisorType: yup.string().required(validations.real.advisorType.required),
-  });
+  const onSubmit = (data: any) => {
+    console.log("submit data", data);
+    setActiveStepIndex((prev) => prev + 1);
+  };
 
   return (
     <>
       <div className="max-w-6xlxl mx-auto text-center pb-12 md:pb-20">
-        <h2 className="h2"> Add your real estate!</h2>
+        <h2 className="text-3xl font-bold">Add your real estate!</h2>
       </div>
-      <Formik
-        initialValues={{ ...formData }}
-        validationSchema={validationSchema}
-        onSubmit={(values) => {
-          const data = { ...formData, ...values };
-
-          setFormData?.(data);
-          console.log(data);
-          setActiveStepIndex?.((lastValue) => lastValue + 1);
-        }}
-      >
-        <Form className="flex flex-col justify-center items-center">
-          <TextField
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <FormField
+            control={form.control}
             name="title"
-            label={fields.title.label}
-            type="text"
-            autoFocus
-            placeholder={fields.title.placeholder}
-            fullWidth
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{fields.title.label}</FormLabel>
+                <FormControl>
+                  <Input placeholder={fields.title.placeholder} {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-          <TexAreaField
+          <FormField
+            control={form.control}
             name="description"
-            label={fields.Description.label}
-            placeholder={fields.Description.placeholder}
-            fullWidth
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{fields.Description.label}</FormLabel>
+                <FormControl>
+                  <Textarea
+                    placeholder={fields.Description.placeholder}
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-
-          <SelectField
+          <FormField
+            control={form.control}
             name="type"
-            label={fields.type.label}
-            placeholder={fields.type.placeholder}
-            options={enumToLocalKeyValues(RealEstateType, fields.type.options)}
-            fullWidth
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{fields.type.label}</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder={fields.type.placeholder} />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {enumToLocalKeyValues(
+                      RealEstateType,
+                      fields.type.options
+                    ).map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-          <SelectField
+          <FormField
+            control={form.control}
             name="rentOrSell"
-            options={enumToLocalKeyValues(
-              RentOrSell,
-              fields.rentOrSell.options
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{fields.rentOrSell.label}</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue
+                        placeholder={fields.rentOrSell.placeholder}
+                      />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {enumToLocalKeyValues(
+                      RentOrSell,
+                      fields.rentOrSell.options
+                    ).map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
             )}
-            label={fields.rentOrSell.label}
-            placeholder={fields.rentOrSell.placeholder}
-            fullWidth
           />
-          <SelectField
+          <FormField
+            control={form.control}
             name="advisorType"
-            options={enumToLocalKeyValues(
-              AdvisorType,
-              fields.advisorType.options
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{fields.advisorType.label}</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue
+                        placeholder={fields.advisorType.placeholder}
+                      />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {enumToLocalKeyValues(
+                      AdvisorType,
+                      fields.advisorType.options
+                    ).map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
             )}
-            label={fields.advisorType.label}
-            placeholder={fields.advisorType.placeholder}
-            fullWidth
           />
-          <SubmitButton text="Continue" />
-        </Form>
-      </Formik>
+          <Button type="submit" className="w-full">
+            Continue
+          </Button>
+        </form>
+      </Form>
     </>
   );
 }

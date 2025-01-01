@@ -1,32 +1,25 @@
-// Stepper.js
-import React, { useContext, useEffect } from "react";
-import { FormContext } from "./FormStepper";
+import React from "react";
+import { useFormContext } from "./FormStepper";
 
 function Stepper() {
-  const { activeStepIndex } = useContext(FormContext) || {};
-  useEffect(() => {
-    const stepperItems = document.querySelectorAll(".stepper-item");
-    stepperItems.forEach((step, i) => {
-      if (activeStepIndex && i <= activeStepIndex) {
-        step.classList.add("bg-indigo-500", "text-white");
-      } else {
-        step.classList.remove("bg-indigo-500", "text-white");
-      }
-    });
-  }, [activeStepIndex]);
+  const { activeStepIndex } = useFormContext();
+
   return (
-    <div className="w-full mx-auto flex flex-row items-center justify-between px-32 py-20">
-      <div className="stepper-item w-8 h-8 text-center font-medium border-2 rounded-full">
-        1
-      </div>
-      <div className="flex-auto border-t-2"></div>
-      <div className="stepper-item w-8 h-8 text-center font-medium border-2 rounded-full">
-        2
-      </div>
-      <div className="flex-auto border-t-2"></div>
-      <div className="stepper-item w-8 h-8 text-center font-medium border-2 rounded-full">
-        3
-      </div>
+    <div className="w-full mx-auto flex flex-row items-center justify-between px-4 py-8">
+      {[1, 2, 3].map((step) => (
+        <React.Fragment key={step}>
+          <div
+            className={`w-8 h-8 flex items-center justify-center rounded-full text-sm font-medium ${
+              step <= activeStepIndex + 1
+                ? "bg-primary text-primary-foreground"
+                : "bg-muted text-muted-foreground"
+            }`}
+          >
+            {step}
+          </div>
+          {step < 3 && <div className="flex-auto border-t border-muted" />}
+        </React.Fragment>
+      ))}
     </div>
   );
 }

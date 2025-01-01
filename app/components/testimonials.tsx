@@ -52,8 +52,8 @@ export default function Testimonials() {
             Trusted by over 20,000 companies worldwide
           </h2>
           <p className="text-xl text-muted-foreground">
-            Our clients love our product and the support we provide. Here's what
-            they have to say about us.
+            Our clients love our product and the support we provide. Here&apos;s
+            what they have to say about us.
           </p>
         </motion.div>
 
@@ -92,9 +92,9 @@ export default function Testimonials() {
               <div className="md:w-2/3">
                 <QuoteIcon className="w-12 h-12 text-primary mb-6 mx-auto md:mx-0" />
                 <blockquote className="text-2xl font-medium mb-6">
-                  "I love this product and would recommend it to anyone. Could
-                  not be easier to use, and our multiple websites are wonderful.
-                  We get nice comments all the time."
+                  &ldquo;I love this product and would recommend it to anyone.
+                  Could not be easier to use, and our multiple websites are
+                  wonderful. We get nice comments all the time.&rdquo;
                 </blockquote>
                 <cite className="not-italic">
                   <strong className="font-bold text-lg block">

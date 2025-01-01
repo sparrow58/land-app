@@ -27,7 +27,7 @@ export default async function SignUp({
   return (
     <div className="flex min-h-screen bg-background">
       {/* Left side - Illustration */}
-      <div className="hidden lg:flex lg:w-1/2 relative bg-gradient-to-br from-primary/10 to-secondary/20 dark:from-primary/20 dark:to-secondary/30 overflow-hidden">
+      <div className="hidden lg:flex lg:w-1/2 relative bg-gradient-to-br from-primary/10 to-secondary/20 dark:from-primary/20 dark:to-secondary/30 overflow-hidden rounded-e-md">
         <div className="relative w-full h-full flex flex-col justify-between p-12">
           <div className="z-10">
             <h1 className="text-5xl font-bold mb-4 text-primary">
@@ -54,7 +54,7 @@ export default async function SignUp({
       <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-background/95 backdrop-blur-sm">
         <Card className="w-full max-w-md border-none shadow-none outline-none bg-card/50">
           <CardHeader className="space-y-1">
-            <div className="flex justify-center mb-8">
+            <div className="flex justify-center mb-8 rounded-md">
               <Image
                 src="/images/logo.png"
                 alt="Aqarat Logo"

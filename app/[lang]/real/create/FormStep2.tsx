@@ -1,22 +1,29 @@
-// Basic.js
 "use client";
-import { Form, Formik } from "formik";
-import React, { useContext } from "react";
-import * as yup from "yup";
-import { FormContext } from "./FormStepper";
-import TextField from "@/app/components/TextField";
-import {
-  convertToMeter,
-  enumToKeyValues,
-  enumToLocalKeyValues,
-} from "@/app/helpers/converters";
-import SelectField from "@/app/components/SelectField";
+
+import React from "react";
+import { useFormContext } from "./FormStepper";
 import { OverlookingType, PaymentMethodType } from "@prisma/client";
-import SubmitButton from "@/app/components/SubmitButton";
-import Button from "@/app/components/Button";
-import AreaUnitSelect from "./AreaUnitSelect";
+import { enumToLocalKeyValues } from "@/app/helpers/converters";
 import { RealFormLocalProps } from "@/app/Props/CommonProps";
+import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { AreaOption } from "@/app/dataObjects/RealEstateFormData";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 function FormStep2({
   t: {
@@ -26,120 +33,166 @@ function FormStep2({
 }: Readonly<{
   t: RealFormLocalProps;
 }>) {
-  const { activeStepIndex, setActiveStepIndex, formData, setFormData } =
-    useContext(FormContext);
+  const { setActiveStepIndex, form } = useFormContext();
 
-  const validationSchema = yup.object().shape({
-    overlooking: yup.string().required(validations.real.overlooking.required),
-    price: yup.number().min(1).required(validations.real.price.required),
-    size: yup.string().required(validations.real.size.required),
-    paymentMethod: yup
-      .string()
-      .required(validations.real.paymentMethod.required),
-  });
+  const onSubmit = (data: any) => {
+    console.log(data);
+    setActiveStepIndex((prev) => prev + 1);
+  };
 
-  const handleBack = (values: {}) => {
-    setFormData?.({ ...formData, ...values });
-    setActiveStepIndex?.((i) => i - 1);
+  const handleBack = () => {
+    setActiveStepIndex((prev) => prev - 1);
   };
 
   return (
-    <Formik
-      initialValues={{ ...formData }}
-      validationSchema={validationSchema}
-      onSubmit={(values) => {
-        setFormData?.({ ...formData, ...values });
-
-        setActiveStepIndex?.((i) => i + 1);
-      }}
-    >
-      {({ values, setFieldValue }) => (
-        <Form className="flex flex-col justify-center items-center">
-          <TextField
+    <>
+      <div className="max-w-6xlxl mx-auto text-center pb-12 md:pb-20">
+        <h2 className="text-3xl font-bold">Property Details</h2>
+      </div>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <FormField
+            control={form.control}
             name="size"
-            label={fields.size.label}
-            type="number"
-            autoFocus
-            fullWidth
-            placeholder={`${fields.size.label} ${
-              formData.areaOption === "METER"
-                ? fields.squareMeter.label
-                : fields.lebnah.label
-            } `}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{fields.size.label}</FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    placeholder={fields.size.placeholder}
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-          <AreaUnitSelect
-            areaOption={values.areaOption}
-            onChange={handleUnitChange(setFieldValue, values.size as number)}
-            lebnahLabel={fields.lebnah.label}
-            squarMeterLabel={fields.squareMeter.label}
+          <FormField
+            control={form.control}
+            name="areaOption"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Area Unit</FormLabel>
+                <FormControl>
+                  <RadioGroup
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                    className="flex flex-row space-x-4"
+                  >
+                    <FormItem className="flex items-center space-x-2">
+                      <FormControl>
+                        <RadioGroupItem value={AreaOption.METER} />
+                      </FormControl>
+                      <FormLabel className="font-normal">
+                        {fields.squareMeter.label}
+                      </FormLabel>
+                    </FormItem>
+                    <FormItem className="flex items-center space-x-2">
+                      <FormControl>
+                        <RadioGroupItem value={AreaOption.LEBNAH} />
+                      </FormControl>
+                      <FormLabel className="font-normal">
+                        {fields.lebnah.label}
+                      </FormLabel>
+                    </FormItem>
+                  </RadioGroup>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-          <TextField
+          <FormField
+            control={form.control}
             name="price"
-            label={fields.price.label}
-            type="number"
-            placeholder={fields.price.placeholder}
-            fullWidth
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{fields.price.label}</FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    placeholder={fields.price.placeholder}
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-
-          <SelectField
+          <FormField
+            control={form.control}
             name="overlooking"
-            label={fields.overlooking.label}
-            options={enumToLocalKeyValues(
-              OverlookingType,
-              fields.overlooking.options
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{fields.overlooking.label}</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue
+                        placeholder={fields.overlooking.placeholder}
+                      />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {enumToLocalKeyValues(
+                      OverlookingType,
+                      fields.overlooking.options
+                    ).map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
             )}
-            placeholder={fields.overlooking.placeholder}
-            fullWidth
           />
-
-          <SelectField
+          <FormField
+            control={form.control}
             name="paymentMethod"
-            options={enumToLocalKeyValues(
-              PaymentMethodType,
-              fields.paymentMethod.options
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{fields.paymentMethod.label}</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue
+                        placeholder={fields.paymentMethod.placeholder}
+                      />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {enumToLocalKeyValues(
+                      PaymentMethodType,
+                      fields.paymentMethod.options
+                    ).map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
             )}
-            label={fields.paymentMethod.label}
-            placeholder={fields.paymentMethod.placeholder}
-            fullWidth
           />
           <div className="flex justify-between gap-6">
-            <Button text="Back" onClick={() => handleBack(values)} />
-            <SubmitButton text="Continue" />
+            <Button type="button" variant="outline" onClick={handleBack}>
+              Back
+            </Button>
+            <Button type="submit">Continue</Button>
           </div>
-        </Form>
-      )}
-    </Formik>
+        </form>
+      </Form>
+    </>
   );
-
-  function handleUnitChange(
-    setFieldValue: (field: string, value: any) => Promise<any>,
-    size?: number
-  ): (value: AreaOption) => void {
-    const handleLebnahChange = () => {
-      setFieldValue("areaOption", "LEBNAH");
-      if (size) {
-        const convertedSize = size / 44.44;
-        setFieldValue("size", Math.round(convertedSize * 100) / 100);
-      }
-    };
-
-    const handleMeterChange = () => {
-      setFieldValue("areaOption", "METER");
-      if (size) {
-        const convertedSize = convertToMeter(size);
-        setFieldValue("size", convertedSize);
-      }
-    };
-
-    return (value) => {
-      console.log("value changed", value);
-      if (value === "LEBNAH") {
-        handleLebnahChange();
-      } else if (value === "METER") {
-        handleMeterChange();
-      }
-    };
-  }
 }
 
 export default FormStep2;
