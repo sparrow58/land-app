@@ -19,6 +19,7 @@ import { Input } from "@/components/ui/input";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 import useSignIn from "@/app/hooks/user/useSignIn";
+import Link from "next/link";
 
 const formSchema = z.object({
   email: z.string().email({
@@ -95,15 +96,15 @@ export default function SignInForm({ t }: Props) {
                   />
                   <Button
                     type="button"
-                    variant="destructive"
+                    variant="ghost"
                     size="sm"
                     className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
                     onClick={() => setShowPassword(!showPassword)}
                   >
                     {showPassword ? (
-                      <EyeOffIcon className="h-4 w-4" />
+                      <EyeOffIcon className="h-4 w-4 text-muted-foreground" />
                     ) : (
-                      <EyeIcon className="h-4 w-4" />
+                      <EyeIcon className="h-4 w-4 text-muted-foreground" />
                     )}
                   </Button>
                 </div>
@@ -112,23 +113,31 @@ export default function SignInForm({ t }: Props) {
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="rememberMe"
-          render={({ field }) => (
-            <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-              <FormControl>
-                <Checkbox
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                />
-              </FormControl>
-              <div className="space-y-1 leading-none">
-                <FormLabel>{t.remember_me}</FormLabel>
-              </div>
-            </FormItem>
-          )}
-        />
+        <div className="flex items-center justify-between">
+          <FormField
+            control={form.control}
+            name="rememberMe"
+            render={({ field }) => (
+              <FormItem className="flex flex-row items-start space-x-2">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+                <div className="space-y-1 leading-none">
+                  <FormLabel>{t.remember_me}</FormLabel>
+                </div>
+              </FormItem>
+            )}
+          />
+          <Link
+            href="/forgot-password"
+            className="text-sm font-medium text-primary hover:underline"
+          >
+            {t.forgot_password}
+          </Link>
+        </div>
         {error && (
           <Alert variant="destructive">
             <AlertDescription>{error}</AlertDescription>

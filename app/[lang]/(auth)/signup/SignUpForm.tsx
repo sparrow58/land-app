@@ -1,10 +1,20 @@
 "use client";
-import SubmitButton from "@/app/components/SubmitButton";
-import TextField from "@/app/components/TextField";
+
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import useCreateUser from "@/app/hooks/user/useCreateUser";
-import useSignIn from "@/app/hooks/user/useSignIn";
-import { Form, Formik } from "formik";
-import * as yup from "yup";
 
 export interface SignUpProps {
   t: {
@@ -19,6 +29,7 @@ export interface SignUpProps {
     invalid_credentials: string;
   };
 }
+
 interface Errors {
   passwordComplex: string;
   password: string;
@@ -28,93 +39,101 @@ interface Errors {
   nameLong: string;
   validEmail: string;
 }
+
 const SignUpForm = ({ t }: SignUpProps) => {
-  const passwordRules =
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&;'*])(?=.{5,})/;
-  const validationSchema = yup.object().shape({
-    name: yup
+  const [isLoading, setIsLoading] = useState(false);
+
+  const formSchema = z.object({
+    name: z.string().min(3, t.errors.nameShort).max(100, t.errors.nameLong),
+    email: z.string().email(t.errors.validEmail),
+    password: z
       .string()
-      .trim()
-      .min(3, t.errors.nameShort)
-      .max(100, t.errors.nameLong)
-      .required(t.errors.name),
-    email: yup.string().email(t.errors.validEmail).required(t.errors.email),
-    password: yup
-      .string()
-      .trim()
       .min(4, t.errors.password)
-      .matches(passwordRules, t.errors.passwordComplex)
-      .required(t.errors.password),
+      .regex(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&;'*])(?=.{5,})/,
+        t.errors.passwordComplex
+      ),
   });
 
-  const {
-    create,
-    error: signUpErrors,
-    isLoading,
-  } = useCreateUser({
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+    },
+  });
+
+  const { create, error: signUpErrors } = useCreateUser({
     onSuccess: (result) => {
       console.log("userCreated", result);
+      setIsLoading(false);
     },
     onFailure: (errors) => {
       console.log("error creating user", errors);
+      setIsLoading(false);
+      if (errors?.error?.field === "email") {
+        form.setError("email", { message: errors.error.message });
+      }
     },
   });
 
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsLoading(true);
+    create(values);
+  }
+
   return (
-    <Formik
-      initialValues={{ name: "", email: "", password: "" }}
-      validationSchema={validationSchema}
-      onSubmit={(values) => {
-        console.log(values);
-        create(values);
-      }}
-    >
-      {({ setErrors }) => {
-        if (signUpErrors?.error?.field === "email") {
-          setErrors({ email: signUpErrors.error.message });
-        }
-
-        return (
-          <Form>
-            <TextField
-              name="name"
-              label={t.name}
-              placeholder={t.enter_name}
-              required
-              autoFocus
-            />
-
-            <TextField
-              name="email"
-              label={t.email}
-              placeholder={t.enter_email}
-              required
-            />
-            <TextField
-              name="password"
-              label={t.password}
-              type="password"
-              placeholder={t.enter_password}
-              required
-            />
-
-            <SubmitButton text={t.sign_up} fullWidth disabled={isLoading} />
-
-            {/* <div className="text-sm text-gray-500 text-center mt-3">
-            By creating an account, you agree to the{" "}
-            <a className="underline" href="#0">
-            terms & conditions
-            </a>
-            , and our{" "}
-            <a className="underline" href="#0">
-            privacy policy
-            </a>
-            .
-          </div> */}
-          </Form>
-        );
-      }}
-    </Formik>
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>{t.name}</FormLabel>
+              <FormControl>
+                <Input placeholder={t.enter_name} {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>{t.email}</FormLabel>
+              <FormControl>
+                <Input placeholder={t.enter_email} {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>{t.password}</FormLabel>
+              <FormControl>
+                <Input
+                  type="password"
+                  placeholder={t.enter_password}
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button type="submit" className="w-full" disabled={isLoading}>
+          {isLoading ? "Loading..." : t.sign_up}
+        </Button>
+      </form>
+    </Form>
   );
 };
 
