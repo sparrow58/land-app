@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { RealEstateFormData } from "@/app/dataObjects/RealEstateFormData";
 import api from "@/app/helpers/api";
 import { ApiEvents } from "@/app/Props/CommonProps";
 import { CreateResult } from "@/app/dataObjects/Generics";
+import { RealEstateFormData } from "@/app/fromSchemas/realEstateFormSchema";
 
 const useCreateRealEstate = ({
   onSuccess,
@@ -14,7 +14,7 @@ const useCreateRealEstate = ({
   const [error, setError] = useState<any>(null);
   const [responseData, setResponseData] = useState<any>(null);
 
-  const create = (data: RealEstateFormData | {}) => {
+  const create = (data: RealEstateFormData) => {
     setIsLoading(true);
     setError(null);
     setResponseData(null);

@@ -1,7 +1,4 @@
-import {
-  Details,
-  RealEstateFormData,
-} from "@/app/dataObjects/RealEstateFormData";
+import { Details } from "@/app/dataObjects/RealEstateFormData";
 import {
   AdvisorType,
   OverlookingType,

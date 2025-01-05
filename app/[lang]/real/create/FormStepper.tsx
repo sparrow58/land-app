@@ -8,10 +8,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import Stepper from "./Stepper";
 import Step from "./Step";
 import { RealFormLocalProps } from "@/app/Props/CommonProps";
-import {
-  AreaOption,
-  RealEstateFormData,
-} from "@/app/dataObjects/RealEstateFormData";
+import { AreaOption } from "@/app/dataObjects/RealEstateFormData";
 
 const formSchema = z.object({
   id: z.string().optional(),
@@ -19,8 +16,8 @@ const formSchema = z.object({
   description: z.string().min(10, "Description must be at least 10 characters"),
   type: z.string().min(1, "Type is required"),
   overlooking: z.string(),
-  price: z.string().min(1, "Price is required"),
-  size: z.string().min(1, "Size is required"),
+  price: z.number().min(1, "Price is required"),
+  size: z.number().min(1, "Size is required"),
   paymentMethod: z.string(),
   rentOrSell: z.string(),
   advisorType: z.string(),
@@ -57,7 +54,7 @@ export const useFormContext = () => {
 };
 
 interface Props {
-  data?: RealEstateFormData;
+  data?: FormData;
   t: RealFormLocalProps;
 }
 
@@ -73,8 +70,8 @@ export const FormStepper = ({ data, t }: Props) => {
           description: data.description,
           type: data.type,
           overlooking: data.overlooking,
-          price: data.price.toString(),
-          size: data.size.toString(),
+          price: data.price,
+          size: data.size,
           paymentMethod: data.paymentMethod,
           rentOrSell: data.rentOrSell,
           advisorType: data.advisorType,
@@ -100,8 +97,8 @@ export const FormStepper = ({ data, t }: Props) => {
           description: "",
           type: "",
           overlooking: "",
-          price: "",
-          size: "",
+          price: 0,
+          size: 0,
           paymentMethod: "",
           rentOrSell: "",
           advisorType: "",

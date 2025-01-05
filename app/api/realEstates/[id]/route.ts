@@ -1,6 +1,7 @@
-import { RealEstateFormData } from "./../../../dataObjects/RealEstateFormData";
+import { RealEstateFormData } from "@/app/fromSchemas/realEstateFormSchema";
 import { updateRealEstate } from "@/app/services/reatState/createService";
 import { deleteRealEstate } from "@/app/services/reatState/deleteService";
+import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 interface Props {
   params: {
@@ -15,11 +16,15 @@ export async function DELETE(request: Request, { params }: Props) {
   return NextResponse.json({ seccuss: false }, { status: 404 });
 }
 export async function PUT(req: NextRequest, { params }: Props) {
+  const token = await getToken({ req: req });
+  if (!token) {
+    return NextResponse.error();
+  }
   const data: RealEstateFormData = await req.json();
 
   console.log("params", params);
   console.log("updating item", params.id);
-  const result = await updateRealEstate(data);
+  const result = await updateRealEstate(data, token.id);
   const response = { message: "updated", data: result, id: result.id };
   return NextResponse.json(response);
 }

@@ -26,7 +26,6 @@ const EditImages = ({ realEstateId, exImages }: Props) => {
   const [selectedUrl, setSelectedUrl] = useState<string>("");
   const [isLoading, setLoading] = useState(false);
   const router = useRouter();
-  const imageCursorRef = useRef(allImages.length - 1);
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -35,6 +34,56 @@ const EditImages = ({ realEstateId, exImages }: Props) => {
   const isFinishedUploading = allImages.every((image) => image.isDone);
 
   const isAnyImage = allImages.length > 0;
+
+  console.log("allImages", allImages);
+  console.log(
+    "isFinishedUploading",
+    isFinishedUploading,
+    "isAnyImage",
+    isAnyImage
+  );
+  function handleSuccessImageUpload({
+    name,
+    data,
+  }: {
+    name: string;
+    data: any;
+  }) {
+    const toastId = toastIds.current.find((id) => id === name);
+
+    if (toastId) {
+      toast.update(toastId, { icon: true });
+      toast.dismiss(toastId);
+    } else {
+      toast.error("Toast undefined");
+    }
+
+    console.log("Response", data);
+
+    setAllImages((prev) => {
+      console.log("Searching", name, "from", prev);
+
+      const updatedImages = prev.map((item) => {
+        if (item.file?.name === name) {
+          console.log("Image found", item, "processing...", "data", data);
+          return {
+            ...item,
+            url: data.data.url,
+            isDone: true,
+            file: null,
+          };
+        }
+        return item;
+      });
+      // Reorder images to move updated item to the appropriate position
+      const completedImages = updatedImages.filter((item) => item.isDone);
+      const pendingImages = updatedImages.filter((item) => !item.isDone);
+      const reorderedImages = [...completedImages, ...pendingImages];
+
+      console.log("Returning reordered images", reorderedImages);
+      return reorderedImages;
+    });
+  }
 
   const readFilesAsync = async (fileList: FileList) => {
     const files: FileProps[] = [];
@@ -89,7 +138,6 @@ const EditImages = ({ realEstateId, exImages }: Props) => {
         console.log("deleted response", data);
         setAllImages((prev) => prev.filter((i) => i.url !== data.url));
         handleCloseConfirmation();
-        imageCursorRef.current -= 1;
         setLoading(false);
       },
       onFailure: (error) => {
@@ -149,11 +197,7 @@ const EditImages = ({ realEstateId, exImages }: Props) => {
         id: realEstateId,
         selectedFile: images[i].file as File,
         onUplading: handelUploading,
-        onSuccess: handleSuccessImageUpload(
-          toastIds,
-          setAllImages,
-          imageCursorRef
-        ),
+        onSuccess: handleSuccessImageUpload,
         onFailure: (error) => {},
       });
     }
@@ -260,45 +304,3 @@ const EditImages = ({ realEstateId, exImages }: Props) => {
 };
 
 export default EditImages;
-function handleSuccessImageUpload(
-  toastIds: React.MutableRefObject<string[]>,
-  setAllImages: React.Dispatch<React.SetStateAction<FileProps[]>>,
-  imageCursorRef: React.MutableRefObject<number>
-): ({ name, data }: { name: string; data: any }) => void {
-  return ({ name, data: { data } }) => {
-    const toastId = toastIds.current.find((id) => id === name);
-    if (toastId) toast.update(toastId, { icon: true });
-    if (toastId) toast.dismiss(toastId);
-    else toast.error("toast undefiend");
-    console.log("response", data);
-    setAllImages((prev) => {
-      const updatedItem = prev.find((item) => item.file?.name === name);
-
-      if (updatedItem) {
-        prev = prev.filter((item) => item !== updatedItem);
-        updatedItem.url = data.url;
-        updatedItem.isDone = true;
-
-        console.log(
-          "adding ",
-          updatedItem.file!.name,
-          imageCursorRef.current + 1
-        );
-        updatedItem.file = null;
-
-        if (imageCursorRef.current === -1) {
-          // If there's no item with isDone === true, move the updated item to the beginning
-          console.log("no image in the begining");
-          prev.unshift(updatedItem);
-        } else {
-          // Otherwise, move it next to the latest item with isDone === true
-          prev.splice(imageCursorRef.current + 1, 0, updatedItem);
-        }
-        imageCursorRef.current += 1;
-      } else {
-        console.log("not found", updatedItem);
-      }
-      return prev;
-    });
-  };
-}

@@ -25,10 +25,7 @@ import {
 } from "@/components/ui/select";
 
 function FormStep1({
-  t: {
-    validations,
-    real: { fields },
-  },
+  t,
 }: Readonly<{
   t: RealFormLocalProps;
 }>) {
@@ -51,9 +48,12 @@ function FormStep1({
             name="title"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>{fields.title.label}</FormLabel>
+                <FormLabel>{t.real.fields.title.label}</FormLabel>
                 <FormControl>
-                  <Input placeholder={fields.title.placeholder} {...field} />
+                  <Input
+                    placeholder={t.real.fields.title.placeholder}
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -64,10 +64,10 @@ function FormStep1({
             name="description"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>{fields.Description.label}</FormLabel>
+                <FormLabel>{t.real.fields.Description.label}</FormLabel>
                 <FormControl>
                   <Textarea
-                    placeholder={fields.Description.placeholder}
+                    placeholder={t.real.fields.Description.placeholder}
                     {...field}
                   />
                 </FormControl>
@@ -80,20 +80,22 @@ function FormStep1({
             name="type"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>{fields.type.label}</FormLabel>
+                <FormLabel>{t.real.fields.type.label}</FormLabel>
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
                 >
                   <FormControl>
                     <SelectTrigger>
-                      <SelectValue placeholder={fields.type.placeholder} />
+                      <SelectValue
+                        placeholder={t.real.fields.type.placeholder}
+                      />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
                     {enumToLocalKeyValues(
                       RealEstateType,
-                      fields.type.options
+                      t.real.fields.type.options
                     ).map((option) => (
                       <SelectItem key={option.value} value={option.value}>
                         {option.label}
@@ -110,7 +112,7 @@ function FormStep1({
             name="rentOrSell"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>{fields.rentOrSell.label}</FormLabel>
+                <FormLabel>{t.real.fields.rentOrSell.label}</FormLabel>
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
@@ -118,14 +120,14 @@ function FormStep1({
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue
-                        placeholder={fields.rentOrSell.placeholder}
+                        placeholder={t.real.fields.rentOrSell.placeholder}
                       />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
                     {enumToLocalKeyValues(
                       RentOrSell,
-                      fields.rentOrSell.options
+                      t.real.fields.rentOrSell.options
                     ).map((option) => (
                       <SelectItem key={option.value} value={option.value}>
                         {option.label}
@@ -142,7 +144,7 @@ function FormStep1({
             name="advisorType"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>{fields.advisorType.label}</FormLabel>
+                <FormLabel>{t.real.fields.advisorType.label}</FormLabel>
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
@@ -150,14 +152,14 @@ function FormStep1({
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue
-                        placeholder={fields.advisorType.placeholder}
+                        placeholder={t.real.fields.advisorType.placeholder}
                       />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
                     {enumToLocalKeyValues(
                       AdvisorType,
-                      fields.advisorType.options
+                      t.real.fields.advisorType.options
                     ).map((option) => (
                       <SelectItem key={option.value} value={option.value}>
                         {option.label}

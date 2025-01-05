@@ -415,6 +415,13 @@
           "label": "الوصف",
           "placeholder": "قم بوصف العقار..."
         },
+        "unitOfmeasure": {
+          "label": "وحدة القياس",
+          "options": {
+            "meter": "متر مربع",
+            "lebnah": "لبنة"
+          }
+        },
         "type": {
           "label": "نوع العقار",
           "placeholder": "حدد نوع العقار",

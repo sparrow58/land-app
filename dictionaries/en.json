@@ -455,6 +455,14 @@
           "label": "Description",
           "placeholder": "Descripe your real estate..."
         },
+        "unitOfmeasure": {
+          "label": "Unit of measurment",
+          "placeholder": "Select",
+          "options": {
+            "meter": "Square Meters",
+            "lebnah": "Lebnah"
+          }
+        },
         "type": {
           "label": "Type",
           "placeholder": "Select Real Estate Type",

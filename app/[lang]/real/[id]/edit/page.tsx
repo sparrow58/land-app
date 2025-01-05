@@ -1,10 +1,7 @@
 import React from "react";
-import { FormStepper } from "../../create/FormStepper";
+import { FormData, FormStepper } from "../../create/FormStepper";
 import { getRealEstate } from "@/app/services/reatState/getService";
-import {
-  AreaOption,
-  RealEstateFormData,
-} from "@/app/dataObjects/RealEstateFormData";
+import { AreaOption } from "@/app/dataObjects/RealEstateFormData";
 import { AdvisorType } from "@prisma/client";
 import { getDictionary } from "@/lib/dictionary";
 import { LangParams } from "@/app/Props/RoutingProps";
@@ -21,7 +18,7 @@ const page = async ({ params: { id, lang } }: Props & LangParams) => {
 
   console.log("data", data);
   if (data) {
-    const mapped: RealEstateFormData = {
+    const mapped: FormData = {
       id: data.id,
       title: data.title,
       description: data.description,

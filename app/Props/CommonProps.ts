@@ -58,6 +58,7 @@ export interface RealFormLocalProps {
       numberOfFloors: FieldLocalProps;
       numberOfRooms: FieldLocalProps;
       numberOfBathRooms: FieldLocalProps;
+      unitOfmeasure: SelectLocalProps;
       finalizationType: SelectLocalProps;
       onMarketType: SelectLocalProps;
       yearOfDelivery: FieldLocalProps;

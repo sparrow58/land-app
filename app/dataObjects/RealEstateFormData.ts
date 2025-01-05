@@ -1,32 +1,5 @@
-import {
-  AdvisorType,
-  OverlookingType,
-  PaymentMethodType,
-  RealEstateType,
-  RentOrSell,
-} from "@prisma/client";
+//todo to be all deleted
 
-export interface RealEstateStep1Data {
-  id?: string;
-  title: string;
-  description: string;
-  type: RealEstateType | "";
-  price: number | "";
-  advisorType: AdvisorType | "";
-}
-
-export interface RealEstateStep2Data {
-  size: number | "";
-  overlooking: OverlookingType | "";
-  paymentMethod: PaymentMethodType | "";
-  rentOrSell: RentOrSell | "";
-  areaOption: AreaOption;
-}
-
-export interface RealEstateStep3Data {
-  paymentMethod: PaymentMethodType | "";
-  rentOrSell: RentOrSell | "";
-}
 export interface Details {
   floor?: number | "";
   numberOfFloors?: number | "";
@@ -39,10 +12,6 @@ export interface Details {
   endowmentType?: EndowmentType | ""; // sell
 }
 
-export type RealEstateFormData = RealEstateStep1Data &
-  RealEstateStep2Data & {
-    details: Details;
-  };
 export enum AreaOption {
   METER = "METER",
   LEBNAH = "LEBNAH",

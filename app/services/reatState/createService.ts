@@ -1,4 +1,4 @@
-import { RealEstateFormData } from "@/app/dataObjects/RealEstateFormData";
+import { RealEstateFormData } from "@/app/fromSchemas/realEstateFormSchema";
 import { convertToMeter as FromLebnahtToMeter } from "@/app/helpers/converters";
 import prisma from "@/lib/prisma";
 import {
@@ -9,32 +9,35 @@ import {
   RentOrSell,
 } from "@prisma/client";
 
-export function createRealEstateAsync(data: RealEstateFormData) {
+export function createRealEstateAsync(
+  data: RealEstateFormData,
+  userId: string
+) {
   console.log("not mapped data", data);
   return prisma.realEstate.create({
-    data: mapData(data),
+    data: mapData(data, userId),
   });
 }
 
-export function updateRealEstate(data: RealEstateFormData) {
+export function updateRealEstate(data: RealEstateFormData, userId: string) {
   console.log("not mapped data", data);
   return prisma.realEstate.update({
     where: { id: data.id },
-    data: mapData(data),
+    data: mapData(data, userId),
   });
 }
 
-function mapData(data: RealEstateFormData) {
+function mapData(data: RealEstateFormData, userId: string) {
   return {
     title: data.title,
     description: data.description,
-    price: data.price as number,
+    price: data.price,
     size:
       data.areaOption === "LEBNAH"
         ? FromLebnahtToMeter(data.size as number)
-        : (data.size as number),
+        : data.size,
     advisorType: data.advisorType as AdvisorType,
-    userId: "clmjhsx490000ac7g03dkr0zf",
+    userId: userId,
     type: data.type as RealEstateType,
     paymentMethod: data.paymentMethod as PaymentMethodType,
     rentOrSell: data.rentOrSell as RentOrSell,
