@@ -1,4 +1,5 @@
 "use client";
+import "react-toastify/dist/ReactToastify.css";
 
 import { useState } from "react";
 import { useForm, FormProvider } from "react-hook-form";
@@ -30,24 +31,34 @@ const steps = ["Basic Info", "Details", "Advisor"];
 
 interface Props {
   t: RealFormLocalProps;
+  data?: RealEstateFormData;
 }
-export function CreateRealEstateItem({ t }: Props) {
+export function CreateRealEstateItem({ t, data }: Props) {
   const [currentStep, setCurrentStep] = useState(0);
   const router = useRouter();
   const methods = useForm<RealEstateFormData>({
     resolver: zodResolver(realEstateSchema),
     mode: "onChange",
-    defaultValues: {
-      areaOption: AreaOption.LEBNAH,
-    },
+    defaultValues: data
+      ? {
+          ...data,
+          areaOption: AreaOption.METER,
+        }
+      : {
+          title: "",
+          description: "",
+          price: 0,
+          size: 0,
+          areaOption: AreaOption.LEBNAH,
+        },
   });
   const { create, update, isLoading } = useCreateRealEstate({
     onSuccess: (response) => {
-      console.log("created");
       toast.success("Created");
       const id = methods.getValues("id");
       if (id) {
         router.replace(`/real/${response.id}`);
+        router.refresh();
       } else {
         router.replace(`/real/${response.id}/edit/images`);
       }
@@ -63,23 +74,17 @@ export function CreateRealEstateItem({ t }: Props) {
     trigger,
     formState: { errors },
   } = methods;
-  console.log("errors", errors);
-  console.log("data", methods.getValues());
 
   const onSubmit = async (data: RealEstateFormData) => {
-    console.log("submitting...");
     const isValid = await trigger();
 
     if (isValid) {
-      console.log("on submit data", data);
       if (data.id) {
         update(data);
       } else {
         create(data);
       }
       // Here you would typically send the data to your backend
-    } else {
-      console.log("data not valid");
     }
   };
 
@@ -107,7 +112,6 @@ export function CreateRealEstateItem({ t }: Props) {
   const handlePrevious = () => {
     setCurrentStep((prev) => Math.max(prev - 1, 0));
   };
-
   return (
     <FormProvider {...methods}>
       <Card className="w-full max-w-2xl mx-auto">

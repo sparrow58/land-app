@@ -64,7 +64,7 @@ const SignUpForm = ({ t }: SignUpProps) => {
     },
   });
 
-  const { create, error: signUpErrors } = useCreateUser({
+  const { create, error: _signUpErrors } = useCreateUser({
     onSuccess: (result) => {
       console.log("userCreated", result);
       setIsLoading(false);

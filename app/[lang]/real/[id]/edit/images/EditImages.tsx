@@ -35,13 +35,6 @@ const EditImages = ({ realEstateId, exImages }: Props) => {
 
   const isAnyImage = allImages.length > 0;
 
-  console.log("allImages", allImages);
-  console.log(
-    "isFinishedUploading",
-    isFinishedUploading,
-    "isAnyImage",
-    isAnyImage
-  );
   function handleSuccessImageUpload({
     name,
     data,
@@ -58,14 +51,9 @@ const EditImages = ({ realEstateId, exImages }: Props) => {
       toast.error("Toast undefined");
     }
 
-    console.log("Response", data);
-
     setAllImages((prev) => {
-      console.log("Searching", name, "from", prev);
-
       const updatedImages = prev.map((item) => {
         if (item.file?.name === name) {
-          console.log("Image found", item, "processing...", "data", data);
           return {
             ...item,
             url: data.data.url,
@@ -80,7 +68,6 @@ const EditImages = ({ realEstateId, exImages }: Props) => {
       const pendingImages = updatedImages.filter((item) => !item.isDone);
       const reorderedImages = [...completedImages, ...pendingImages];
 
-      console.log("Returning reordered images", reorderedImages);
       return reorderedImages;
     });
   }
@@ -131,11 +118,9 @@ const EditImages = ({ realEstateId, exImages }: Props) => {
   const handleConfirm = () => {
     // Handle confirmation logic here
     // For example, delete an item
-    console.log("Confirmed");
     setLoading(true);
     deleteImage(realEstateId, selectedUrl, {
       onSuccess: (data) => {
-        console.log("deleted response", data);
         setAllImages((prev) => prev.filter((i) => i.url !== data.url));
         handleCloseConfirmation();
         setLoading(false);
@@ -156,7 +141,6 @@ const EditImages = ({ realEstateId, exImages }: Props) => {
         params: { url: url },
       })
       .then((response) => {
-        console.log("ok", response);
         if (response.data.success === true && onSuccess) {
           onSuccess(response.data.data);
         }
@@ -167,7 +151,6 @@ const EditImages = ({ realEstateId, exImages }: Props) => {
   }
 
   function handleDeleteImage(url: string) {
-    console.log("deleting url");
     setSelectedUrl(url);
     setPopupOpen(true);
   }
@@ -203,7 +186,6 @@ const EditImages = ({ realEstateId, exImages }: Props) => {
     }
   }
   const handleImageChanged = async (e: ChangeEvent<HTMLInputElement>) => {
-    console.log("uploading");
     const files = e.target.files;
     if (files && allImages.length + files.length > 6) {
       toast.error("you can't upload more than 6 images", {

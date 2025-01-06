@@ -13,14 +13,12 @@ export function createRealEstateAsync(
   data: RealEstateFormData,
   userId: string
 ) {
-  console.log("not mapped data", data);
   return prisma.realEstate.create({
     data: mapData(data, userId),
   });
 }
 
 export function updateRealEstate(data: RealEstateFormData, userId: string) {
-  console.log("not mapped data", data);
   return prisma.realEstate.update({
     where: { id: data.id },
     data: mapData(data, userId),

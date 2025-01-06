@@ -1,7 +1,5 @@
 import getImagesService from "@/app/services/reatState/getImagesService";
 import { NextRequest, NextResponse } from "next/server";
-import { join } from "path";
-import { uploadFile } from "@/app/helpers/uploadHelper";
 import { addRealEstateImageUrlAsync } from "@/app/services/reatState/createService";
 import { del, put } from "@vercel/blob";
 import deleteImageAsync from "@/app/services/reatState/deleteImageService";
@@ -26,8 +24,7 @@ export async function PATCH(req: NextRequest, { params: { id } }: Props) {
   // const imageUrl = join(req.nextUrl.origin, relativePath);
 
   const imageUrl = blob.url;
-  console.log("adding image", file.name);
-  const updated = await addRealEstateImageUrlAsync(id, imageUrl);
+  await addRealEstateImageUrlAsync(id, imageUrl);
 
   return NextResponse.json({
     success: true,
@@ -35,9 +32,8 @@ export async function PATCH(req: NextRequest, { params: { id } }: Props) {
   });
 }
 
-export async function GET(req: NextRequest, { params: { id } }: Props) {
+export async function GET(_req: NextRequest, { params: { id } }: Props) {
   const data = await getImagesService(id);
-  //console.log("returning images", data);
   if (data) {
     const response: ApiResponse<string[]> = {
       success: true,
@@ -59,7 +55,7 @@ export async function DELETE(request: Request, { params: { id } }: Props) {
         { status: 200 }
       );
     } else {
-      console.log("no image found");
+      console.error("no image found");
       return NextResponse.json({ success: false }, { status: 404 });
     }
   }

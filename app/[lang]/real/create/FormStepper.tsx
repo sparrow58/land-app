@@ -62,34 +62,23 @@ export const FormStepper = ({ data, t }: Props) => {
   const [activeStepIndex, setActiveStepIndex] = useState(0);
 
   const form = useForm<FormData>({
-    // resolver: zodResolver(formSchema),
+    resolver: zodResolver(formSchema),
     defaultValues: data
       ? {
-          id: data.id,
-          title: data.title,
-          description: data.description,
-          type: data.type,
-          overlooking: data.overlooking,
-          price: data.price,
-          size: data.size,
-          paymentMethod: data.paymentMethod,
-          rentOrSell: data.rentOrSell,
-          advisorType: data.advisorType,
-          areaOption: data.areaOption,
-          details: {
-            floor: data.details.floor?.toString() || undefined,
-            endowmentType: data.details.endowmentType || undefined,
-            yearOfDelivery:
-              data.details.yearOfDelivery?.toString() || undefined,
-            finalizationType: data.details.finalizationType || undefined,
-            onMarketType: data.details.onMarketType || undefined,
-            numberOfBathRooms:
-              data.details.numberOfBathRooms?.toString() || undefined,
-            numberOfFloors:
-              data.details.numberOfFloors?.toString() || undefined,
-            numberOfRooms: data.details.numberOfRooms?.toString() || undefined,
-            rentType: data.details.rentType || undefined,
-          },
+          ...data,
+
+          // id: data.id,
+          // title: data.title,
+          // description: data.description,
+          // type: data.type,
+          // overlooking: data.overlooking,
+          // price: data.price,
+          // size: data.size,
+          // paymentMethod: data.paymentMethod,
+          // rentOrSell: data.rentOrSell,
+          // advisorType: data.advisorType,
+          // areaOption: data.areaOption,
+          // details: data.details
         }
       : {
           id: undefined,

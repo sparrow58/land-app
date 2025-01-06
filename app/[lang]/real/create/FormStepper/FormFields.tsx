@@ -20,6 +20,13 @@ import { cn } from "@/lib/utils";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import { format } from "date-fns";
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 
 interface FieldProps {
   name: string;
@@ -99,27 +106,71 @@ export function TextField({
   placeholder,
   autoFocus = false,
   type = "text",
+  onChanged,
 }: TextFieldProps) {
   const {
-    register,
+    control,
     formState: { errors },
   } = useFormContext();
 
   return (
     <div className="space-y-2 flex-1">
+      {/* <FormField
+        control={control}
+        name={name}
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>{label}</FormLabel>
+            <FormControl>
+              <Input type={type} placeholder={placeholder} {...field} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      /> */}
       <Label htmlFor={name}>{label}</Label>
-      <Input
-        id={name}
-        type={type}
-        placeholder={placeholder}
-        autoFocus={autoFocus}
-        {...register(name, { valueAsNumber: type === "number" })}
+      <Controller
+        name={name}
+        control={control}
+        render={({ field }) => (
+          <Input
+            {...field}
+            type={type}
+            id={name}
+            autoFocus={autoFocus}
+            placeholder={placeholder}
+            onChange={(e) => {
+              field.onChange(
+                type === "number"
+                  ? e.target.value
+                    ? Number(e.target.value)
+                    : undefined
+                  : e.target.value
+              );
+              onChanged && onChanged(e);
+            }}
+            className="mt-2"
+          />
+        )}
       />
       {errors[name] && (
         <p className="text-sm text-red-500">
           {errors[name]?.message as string}
         </p>
       )}
+      {/* <Input
+        id={name}
+        type={type}
+        placeholder={placeholder}
+        autoFocus={autoFocus}
+        defaultValue={999}
+        {...register(name, { valueAsNumber: type === "number" })}
+      />
+      {errors[name] && (
+        <p className="text-sm text-red-500">
+          {errors[name]?.message as string}
+        </p>
+      )} */}
     </div>
   );
 }

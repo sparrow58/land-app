@@ -14,10 +14,7 @@ interface Props {
   t: RealFormLocalProps;
 }
 export function Step2({ t }: Props) {
-  const { watch, setValue, getValues } = useFormContext<RealEstateFormData>();
-
-  // const sizeUnit = watch("sizeUnit");
-  // const size = watch("size");
+  const { setValue, getValues } = useFormContext<RealEstateFormData>();
 
   function handleUnitChange(sizeUnit: AreaOption): void {
     const size = getValues("size");

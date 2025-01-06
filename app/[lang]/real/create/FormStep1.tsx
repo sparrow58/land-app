@@ -32,7 +32,6 @@ function FormStep1({
   const { setActiveStepIndex, form } = useFormContext();
 
   const onSubmit = (data: any) => {
-    console.log("submit data", data);
     setActiveStepIndex((prev) => prev + 1);
   };
 

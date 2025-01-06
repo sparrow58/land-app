@@ -5,7 +5,6 @@ export async function uploadFile(file: File, folder: string) {
   const bytes = await file.arrayBuffer();
   const buffer = Buffer.from(bytes);
   const filename = Date.now() + file.name.replaceAll(" ", "_");
-  console.log(filename);
   const relativeDirectory = join("uploads", folder);
 
   const relativeFilePath = join(relativeDirectory, filename);
@@ -18,7 +17,6 @@ export async function uploadFile(file: File, folder: string) {
     await mkdir(absoluteDirctory);
   }
   await writeFile(absolutFilePath, buffer);
-  console.log("File path", absolutFilePath);
 
   return { relativePath: relativeFilePath };
 }

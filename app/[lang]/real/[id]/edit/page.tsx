@@ -1,10 +1,13 @@
 import React from "react";
-import { FormData, FormStepper } from "../../create/FormStepper";
 import { getRealEstate } from "@/app/services/reatState/getService";
-import { AreaOption } from "@/app/dataObjects/RealEstateFormData";
 import { AdvisorType } from "@prisma/client";
 import { getDictionary } from "@/lib/dictionary";
 import { LangParams } from "@/app/Props/RoutingProps";
+import { CreateRealEstateItem } from "../../create/FormStepper/CreateRealEstateItem";
+import {
+  AreaOption,
+  RealEstateFormData,
+} from "@/app/fromSchemas/realEstateFormSchema";
 
 interface Props {
   params: {
@@ -16,23 +19,24 @@ const page = async ({ params: { id, lang } }: Props & LangParams) => {
 
   const { forms } = await getDictionary(lang);
 
-  console.log("data", data);
   if (data) {
-    const mapped: FormData = {
+    const details = data.details ? JSON.parse(data.details.toString()) : {};
+    const mapped: RealEstateFormData = {
       id: data.id,
       title: data.title,
       description: data.description,
       type: data.type,
-      advisorType: data.advisorType as AdvisorType,
+      advisorType: data.advisorType!,
       overlooking: data.overlooking,
       paymentMethod: data.paymentMethod,
       price: data.price,
       rentOrSell: data.rentOrSell,
       size: data.size,
-      areaOption: AreaOption.METER,
-      details: data.details ? JSON.parse(data.details.toString()) : {},
+      details: details,
     };
-    return <FormStepper data={mapped} t={forms} />;
+
+    return <CreateRealEstateItem t={forms} data={mapped} />;
+    // return <FormStepper data={mapped} t={forms} />;
   }
 };
 

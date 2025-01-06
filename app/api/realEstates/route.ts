@@ -9,7 +9,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.error();
   }
   const data: RealEstateFormData = await req.json();
-  console.log("creating real estate for", token.id);
   const result = await createRealEstateAsync(data, token.id);
   const response = { message: "created", data: result, id: result.id };
   return NextResponse.json(response);

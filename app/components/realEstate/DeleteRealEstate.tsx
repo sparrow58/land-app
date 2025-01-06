@@ -11,7 +11,6 @@ const DeleteRealEstate = ({ id }: { id: string }) => {
   const [isPopupOpen, setPopupOpen] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const route = useRouter();
-  console.log("item id", id);
   function handleDelete(id: string): void {
     setPopupOpen(true);
   }
@@ -19,11 +18,9 @@ const DeleteRealEstate = ({ id }: { id: string }) => {
     setPopupOpen(false);
   };
   function deleteRealEstate(id: string, { onSuccess, onFailure }: ApiEvents) {
-    console.log("item to delete id", id);
     api
       .delete(`/realEstates/${id}`)
       .then((respose) => {
-        console.log("ok", respose.status);
         if (onSuccess) onSuccess(respose);
       })
       .catch((error) => {
@@ -33,7 +30,6 @@ const DeleteRealEstate = ({ id }: { id: string }) => {
   const handleConfirm = () => {
     // Handle confirmation logic here
     // For example, delete an item
-    console.log("Confirmed");
     setLoading(true);
     deleteRealEstate(id, {
       onSuccess: (respose) => {

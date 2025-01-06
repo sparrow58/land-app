@@ -33,7 +33,6 @@ const uploadImageService = async ({
           const percentCompleted =
             progressEvent.total &&
             Math.round(progressEvent.loaded / progressEvent.total);
-          console.log("progressEvent.progress", progressEvent.progress);
           onUplading({
             progress: percentCompleted,
             name: fileName,

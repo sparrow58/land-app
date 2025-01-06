@@ -70,7 +70,7 @@ export const realEstateSchema = z.object({
   advisorType: z.nativeEnum(AdvisorType, {
     required_error: errorMessages.required,
   }),
-  areaOption: z.nativeEnum(AreaOption),
+  areaOption: z.nativeEnum(AreaOption).optional(),
   details: z
     .object({
       floor: z.number().optional(),
@@ -89,11 +89,9 @@ export const realEstateSchema = z.object({
 export type RealEstateFormData = z.infer<typeof realEstateSchema>;
 
 export function convertToSquareMeters(size: number) {
-  console.log("converting to square meters");
   return Math.round(size * 44.44 * 100) / 100;
 }
 
 export function convertToLebnah(size: number) {
-  console.log("converting to lebnah");
   return Math.round((size / 44.44) * 100) / 100;
 }
