@@ -8,6 +8,7 @@ declare module "next-auth" {
   interface User {
     id: string;
     role?: any;
+    emailVerified: Date?;
   }
   /**
    * The shape of the account object returned in the OAuth providers' `account` callback,

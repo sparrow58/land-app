@@ -42,7 +42,7 @@ export const authOptions: NextAuthOptions = {
           placeholder: "Password",
         },
       },
-      async authorize(credentials, req) {
+      async authorize(credentials, _req) {
         // Add logic here to look up the user from the credentials supplied
         // const user = { id: "1", name: "J Smith", email: "jsmith@example.com" };
         if (!credentials?.username || !credentials?.password) return null;
@@ -68,5 +68,16 @@ export const authOptions: NextAuthOptions = {
   },
   pages: {
     signIn: "/signin",
+  },
+  events: {
+    async createUser({ user }) {
+      // Check if the user was created by Google
+      if (user.email && user.emailVerified === null) {
+        await prisma.user.update({
+          where: { id: user.id },
+          data: { emailVerified: new Date() },
+        });
+      }
+    },
   },
 };

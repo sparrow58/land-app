@@ -10,7 +10,7 @@
     "lint": "next lint",
     "postinstall": "prisma generate",
     "migrate:dev": "node run-migration.js",
-    "migrate:pro": "npx dotenv -e .env.production -- npx prisma migrate deploy",
+    "migrate:pro": "node run-migration-pro.js",
     "studio:dev": "npx dotenv -e .env.development -- npx prisma studio",
     "studio:pro": "npx dotenv -e .env.production -- npx prisma studio"
   },
